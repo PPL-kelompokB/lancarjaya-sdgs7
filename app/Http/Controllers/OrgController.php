@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Organization;
+use App\Models\Blog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+
 
 class OrgController extends Controller
 {
@@ -35,8 +39,15 @@ class OrgController extends Controller
             'bank_name' => 'nullable|string|max:255',
             'account_holder_name' => 'nullable|string|max:255',
             'rekening_number' => 'nullable|string|max:50',
+            'bank_proof' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
+        $bankProofPath = null;
+
+        if ($request->hasFile('bank_proof')) {
+            $bankProofPath = $request->file('bank_proof')->store('bank_proofs', 'public');
+        }
+        
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -58,6 +69,7 @@ class OrgController extends Controller
             'bank_name' => $request->bank_name,
             'account_holder_name' => $request->account_holder_name,
             'rekening_number' => $request->rekening_number,
+            'bank_proof'=>$bankProofPath,
             'verification_status' => 'pending',
         ]);
 
@@ -70,4 +82,85 @@ class OrgController extends Controller
 
         return view('organization.dashboard', compact('organization'));
     }
+    public function updateProfile(Request $request)
+{
+    $organization = Organization::where('user_id', Auth::id())->firstOrFail();
+
+    $validated = $request->validate([
+        'organization_name' => 'required|string|max:255',
+        'organization_type' => 'nullable|string|max:255',
+        'founded_year' => 'nullable|digits:4|integer|min:1900|max:' . date('Y'),
+        'description' => 'nullable|string',
+        'org_phone' => 'nullable|string|max:30',
+        'address' => 'nullable|string|max:1000',
+        'pic_name' => 'nullable|string|max:255',
+        'pic_email' => 'nullable|email|max:255',
+        'pic_phone' => 'nullable|string|max:30',
+    ]);
+
+    $organization->update($validated);
+
+    return redirect()
+        ->route('organization.dashboard')
+        ->with('success', 'Profil organisasi berhasil diperbarui.');
+}
+
+public function updateCoverImage(Request $request)
+{
+    $organization = Organization::where('user_id', Auth::id())->firstOrFail();
+
+    $request->validate([
+        'cover_image' => 'required|image|mimes:jpg,jpeg,png,webp|max:4096',
+    ]);
+
+    if ($request->hasFile('cover_image')) {
+        if (!empty($organization->cover_image) && Storage::disk('public')->exists($organization->cover_image)) {
+            Storage::disk('public')->delete($organization->cover_image);
+        }
+
+        $path = $request->file('cover_image')->store('organization/covers', 'public');
+        $organization->cover_image = $path;
+        $organization->save();
+    }
+
+    return redirect()
+        ->route('organization.dashboard')
+        ->with('success', 'Cover organisasi berhasil diperbarui.');
+}
+
+public function updateProfileImage(Request $request)
+{
+    $organization = Organization::where('user_id', Auth::id())->firstOrFail();
+
+    $request->validate([
+        'profile_image' => 'required|image|mimes:jpg,jpeg,png,webp|max:4096',
+    ]);
+
+    if ($request->hasFile('profile_image')) {
+        if (!empty($organization->profile_image) && Storage::disk('public')->exists($organization->profile_image)) {
+            Storage::disk('public')->delete($organization->profile_image);
+        }
+
+        $path = $request->file('profile_image')->store('organization/profiles', 'public');
+        $organization->profile_image = $path;
+        $organization->save();
+    }
+
+    return redirect()
+        ->route('organization.dashboard')
+        ->with('success', 'Foto profil organisasi berhasil diperbarui.');
+}
+    public function storeBlog(Request $request)
+{
+    $organization = Organization::where('user_id', auth()->id())->first();
+
+    Blog::create([
+        'organization_id' => $organization->id,
+        'title' => $request->title,
+        'content' => $request->content
+    ]);
+
+    return back()->with('success', 'Blog berhasil dibuat');
+}
+
 }

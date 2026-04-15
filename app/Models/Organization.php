@@ -22,10 +22,21 @@ class Organization extends Model
         'rekening_number',
         'verification_status',
         'verification_note',
+        'bank_proof',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class);
+    }
+
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
+    }
+
 }

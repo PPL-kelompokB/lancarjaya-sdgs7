@@ -1,278 +1,250 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - EcoDon</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
     <style>
-        * {
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            margin: 0;
-            background-color: #f4f7f4;
-            color: #333;
-        }
-
-        .navbar {
-            background-color: #2f6f4f;
-            color: white;
-            padding: 16px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .navbar h2 {
-            margin: 0;
-            font-size: 22px;
-        }
-
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            background: rgba(255,255,255,0.15);
-            padding: 8px 14px;
-            border-radius: 8px;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 28px auto;
-            padding: 0 16px;
-        }
-
-        .welcome-box {
-            background: white;
-            border-radius: 14px;
-            padding: 22px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-            margin-bottom: 22px;
-        }
-
-        .welcome-box h3 {
-            margin-top: 0;
-            color: #2f6f4f;
-        }
-
-        .welcome-box p {
-            margin-bottom: 0;
-            color: #666;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-            margin-bottom: 24px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 14px;
-            padding: 20px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-        }
-
-        .card h4 {
-            margin: 0 0 8px;
-            color: #666;
-            font-size: 14px;
-            font-weight: normal;
-        }
-
-        .card .number {
-            font-size: 28px;
-            font-weight: bold;
-            color: #2f6f4f;
-        }
-
-        .section {
-            background: white;
-            border-radius: 14px;
-            padding: 22px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-            margin-bottom: 24px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-            gap: 12px;
-        }
-
-        .section-header h3 {
-            margin: 0;
-            color: #2f6f4f;
-        }
-
-        .btn {
-            display: inline-block;
-            text-decoration: none;
-            background-color: #2f6f4f;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        .btn:hover {
-            background-color: #25593f;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            text-align: left;
-            padding: 12px 10px;
-            border-bottom: 1px solid #eee;
-            font-size: 14px;
-        }
-
-        th {
-            background-color: #f8faf8;
-            color: #444;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .badge-pending {
-            background: #fff4d6;
-            color: #9a6b00;
-        }
-
-        .badge-verified {
-            background: #e7f6ec;
-            color: #2f6f4f;
-        }
-
-        .badge-rejected {
-            background: #fdeaea;
-            color: #a12626;
-        }
-
-        .empty-note {
-            color: #777;
-            font-size: 14px;
-            margin: 0;
-        }
-
-        @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, .brand-font { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
     </style>
 </head>
-<body>
-    <div class="navbar">
-        <h2>EcoDon Admin</h2>
-        <a href="{{ url('/logout') }}"
-           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            Logout
-        </a>
-    </div>
+<body class="bg-[#fff8f5] text-[#1f1b17] min-h-screen">
 
-    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-        @csrf
-    </form>
+<div class="min-h-screen flex">
 
-    <div class="container">
-        <div class="welcome-box">
-            <h3>Selamat Datang, Admin</h3>
-            <p>Kelola verifikasi organisasi sosial dan pantau aktivitas utama platform EcoDon dari sini.</p>
+    <!-- Sidebar -->
+    <aside class="hidden lg:flex w-72 bg-[#fff8f5] border-r-0 flex-col p-6 shadow-[0px_20px_40px_rgba(31,27,23,0.06)]">
+        <div class="mb-10">
+            <span class="text-2xl font-bold text-[#003527]">EcoDon Admin</span>
+            <p class="mt-1 text-xs uppercase tracking-widest opacity-60">Dashboard Administrator</p>
         </div>
 
-        <div class="stats-grid">
-            <div class="card">
-                <h4>Total User</h4>
-                <div class="number">{{ $totalUsers ?? 0 }}</div>
-            </div>
+        <nav class="flex-1 space-y-2">
+            <a href="{{ route('admin.dashboard') }}"
+               class="flex items-center gap-3 rounded-full px-4 py-3 transition-all duration-200 {{ request()->routeIs('admin.dashboard') ? 'bg-[#003527] text-white' : 'text-[#1f1b17] hover:bg-[#f6ece6]' }}">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="text-sm font-semibold">Overview</span>
+            </a>
 
-            <div class="card">
-                <h4>Total Organisasi</h4>
-                <div class="number">{{ $totalOrganizations ?? 0 }}</div>
-            </div>
+            <a href="{{ route('admin.organizations.index') }}"
+               class="flex items-center gap-3 rounded-full px-4 py-3 transition-all duration-200 {{ request()->routeIs('admin.organizations.*') ? 'bg-[#003527] text-white' : 'text-[#1f1b17] hover:bg-[#f6ece6]' }}">
+                <span class="material-symbols-outlined">corporate_fare</span>
+                <span class="text-sm font-semibold">Organizations</span>
+            </a>
 
-            <div class="card">
-                <h4>Organisasi Pending</h4>
-                <div class="number">{{ $pendingOrganizationsCount ?? 0 }}</div>
-            </div>
+            <a href="{{ route('admin.vouchers.index') }}"
+               class="flex items-center gap-3 rounded-full px-4 py-3 transition-all duration-200 {{ request()->routeIs('admin.vouchers.*') ? 'bg-[#003527] text-white' : 'text-[#1f1b17] hover:bg-[#f6ece6]' }}">
+                <span class="material-symbols-outlined">confirmation_number</span>
+                <span class="text-sm font-semibold">Manajemen Voucher</span>
+            </a>
+        </nav>
+
+        <div class="mt-auto pt-6">
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit"
+                        class="flex w-full items-center justify-center gap-2 rounded-full border border-[#d8ccc5] px-4 py-3 font-semibold text-[#003527] transition hover:bg-[#f6ece6]">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Logout</span>
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-4 sm:p-6 lg:p-10">
+
+        <!-- Mobile top -->
+        <div class="lg:hidden mb-6">
+            <h1 class="text-2xl font-extrabold text-[#003527] brand-font">EcoDon Admin</h1>
+            <p class="text-sm text-[#666]">Dashboard Administrator</p>
         </div>
 
-        <div class="section">
-            <div class="section-header">
-                <h3>Menu Admin</h3>
-                <a href="{{ url('/admin/organizations') }}" class="btn">Verifikasi Organisasi</a>
-            </div>
-
-            <p class="empty-note">
-                Gunakan dashboard ini untuk melihat ringkasan sistem dan memproses organisasi yang menunggu verifikasi.
+        <div class="mb-8">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-[#003527]">
+                Dashboard Admin
+            </h2>
+            <p class="mt-2 text-sm sm:text-base text-[#404944]">
+                Pantau user, organisasi, verifikasi, dan progres donasi barang.
             </p>
         </div>
 
-        <div class="section">
-            <div class="section-header">
-                <h3>Daftar Organisasi Pending</h3>
-                <a href="{{ url('/admin/organizations') }}" class="btn">Lihat Semua</a>
+        @if (session('success'))
+            <div class="mb-5 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <!-- Statistik utama -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white rounded-2xl border border-[#e5ddd7] p-5 shadow-sm">
+                <p class="text-sm text-[#666]">Total User</p>
+                <h3 class="mt-2 text-3xl font-extrabold text-[#003527]">{{ $totalUsers }}</h3>
             </div>
 
-            @if(isset($organizations) && count($organizations) > 0)
-                <table>
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Organisasi</th>
-                            <th>Jenis</th>
-                            <th>Email PIC</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($organizations as $index => $organization)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $organization->organization_name }}</td>
-                                <td>{{ $organization->organization_type }}</td>
-                                <td>{{ $organization->pic_email }}</td>
-                                <td>
-                                    <span class="badge badge-pending">
-                                        {{ ucfirst($organization->verification_status) }}
+            <div class="bg-white rounded-2xl border border-[#e5ddd7] p-5 shadow-sm">
+                <p class="text-sm text-[#666]">Total Organisasi</p>
+                <h3 class="mt-2 text-3xl font-extrabold text-[#003527]">{{ $totalOrganizations }}</h3>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-[#e5ddd7] p-5 shadow-sm">
+                <p class="text-sm text-[#666]">Pending Verifikasi</p>
+                <h3 class="mt-2 text-3xl font-extrabold text-yellow-600">{{ $pendingOrganizationsCount }}</h3>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-[#e5ddd7] p-5 shadow-sm">
+                <p class="text-sm text-[#666]">Total Donasi Barang</p>
+                <h3 class="mt-2 text-3xl font-extrabold text-[#003527]">{{ $totalDonations }}</h3>
+            </div>
+        </section>
+
+        <!-- Statistik donasi -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-[#f6ece6] rounded-2xl border border-[#e5ddd7] p-5">
+                <p class="text-sm text-[#666]">Donasi Open</p>
+                <h3 class="mt-2 text-2xl font-bold text-blue-700">{{ $openDonations }}</h3>
+            </div>
+
+            <div class="bg-[#f6ece6] rounded-2xl border border-[#e5ddd7] p-5">
+                <p class="text-sm text-[#666]">Donasi In Progress</p>
+                <h3 class="mt-2 text-2xl font-bold text-yellow-700">{{ $inProgressDonations }}</h3>
+            </div>
+
+            <div class="bg-[#f6ece6] rounded-2xl border border-[#e5ddd7] p-5">
+                <p class="text-sm text-[#666]">Donasi Completed</p>
+                <h3 class="mt-2 text-2xl font-bold text-green-700">{{ $completedDonations }}</h3>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+            <!-- Organisasi Pending -->
+            <section class="bg-white rounded-2xl border border-[#e5ddd7] p-5 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold text-[#003527]">Organisasi Pending</h3>
+                    <span class="text-sm font-semibold text-[#666]">
+                        {{ $organizations->count() }} organisasi
+                    </span>
+                </div>
+
+                <div class="space-y-4">
+                    @forelse ($organizations as $org)
+                        <div class="border border-[#eee2db] rounded-xl p-4">
+                            <h4 class="font-bold text-[#1f1b17]">{{ $org->organization_name }}</h4>
+                            <p class="text-sm text-[#666] mt-1">Tipe: {{ $org->organization_type }}</p>
+                            <p class="text-sm text-[#666]">PIC: {{ $org->pic_name }}</p>
+                            <p class="text-sm text-[#666]">Email PIC: {{ $org->pic_email }}</p>
+
+                            <div class="mt-3 flex gap-2 flex-wrap">
+                                <a href="{{ route('admin.organizations.show', $org->id) }}"
+                                   class="px-4 py-2 rounded-lg bg-[#003527] text-white text-sm font-semibold hover:opacity-90">
+                                    Detail Verifikasi
+                                </a>
+
+                                <form action="{{ route('admin.organizations.approve', $org->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                            class="px-4 py-2 rounded-lg border border-[#003527] text-[#003527] text-sm font-semibold hover:bg-[#f6ece6]">
+                                        Approve Cepat
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @empty
+                        <p class="text-sm text-[#666]">Tidak ada organisasi pending.</p>
+                    @endforelse
+                </div>
+            </section>
+
+            <!-- Donasi Terbaru -->
+            <section class="bg-white rounded-2xl border border-[#e5ddd7] p-5 shadow-sm">
+                <h3 class="text-xl font-bold text-[#003527] mb-4">Donasi Barang Terbaru</h3>
+
+                <div class="space-y-4">
+                    @forelse ($latestDonations as $donation)
+                        <div class="border border-[#eee2db] rounded-xl p-4">
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <h4 class="font-bold text-[#1f1b17]">{{ $donation->title }}</h4>
+                                    <p class="text-sm text-[#666] mt-1">
+                                        Organisasi: {{ $donation->organization->organization_name ?? '-' }}
+                                    </p>
+                                    <p class="text-sm text-[#666]">
+                                        Barang: {{ $donation->item_name }}
+                                        @if($donation->quantity)
+                                            - {{ $donation->quantity }} {{ $donation->unit }}
+                                        @endif
+                                    </p>
+                                    <p class="text-sm text-[#666]">
+                                        Lokasi: {{ $donation->city ?? '-' }}, {{ $donation->province ?? '-' }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 flex flex-wrap gap-2">
+                                @if ($donation->status === 'open')
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">
+                                        Open
                                     </span>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @else
-                <p class="empty-note">Belum ada organisasi yang menunggu verifikasi.</p>
-            @endif
+                                @elseif ($donation->status === 'in_progress')
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700">
+                                        In Progress
+                                    </span>
+                                @elseif ($donation->status === 'completed')
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                                        Completed
+                                    </span>
+                                @else
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">
+                                        Cancelled
+                                    </span>
+                                @endif
+
+                                @if ($donation->logistic_status === 'waiting_pickup')
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-700">
+                                        Menunggu Pickup
+                                    </span>
+                                @elseif ($donation->logistic_status === 'picked_up')
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-700">
+                                        Sudah Diambil
+                                    </span>
+                                @elseif ($donation->logistic_status === 'in_transit')
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-700">
+                                        Dalam Pengiriman
+                                    </span>
+                                @elseif ($donation->logistic_status === 'arrived')
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-cyan-100 text-cyan-700">
+                                        Sudah Sampai
+                                    </span>
+                                @elseif ($donation->logistic_status === 'processed')
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-700">
+                                        Sedang Diolah
+                                    </span>
+                                @elseif ($donation->logistic_status === 'distributed')
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                                        Sudah Disalurkan
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                    @empty
+                        <p class="text-sm text-[#666]">Belum ada data donasi.</p>
+                    @endforelse
+                </div>
+            </section>
+
         </div>
-    </div>
+    </main>
+</div>
+
 </body>
 </html>
