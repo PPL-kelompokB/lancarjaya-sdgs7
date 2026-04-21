@@ -123,7 +123,10 @@
                 <span class="text-sm font-medium">Dashboard</span>
             </a>
 
-            <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="#">
+            <a 
+                class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" 
+                href="{{ route('organization.blog.create', $organization->id) }}"
+            >
                 <span class="material-symbols-outlined">article</span>
                 <span class="text-sm font-medium">Blog</span>
             </a>
