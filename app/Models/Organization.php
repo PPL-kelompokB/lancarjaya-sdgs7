@@ -39,4 +39,18 @@ class Organization extends Model
         return $this->hasMany(Donation::class);
     }
 
+    /**
+     * User yang mengikuti (follow) organisasi ini.
+     */
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'organization_follows')
+                    ->withTimestamps();
+    }
+
+    public function getFollowersCountAttribute(): int
+    {
+        return $this->followers()->count();
+    }
+
 }

@@ -6,12 +6,17 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\FollowController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Organization;
 
 Route::get('/', function () {
     return view('landing-page');
 })->name('landing-page');
+
+// Profil publik organisasi (bisa diakses tanpa login, tapi follow butuh login)
+Route::get('/organizations/{organization}', [FollowController::class, 'publicProfile'])->name('organization.public-profile');
 
 // Autentikasi User
 Route::get('/register', [AuthUserController::class, 'showRegister'])->name('register');
@@ -46,6 +51,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/search', [SearchController::class, 'globalSearch'])->name('search.global');
     Route::get('/search/blogs', [SearchController::class, 'searchBlogs'])->name('search.blogs');
     Route::get('/search/organizations', [SearchController::class, 'searchOrganizations'])->name('search.organizations');
+
+    // ⭐ FOLLOW ORGANISASI (A-07)
+    Route::post('/organizations/{organization}/follow', [FollowController::class, 'toggle'])->name('organization.follow.toggle');
+    Route::get('/feed', [FollowController::class, 'feed'])->name('user.feed');
+
+    // 👤 USER DASHBOARD & PROFILE
+    Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
+    Route::put('/user/profile', [UserController::class, 'updateProfile'])->name('user.profile.update');
+    Route::post('/user/profile-photo', [UserController::class, 'updatePhoto'])->name('user.profile.photo.update');
 
 });
 

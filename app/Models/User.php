@@ -54,4 +54,21 @@ class User extends Authenticatable
     {
         return $this->hasOne(Organization::class);
     }
+
+    /**
+     * Organisasi yang di-follow oleh user ini.
+     */
+    public function followingOrganizations()
+    {
+        return $this->belongsToMany(Organization::class, 'organization_follows')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Cek apakah user sedang mengikuti organisasi tertentu.
+     */
+    public function isFollowing(Organization $organization): bool
+    {
+        return $this->followingOrganizations()->where('organization_id', $organization->id)->exists();
+    }
 }
