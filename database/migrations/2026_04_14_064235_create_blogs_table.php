@@ -12,12 +12,26 @@ return new class extends Migration
     public function up()
 {
     Schema::create('blogs', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('organization_id')->constrained()->onDelete('cascade');
-        $table->string('title');
-        $table->text('content');
-        $table->timestamps();
-    });
+    $table->id();
+
+    // 🔥 siapa pembuat blog (user atau organization)
+    $table->foreignId('user_id')
+          ->constrained()
+          ->onDelete('cascade');
+
+    // 📝 isi blog
+    $table->string('title');
+    $table->text('content');
+
+    # like komen
+    $table->integer('likes')->default(0);
+    $table->integer('comments')->default(0);
+
+    // 🖼️ gambar blog (opsional)
+    $table->string('image')->nullable();
+
+    $table->timestamps();
+});
 }
 
     /**

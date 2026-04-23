@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Organization;
 use App\Models\Blog;
+use App\Models\VolunteerRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -78,10 +79,15 @@ class OrgController extends Controller
 
     public function dashboard()
     {
-        $organization = \App\Models\Organization::where('user_id', auth()->id())->firstOrFail();
+        $organization = Organization::where('user_id', auth()->id())->firstOrFail();
 
-        return view('organization.dashboard', compact('organization'));
+        $volunteerRequests = VolunteerRequest::where('organization_id', $organization->id)
+            ->latest()
+            ->get();
+
+        return view('organization.dashboard', compact('organization', 'volunteerRequests'));
     }
+
     public function updateProfile(Request $request)
 {
     $organization = Organization::where('user_id', Auth::id())->firstOrFail();

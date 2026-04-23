@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Donation extends Model
 {
     protected $fillable = [
+        'user_id',
         'organization_id',
         'title',
         'description',
@@ -28,8 +29,16 @@ class Donation extends Model
     /**
      * Relasi ke Organization
      */
-    public function organization()
-    {
-        return $this->belongsTo(Organization::class);
-    }
+    public function dashboard()
+        {
+            $user = Auth::user();
+            $donations = collect();
+
+            return view('user.dashboard-user', compact('user', 'donations'));
+        }
+
+    public function user()
+        {
+            return $this->belongsTo(User::class);
+        }
 }

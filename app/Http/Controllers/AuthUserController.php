@@ -66,7 +66,7 @@ class AuthUserController extends Controller
             return redirect('/organization/dashboard');
         }
 
-        return redirect('/dashboard');
+        return redirect()->route('user.dashboard');
     }
 
     public function logout(Request $request)

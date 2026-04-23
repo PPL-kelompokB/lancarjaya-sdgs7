@@ -29,9 +29,10 @@ class Organization extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function blogs()
     {
-        return $this->hasMany(Blog::class);
+        return $this->hasMany(Blog::class, 'user_id', 'user_id');
     }
 
     public function donations()
@@ -39,4 +40,8 @@ class Organization extends Model
         return $this->hasMany(Donation::class);
     }
 
+    public function volunteerRequests()
+    {
+        return $this->hasMany(VolunteerRequest::class);
+    }
 }

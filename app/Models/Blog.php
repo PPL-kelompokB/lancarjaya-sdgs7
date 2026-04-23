@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Blog extends Model
 {
     protected $fillable = [
-        'organization_id',
         'title',
-        'content'
+        'content',
+        'user_id',
+        'image'
     ];
 
-    public function organization()
+    public function user()
     {
-        return $this->belongsTo(Organization::class);
+        return $this->belongsTo(User::class);
     }
 }

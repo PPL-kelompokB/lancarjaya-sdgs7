@@ -131,12 +131,12 @@
                 <span class="text-sm font-medium">Blog</span>
             </a>
 
-            <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="#">
+            <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="{{ route('organization.donation.create') }}">
                 <span class="material-symbols-outlined">card_giftcard</span>
                 <span class="text-sm font-medium">Donation Programs</span>
             </a>
 
-            <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="#">
+            <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="{{ route('organization.volunteer-request.create') }}">
                 <span class="material-symbols-outlined">group</span>
                 <span class="text-sm font-medium">Volunteer Activity</span>
             </a>
@@ -452,13 +452,62 @@
                 <!-- VOLUNTEER -->
                 <div id="panel-volunteer-activity" class="tab-panel">
                     <section class="bg-surface-container rounded-2xl p-6">
+
                         <div class="flex items-center justify-between gap-4 mb-6">
                             <h3 class="text-xl font-headline font-bold text-primary">Volunteer Activity</h3>
+
+                            <a href="{{ route('organization.volunteer-request.create') }}"
+                            class="px-4 py-2 bg-primary text-white rounded-full text-sm">
+                                + Buat Request
+                            </a>
                         </div>
 
-                        <div class="bg-white rounded-2xl p-6 border border-outline-variant/20 text-on-surface-variant">
-                            Belum ada data aktivitas volunteer untuk ditampilkan.
-                        </div>
+                        @if ($volunteerRequests->isEmpty())
+                            <div class="bg-white rounded-2xl p-6 border border-outline-variant/20 text-on-surface-variant">
+                                Belum ada data aktivitas volunteer untuk ditampilkan.
+                            </div>
+                        @else
+                            <div class="space-y-4">
+                                @foreach ($volunteerRequests as $item)
+                                    <div class="bg-white rounded-2xl p-5 border border-outline-variant/20">
+
+                                        {{-- GAMBAR --}}
+                                        @if ($item->image)
+                                            <img 
+                                                src="{{ asset('storage/' . $item->image) }}" 
+                                                class="w-full h-auto rounded-xl mb-4"
+                                            >
+                                        @endif
+
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="text-lg font-semibold text-primary">
+                                                    {{ $item->title }}
+                                                </h4>
+                                                <p class="text-sm text-gray-500">
+                                                    {{ $item->location }} • {{ ucfirst($item->event_type) }}
+                                                </p>
+                                            </div>
+
+                                            <span class="text-sm bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full">
+                                                {{ $item->volunteer_quota }} orang
+                                            </span>
+                                        </div>
+
+                                        <p class="mt-3 text-sm text-gray-700">
+                                            {{ Str::limit($item->description, 100) }}
+                                        </p>
+
+                                        <div class="mt-4 flex justify-between text-xs text-gray-500">
+                                            <span>Deadline: {{ \Carbon\Carbon::parse($item->deadline)->format('d M Y') }}</span>
+                                            <span>Tanggal: {{ \Carbon\Carbon::parse($item->event_date)->format('d M Y') }}</span>
+                                        </div>
+
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+
                     </section>
                 </div>
 
@@ -882,6 +931,20 @@
                         : 'Belum ada file dipilih.';
                 });
             }
+
+            const successAlert = document.getElementById('successAlert');
+            if (successAlert) {
+                setTimeout(() => {
+                    successAlert.remove();
+                }, 3000);
+            }
+
+            @if (session('success'))
+                <div id="successAlert" class="mx-4 mt-4 bg-green-100 text-green-700 p-4 rounded-xl flex justify-between items-center">
+                    <span>{{ session('success') }}</span>
+                    <button onclick="document.getElementById('successAlert').remove()" class="text-green-700 font-bold">✕</button>
+                </div>
+            @endif
 
             @if ($errors->any())
                 openModal('profileModal');
