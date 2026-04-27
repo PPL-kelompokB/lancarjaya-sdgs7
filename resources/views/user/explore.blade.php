@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Explore EcoDon</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -94,7 +96,20 @@
                 <p class="text-xs text-[#707974] mt-3">
                     by {{ $item->user->name ?? 'User' }}
                 </p>
+                <!-- LIKE COMMENT -->
+                <div class="flex items-center gap-6 mt-4 text-sm text-[#707974]">
 
+                    <span class="flex items-center gap-2">
+                        <i class="fa-solid fa-heart text-red-700 text-lg"></i>
+                        {{ $item->likes ?? 0 }}
+                    </span>
+
+                    <span class="flex items-center gap-2">
+                        <i class="fa-solid fa-comment text-gray-500 text-lg"></i>
+                        {{ $item->comments ?? 0 }}
+                    </span>
+
+                </div>
             </div>
         </a>
         @endif
@@ -119,6 +134,20 @@
             <p class="text-xs text-[#707974] mt-3">
                 by {{ $item->organization->name ?? 'Organization' }}
             </p>
+
+                <div class="flex items-center gap-6 mt-4 text-sm text-[#707974]">
+
+                    <span class="flex items-center gap-2">
+                        <i class="fa-solid fa-heart text-red-700 text-lg"></i>
+                        {{ $item->likes ?? 0 }}
+                    </span>
+
+                    <span class="flex items-center gap-2">
+                        <i class="fa-solid fa-comment text-gray-500 text-lg"></i>
+                        {{ $item->comments ?? 0 }}
+                    </span>
+
+                </div>
 
         </a>
         @endif
@@ -150,6 +179,21 @@
                 <p class="text-xs text-[#707974] mt-3">
                     by {{ $item->organization->name ?? 'Organization' }}
                 </p>
+
+                <!-- LIKE COMMENT -->
+                <div class="flex items-center gap-6 mt-4 text-sm text-[#707974]">
+
+                    <span class="flex items-center gap-2">
+                        <i class="fa-solid fa-heart text-red-700 text-lg"></i>
+                        {{ $item->likes ?? 0 }}
+                    </span>
+
+                    <span class="flex items-center gap-2">
+                        <i class="fa-solid fa-comment text-gray-500 text-lg"></i>
+                        {{ $item->comments ?? 0 }}
+                    </span>
+
+                </div>
 
             </div>
         </a>

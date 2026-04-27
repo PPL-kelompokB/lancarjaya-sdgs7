@@ -59,6 +59,9 @@ return new class extends Migration
             ])->default('waiting_pickup');
 
             $table->timestamps();
+
+            $table->integer('likes')->default(0);
+            $table->integer('comments')->default(0);
         });
     }
 

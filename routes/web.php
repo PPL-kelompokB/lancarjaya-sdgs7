@@ -141,4 +141,17 @@ Route::prefix('user')->group(function () {
 
     Route::get('/explore/volunteer/{id}', [ExploreController::class, 'detailVolunteer'])
         ->name('user.explore.volunteer');
+
+    Route::post('/blog/{id}/like', [ExploreController::class, 'likeBlog'])->name('blog.like');
+
+    Route::post('/blog/{id}/comment', [ExploreController::class, 'commentBlog'])->name('blog.comment');
+
+    Route::post('/blog/{id}/like', [ExploreController::class, 'toggleLikeBlog'])
+    ->name('blog.like');
+
+    Route::post('/volunteer/{id}/like', [ExploreController::class, 'toggleLikeVolunteer'])
+    ->name('volunteer.like');
+
+    Route::post('/volunteer/{id}/comment', [ExploreController::class, 'commentVolunteer'])
+    ->name('volunteer.comment');
 });
