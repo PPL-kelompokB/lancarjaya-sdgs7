@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('donations', function (Blueprint $table) {
-            //
+            $table->dropColumn(['likes', 'comments']);
         });
     }
 
@@ -22,7 +22,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('donations', function (Blueprint $table) {
-            //
+            $table->integer('likes')->default(0);
+            $table->integer('comments')->default(0);
         });
     }
 };
