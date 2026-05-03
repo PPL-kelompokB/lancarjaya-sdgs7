@@ -135,7 +135,7 @@
             <a  href="{{ route('user.explore') }}"
                 class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="#">
                 <span class="material-symbols-outlined">home</span>
-                <span class="text-sm font-medium">Beranda Saya</span>
+                <span class="text-sm font-medium">Explore</span>
             </a>
 
              <a href="{{ route('user.blog.index') }}"

@@ -1,71 +1,150 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Blog</title>
+    <title>Buat Blog - {{ $organization->organization_name }}</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#003527",
+                        secondary: "#006c49",
+                        surface: "#fff8f5",
+                        cream: "#f6ece6",
+                    },
+                    fontFamily: {
+                        sans: ["Inter", "sans-serif"],
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-surface min-h-screen text-gray-800">
 
-<div class="max-w-4xl mx-auto mt-10 bg-white p-8 rounded-xl shadow">
+    <div class="min-h-screen flex items-center justify-center px-4 py-10">
+        <div class="w-full max-w-4xl bg-white rounded-3xl shadow-xl overflow-hidden">
 
-    <h1 class="text-2xl font-bold mb-6">Create Blog</h1>
+            <div class="bg-gradient-to-r from-primary to-secondary px-8 py-8 text-white">
+                <p class="text-sm opacity-80 mb-2">EcoDon Organization</p>
+                <h1 class="text-3xl font-extrabold">Buat Blog Baru</h1>
+                <p class="mt-2 text-white/80">
+                    Tulis cerita, kegiatan, atau update terbaru dari {{ $organization->organization_name }}.
+                </p>
+            </div>
 
-    {{-- Error --}}
-    @if ($errors->any())
-        <div class="mb-4 bg-red-100 text-red-700 p-4 rounded">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>• {{ $error }}</li>
-                @endforeach
-            </ul>
+            <div class="p-8">
+
+                @if ($errors->any())
+                    <div class="mb-6 rounded-2xl bg-red-50 border border-red-200 text-red-700 px-5 py-4">
+                        <p class="font-bold mb-2">Ada error:</p>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('organization.blog.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    @csrf
+
+                    <input type="hidden" name="organization_id" value="{{ $organization->id }}">
+
+                    <div>
+                        <label class="block mb-2 font-bold text-primary">
+                            Judul Blog
+                        </label>
+                        <input 
+                            type="text" 
+                            name="title"
+                            value="{{ old('title') }}"
+                            class="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-secondary"
+                            placeholder="Contoh: Aksi Bersih Sungai Bersama Relawan"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-bold text-primary">
+                            Gambar Blog
+                        </label>
+
+                        <div class="rounded-2xl border-2 border-dashed border-gray-300 bg-cream/60 p-5">
+                            <input 
+                                type="file" 
+                                name="image"
+                                id="imageInput"
+                                accept="image/*"
+                                class="block w-full text-sm text-gray-700"
+                            >
+
+                            <p class="mt-2 text-xs text-gray-500">
+                                Format: JPG, JPEG, PNG. Maksimal 2MB.
+                            </p>
+
+                            <img 
+                                id="imagePreview"
+                                class="hidden mt-5 w-full max-h-80 object-cover rounded-2xl border"
+                                alt="Preview gambar"
+                            >
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block mb-2 font-bold text-primary">
+                            Konten Blog
+                        </label>
+                        <textarea 
+                            name="content"
+                            rows="12"
+                            class="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-secondary"
+                            placeholder="Tulis isi blog di sini..."
+                            required
+                        >{{ old('content') }}</textarea>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-end gap-3 pt-4">
+                        <a href="{{ route('organization.dashboard') }}"
+                           class="px-6 py-3 bg-gray-200 text-gray-700 rounded-full font-bold text-center hover:bg-gray-300 transition">
+                            Batal
+                        </a>
+
+                        <button 
+                            type="submit"
+                            class="px-8 py-3 bg-primary text-white rounded-full font-bold hover:bg-secondary transition"
+                        >
+                            Publish Blog
+                        </button>
+                    </div>
+                </form>
+
+            </div>
         </div>
-    @endif
-
-    <form action="{{ route('organization.blog.store') }}" method="POST">
-    @csrf
-
-    <input type="hidden" name="organization_id" value="{{ $organization->id }}">
-
-    <div class="mb-6">
-        <label class="block mb-2 font-semibold text-primary">Judul Blog</label>
-        <input 
-            type="text" 
-            name="title"
-            value="{{ old('title') }}"
-            class="w-full border border-outline-variant rounded-xl p-3 bg-white"
-            placeholder="Masukkan judul blog..."
-        >
     </div>
 
-    <div class="mb-6">
-        <label class="block mb-2 font-semibold text-primary">Konten</label>
-        <textarea 
-            name="content"
-            rows="10"
-            class="w-full border border-outline-variant rounded-xl p-3 bg-white"
-            placeholder="Tulis isi blog..."
-        >{{ old('content') }}</textarea>
-    </div>
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
 
-    <div class="flex justify-end gap-3">
-        <a href="{{ route('organization.dashboard') }}"
-           class="px-5 py-2 bg-gray-200 rounded-full font-semibold">
-            Batal
-        </a>
+        imageInput.addEventListener('change', function () {
+            const file = this.files[0];
 
-        <button 
-            type="submit"
-            class="px-6 py-2 bg-primary text-white rounded-full hover:bg-[#064e3b]"
-        >
-            Publish Blog
-        </button>
-    </div>
-</form>
-</div>
+            if (file) {
+                imagePreview.src = URL.createObjectURL(file);
+                imagePreview.classList.remove('hidden');
+            } else {
+                imagePreview.src = '';
+                imagePreview.classList.add('hidden');
+            }
+        });
+    </script>
 
 </body>
 </html>

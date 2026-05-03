@@ -1,26 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
     <title>Explore EcoDon</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-        .masonry {
-            column-count: 1;
-            column-gap: 24px;
-        }
-        @media(min-width:768px){ .masonry{column-count:2;} }
-        @media(min-width:1024px){ .masonry{column-count:3;} }
+        .masonry { column-count: 1; column-gap: 24px; }
+        @media(min-width:768px){ .masonry{ column-count:2; } }
+        @media(min-width:1024px){ .masonry{ column-count:3; } }
 
         .item {
             break-inside: avoid;
             margin-bottom: 24px;
-            transition: all .3s ease;
+            transition: all .25s ease;
         }
 
-        .item:hover {
-            transform: translateY(-5px);
-        }
+        .item:hover { transform: translateY(-5px); }
     </style>
 </head>
 
@@ -28,136 +24,155 @@
 
 <div class="max-w-7xl mx-auto px-6 py-10">
 
-    <!-- HEADER -->
     <div class="mb-10 text-center">
+        <h1 class="text-4xl font-bold text-[#003527]">Explore EcoDon</h1>
+        <p class="text-[#404944] mt-2">Discover blog, donation, and volunteer activities</p>
 
-        <h1 class="text-4xl font-bold text-[#003527]">
-            Explore EcoDon
-        </h1>
-
-        <p class="text-[#404944] mt-2">
-            Discover blog, donation, and volunteer activities
-        </p>
-
-        <!-- SEARCH -->
-        <form method="GET" action="{{ url('/user/explore') }}" class="mt-6 flex justify-center">
-
+        <form method="GET" action="{{ route('user.explore') }}" class="mt-6 flex justify-center">
             <div class="relative w-full max-w-xl">
+                <span class="absolute left-4 top-3.5 text-[#707974]">🔍</span>
 
-                <span class="absolute left-4 top-3.5 text-[#707974]">
-                    🔍
-                </span>
-
-                <input 
+                <input
                     type="text"
                     name="search"
                     value="{{ request('search') }}"
-                    placeholder="Search blog, donation, volunteer..."
-                    class="w-full pl-12 pr-4 py-3 rounded-full shadow border border-[#eae1da] bg-[#fff8f5] focus:outline-none focus:ring-2 focus:ring-[#006c49]"
+                    placeholder="Search title, author, organization..."
+                    class="w-full pl-12 pr-24 py-3 rounded-full shadow border border-[#eae1da] bg-white focus:outline-none focus:ring-2 focus:ring-[#006c49]"
                 >
 
+                @if(request('search'))
+                    <a href="{{ route('user.explore') }}"
+                       class="absolute right-4 top-3 text-sm font-bold text-[#006c49]">
+                        Reset
+                    </a>
+                @endif
             </div>
-
         </form>
-
     </div>
 
-    <!-- GRID -->
-    <div class="masonry">
+    @if($explore->isEmpty())
+        <div class="max-w-xl mx-auto bg-white rounded-3xl p-8 text-center text-[#404944] border border-[#eae1da]">
+            @if(request('search'))
+                Tidak ada hasil untuk
+                <span class="font-bold text-[#003527]">"{{ request('search') }}"</span>.
 
-        @foreach($explore as $item)
-
-        <!-- BLOG -->
-        @if($item->type == 'blog')
-        <a href="{{ url('/user/explore/blog/'.$item->id) }}"
-           class="item block bg-[#fcf2eb] rounded-2xl shadow border border-[#eae1da] overflow-hidden">
-
-            @if($item->image)
-                <img src="{{ asset('storage/'.$item->image) }}"
-                     class="w-full h-52 object-cover">
+                <div class="mt-4">
+                    <a href="{{ route('user.explore') }}"
+                       class="inline-block px-5 py-2 rounded-full bg-[#006c49] text-white text-sm font-bold">
+                        Kembali ke Explore
+                    </a>
+                </div>
+            @else
+                Belum ada konten yang ditemukan.
             @endif
+        </div>
+    @else
+        <div class="masonry">
+            @foreach($explore as $item)
+                <div class="item bg-white rounded-3xl shadow border border-[#eae1da] overflow-hidden">
 
-            <div class="p-5">
+                    @if(!empty($item->image))
+                        <a href="{{ url('/user/explore/' . $item->type . '/' . $item->id) }}">
+                            <img src="{{ asset('storage/' . $item->image) }}"
+                                 class="w-full h-56 object-cover"
+                                 alt="{{ $item->title }}">
+                        </a>
+                    @endif
 
-                <span class="text-xs font-bold text-[#006c49]">
-                    BLOG
-                </span>
+                    <div class="p-5">
+                        <a href="{{ url('/user/explore/' . $item->type . '/' . $item->id) }}" class="block">
+                            <span class="inline-flex px-3 py-1 rounded-full bg-[#e6f5ef] text-[#006c49] text-[11px] font-bold uppercase tracking-wider">
+                                {{ $item->type }}
+                            </span>
 
-                <h2 class="font-bold text-lg mt-1 text-[#003527]">
-                    {{ $item->title }}
-                </h2>
+                            <h2 class="font-bold text-xl mt-3 text-[#003527] leading-snug">
+                                {{ $item->title }}
+                            </h2>
 
-                <p class="text-sm text-[#404944] mt-2">
-                    {{ Str::limit($item->content, 100) }}
-                </p>
+                            <p class="text-sm text-[#404944] mt-2 leading-relaxed">
+                                {{ Str::limit($item->description ?? $item->content, 120) }}
+                            </p>
+                        </a>
 
-                <p class="text-xs text-[#707974] mt-3">
-                    by {{ $item->user->name ?? 'User' }}
-                </p>
+                        <div class="mt-5 flex items-center justify-between gap-3">
+                            @if($item->author_type === 'organization')
+                                <a href="{{ route('organization.public.profile', $item->organization_id) }}"
+                                   class="flex items-center gap-3 min-w-0">
 
-            </div>
-        </a>
-        @endif
+                                    <div class="w-11 h-11 rounded-full overflow-hidden bg-[#f6ece6] flex items-center justify-center shrink-0">
+                                        @if(!empty($item->organization_profile_image))
+                                            <img src="{{ asset('storage/' . $item->organization_profile_image) }}"
+                                                 class="w-full h-full object-cover">
+                                        @else
+                                            <span class="font-bold text-[#003527]">
+                                                {{ strtoupper(substr($item->organization_name ?? 'O', 0, 1)) }}
+                                            </span>
+                                        @endif
+                                    </div>
 
-        <!-- DONATION -->
-        @if($item->type == 'donation')
-        <a href="{{ url('/user/explore/donation/'.$item->id) }}"
-           class="item block bg-[#fcf2eb] rounded-2xl p-5 shadow border border-[#eae1da]">
+                                    <p class="text-sm font-bold text-[#003527] truncate">
+                                        {{ $item->organization_name ?? 'Organization' }}
+                                    </p>
+                                </a>
 
-            <span class="text-xs font-bold text-[#006c49]">
-                DONATION
-            </span>
+                                @auth
+                                    @if(auth()->user()->organization?->id !== $item->organization_id)
+                                        @if(auth()->user()->followedOrganizations->contains($item->organization_id))
+                                            <form action="{{ route('organizations.unfollow', $item->organization_id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="px-3 py-1 rounded-full bg-[#003527] text-white text-xs font-bold">
+                                                    Following
+                                                </button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('organizations.follow', $item->organization_id) }}" method="POST">
+                                                @csrf
+                                                <button class="px-3 py-1 rounded-full bg-[#006c49] text-white text-xs font-bold">
+                                                    Follow
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @endif
+                                @endauth
 
-            <h2 class="font-bold text-lg mt-2 text-[#003527]">
-                {{ $item->title }}
-            </h2>
+                            @elseif($item->author_type === 'user')
+                                <a href="{{ route('user.public.profile', $item->user_id) }}"
+                                   class="flex items-center gap-3 min-w-0">
 
-            <p class="text-sm text-[#404944] mt-2">
-                {{ Str::limit($item->description, 100) }}
-            </p>
+                                    <div class="w-11 h-11 rounded-full overflow-hidden bg-[#f6ece6] flex items-center justify-center shrink-0">
+                                        @if(!empty($item->user_profile_image))
+                                            <img src="{{ asset('storage/' . $item->user_profile_image) }}"
+                                                 class="w-full h-full object-cover">
+                                        @else
+                                            <span class="font-bold text-[#003527]">
+                                                {{ strtoupper(substr($item->user_name ?? 'U', 0, 1)) }}
+                                            </span>
+                                        @endif
+                                    </div>
 
-            <p class="text-xs text-[#707974] mt-3">
-                by {{ $item->organization->name ?? 'Organization' }}
-            </p>
+                                    <p class="text-sm font-bold text-[#003527] truncate">
+                                        {{ $item->user_name ?? 'User' }}
+                                    </p>
+                                </a>
+                            @endif
+                        </div>
 
-        </a>
-        @endif
+                        <div class="flex items-center gap-4 mt-4 text-sm text-[#707974] border-t border-[#eae1da] pt-4">
+                            <form action="{{ route('like', [$item->type, $item->id]) }}" method="POST">
+                                @csrf
+                                <button type="submit">
+                                    ❤️ {{ $item->likes_count ?? 0 }}
+                                </button>
+                            </form>
 
-        <!-- VOLUNTEER -->
-        @if($item->type == 'volunteer')
-        <a href="{{ url('/user/explore/volunteer/'.$item->id) }}"
-           class="item block bg-[#fcf2eb] rounded-2xl overflow-hidden shadow border border-[#eae1da]">
-
-            @if(!empty($item->image))
-                <img src="{{ asset('storage/'.$item->image) }}"
-                     class="w-full h-52 object-cover">
-            @endif
-
-            <div class="p-5">
-
-                <span class="text-xs font-bold text-[#006c49]">
-                    VOLUNTEER
-                </span>
-
-                <h2 class="font-bold text-lg mt-2 text-[#003527]">
-                    {{ $item->title }}
-                </h2>
-
-                <p class="text-sm text-[#404944] mt-2">
-                    {{ Str::limit($item->description, 100) }}
-                </p>
-
-                <p class="text-xs text-[#707974] mt-3">
-                    by {{ $item->organization->name ?? 'Organization' }}
-                </p>
-
-            </div>
-        </a>
-        @endif
-
-        @endforeach
-
-    </div>
+                            <span>💬 {{ $item->comments_count ?? 0 }}</span>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
 
 </div>
 

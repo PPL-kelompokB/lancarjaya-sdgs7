@@ -10,6 +10,10 @@ use App\Http\Controllers\VolunteerRequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DonationController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExploreController;
+use App\Http\Controllers\UserExploreController;
+use App\Http\Controllers\OrganizationFollowController;
+use App\Http\Controllers\InteractionController;
 use App\Models\Organization;
 
 Route::get('/', function () {
@@ -52,11 +56,27 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/search', [SearchController::class, 'globalSearch'])->name('search.global');
     Route::get('/search/blogs', [SearchController::class, 'searchBlogs'])->name('search.blogs');
     Route::get('/search/organizations', [SearchController::class, 'searchOrganizations'])->name('search.organizations');
+    Route::get('/organization/profile/{id}', [OrgController::class, 'publicProfile'])
+    ->name('organization.public.profile');
 
     // 🔥 PROFIL USER (TAMBAH DI SINI)
     Route::get('/profil', [UserController::class, 'dashboard'])->name('user.profil');
     Route::put('/profil/update', [UserController::class, 'updateProfile'])->name('user.update');
     Route::post('/profil/photo', [UserController::class, 'updatePhoto'])->name('user.photo');
+
+     // ✅ FOLLOW ORGANIZATION (TAMBAH DI SINI)
+    Route::post('/organizations/{organization}/follow', [OrganizationFollowController::class, 'follow'])
+        ->name('organizations.follow');
+
+    Route::delete('/organizations/{organization}/unfollow', [OrganizationFollowController::class, 'unfollow'])
+        ->name('organizations.unfollow');
+
+    Route::get('/user/profile/{id}', [UserController::class, 'publicProfile'])
+    ->name('user.public.profile');
+
+    Route::post('/like/{type}/{id}', [InteractionController::class, 'like'])->name('like');
+    Route::post('/comment/{type}/{id}', [InteractionController::class, 'comment'])->name('comment');
+    Route::get('/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
 });
 
 // Organization Routes
@@ -77,7 +97,7 @@ Route::middleware(['auth', 'role:organization'])->group(function () {
         return view('organization.createBlog', compact('organization'));
     })->name('organization.blog.create');
 
-    Route::post('/organization/blog', [BlogController::class, 'store'])
+    Route::post('/organization/blog', [OrgController::class, 'storeBlog'])
         ->name('organization.blog.store');
 
     Route::get('/organization/donation/create', [DonationController::class, 'create'])
@@ -85,6 +105,22 @@ Route::middleware(['auth', 'role:organization'])->group(function () {
 
     Route::post('/organization/donation/store', [DonationController::class, 'store'])
         ->name('organization.donation.store');
+    
+    Route::get('/organization/donations/create', [DonationController::class, 'create'])->name('donations.create');
+    Route::post('/organization/donations', [DonationController::class, 'store'])->name('donations.store');
+
+    Route::get('/organization/donations/{id}/edit', [DonationController::class, 'edit'])->name('donations.edit');
+    Route::put('/organization/donations/{id}', [DonationController::class, 'update'])->name('donations.update');
+    Route::delete('/organization/donations/{id}', [DonationController::class, 'destroy'])->name('donations.destroy');
+
+    Route::get('/organization/blog/{id}/edit', [OrgController::class, 'editBlog'])
+    ->name('organization.blog.edit');
+
+    Route::put('/organization/blog/{id}', [OrgController::class, 'updateBlog'])
+        ->name('organization.blog.update');
+
+    Route::delete('/organization/blog/{id}', [OrgController::class, 'deleteBlog'])
+        ->name('organization.blog.delete');
 
 
     Route::get('/organization/volunteer-request/create', [VolunteerRequestController::class, 'create'])
@@ -126,7 +162,7 @@ Route::prefix('user')->group(function () {
 
 });
 
-use App\Http\Controllers\ExploreController;
+
 
 Route::prefix('user')->group(function () {
 
