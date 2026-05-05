@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthUserController;
 use App\Http\Controllers\OrgController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\BlogController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -61,4 +62,43 @@ Route::middleware(['auth', 'role:organization'])->group(function () {
         ->name('organization.cover-image.update');
     // 🔥 TAMBAH DI SINI
     Route::post('/organization/blog', [OrgController::class, 'storeBlog']);
+});
+
+
+// BLOG PENDONASI (ORGANIZATION)
+Route::prefix('organization')->group(function () {
+
+    // tampilkan semua blog
+    Route::get('/blog', [OrgController::class, 'indexBlog'])->name('organization.blog.index');
+
+    // form tambah blog
+    Route::get('/blog/create', [OrgController::class, 'createBlog'])->name('organization.blog.create');
+
+    // simpan blog
+    Route::post('/blog', [OrgController::class, 'storeBlog'])->name('organization.blog.store');
+
+    // form edit
+    Route::get('/blog/{id}/edit', [OrgController::class, 'editBlog'])->name('organization.blog.edit');
+
+    // update
+    Route::put('/blog/{id}', [OrgController::class, 'updateBlog'])->name('organization.blog.update');
+
+    // delete
+    Route::delete('/blog/{id}', [OrgController::class, 'destroyBlog'])->name('organization.blog.delete');
+});
+
+use App\Http\Controllers\Pendonasi\PendonasiBlogController;
+
+Route::prefix('pendonasi')->name('pendonasi.')->group(function () {
+
+    Route::get('/blog', [PendonasiBlogController::class, 'index'])->name('blog.index');
+    Route::get('/blog/create', [PendonasiBlogController::class, 'create'])->name('blog.create');
+    Route::post('/blog', [PendonasiBlogController::class, 'store'])->name('blog.store');
+
+    Route::get('/blog/{id}', [PendonasiBlogController::class, 'show'])->name('blog.show');
+    Route::get('/blog/{id}/edit', [PendonasiBlogController::class, 'edit'])->name('blog.edit');
+
+    Route::put('/blog/{id}', [PendonasiBlogController::class, 'update'])->name('blog.update');
+    Route::delete('/blog/{id}', [PendonasiBlogController::class, 'destroy'])->name('blog.delete');
+
 });
