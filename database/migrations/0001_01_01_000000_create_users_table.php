@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('password');
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
+            
+            // Kolom tambahan untuk memperbaiki QueryException
+            $table->integer('points')->default(0); 
+            
             $table->enum('role', ['admin', 'user', 'organization'])->default('user');
             $table->rememberToken();
             $table->timestamps();
