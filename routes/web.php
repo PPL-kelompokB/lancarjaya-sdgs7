@@ -45,6 +45,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/vouchers/{id}/edit', [VoucherController::class, 'edit'])->name('admin.vouchers.edit');
     Route::put('/admin/vouchers/{id}', [VoucherController::class, 'update'])->name('admin.vouchers.update');
     Route::delete('/admin/vouchers/{id}', [VoucherController::class, 'destroy'])->name('admin.vouchers.destroy');
+
+    Route::get('/admin/activity-monitor', [AdminController::class, 'activityMonitor'])->name('admin.activity-monitor');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -77,6 +79,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/like/{type}/{id}', [InteractionController::class, 'like'])->name('like');
     Route::post('/comment/{type}/{id}', [InteractionController::class, 'comment'])->name('comment');
     Route::get('/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
+
+    // Voucher - User
+    Route::get('/user/vouchers', [VoucherController::class, 'userIndex'])->name('user.vouchers.index');
+    Route::post('/user/vouchers/{id}/redeem', [VoucherController::class, 'redeem'])->name('user.vouchers.redeem');
+    Route::get('/user/my-vouchers', [VoucherController::class, 'myVouchers'])->name('user.vouchers.my');
 });
 
 // Organization Routes

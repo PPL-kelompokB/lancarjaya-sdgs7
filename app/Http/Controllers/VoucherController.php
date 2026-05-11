@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Voucher;
+use App\Models\UserVoucher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VoucherController extends Controller
 {
@@ -124,5 +126,81 @@ class VoucherController extends Controller
         $voucher->delete();
 
         return redirect()->route('admin.vouchers.index')->with('success', 'Voucher berhasil dihapus');
+    }
+
+    // ===================== USER METHODS =====================
+
+    public function userIndex()
+    {
+        $vouchers = Voucher::where('status', 'active')
+            ->where(function ($q) {
+                $q->whereNull('end_date')->orWhere('end_date', '>=', now()->toDateString());
+            })
+            ->where(function ($q) {
+                $q->where('quota', 0)->orWhereRaw('used_count < quota');
+            })
+            ->orderBy('points_cost')
+            ->get();
+
+        $userPoints = auth()->user()->points ?? 0;
+        $myVoucherIds = UserVoucher::where('user_id', auth()->id())->pluck('voucher_id');
+
+        return view('user.vouchers', compact('vouchers', 'userPoints', 'myVoucherIds'));
+    }
+
+    public function redeem($id)
+    {
+        $voucher = Voucher::where('status', 'active')->findOrFail($id);
+        $user    = auth()->user();
+
+        // Cek poin cukup
+        if ($user->points < $voucher->points_cost) {
+            return back()->with('error', 'Poin kamu tidak cukup untuk menukar voucher ini.');
+        }
+
+        // Cek quota
+        if ($voucher->quota > 0 && $voucher->used_count >= $voucher->quota) {
+            return back()->with('error', 'Kuota voucher ini sudah habis.');
+        }
+
+        // Cek sudah pernah ditukar
+        $alreadyRedeemed = UserVoucher::where('user_id', $user->id)
+            ->where('voucher_id', $voucher->id)
+            ->exists();
+
+        if ($alreadyRedeemed) {
+            return back()->with('error', 'Kamu sudah pernah menukar voucher ini.');
+        }
+
+        DB::transaction(function () use ($user, $voucher) {
+            // Kurangi poin user
+            $user->decrement('points', $voucher->points_cost);
+
+            // Tambah used_count voucher
+            $voucher->increment('used_count');
+
+            // Simpan riwayat
+            UserVoucher::create([
+                'user_id'    => $user->id,
+                'voucher_id' => $voucher->id,
+                'code_used'  => $voucher->code,
+                'redeemed_at' => now(),
+            ]);
+        });
+
+        return redirect()->route('user.vouchers.my')
+            ->with('success', 'Voucher berhasil ditukar! Sisa poin kamu: ' . ($user->fresh()->points));
+    }
+
+    public function myVouchers()
+    {
+        $myVouchers = UserVoucher::with('voucher')
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->get();
+
+        $userPoints = auth()->user()->points ?? 0;
+
+        return view('user.my-vouchers', compact('myVouchers', 'userPoints'));
     }
 }

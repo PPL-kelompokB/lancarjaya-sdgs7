@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Organization;
 use App\Models\Donation;
+use App\Models\VolunteerRequest;
 
 class AdminController extends Controller
 {
@@ -134,5 +135,86 @@ class AdminController extends Controller
         return redirect()
             ->route('admin.organizations.index')
             ->with('success', 'Organisasi berhasil ditolak');
+    }
+
+    public function activityMonitor(Request $request)
+    {
+        $orgId    = $request->get('org_id');
+        $type     = $request->get('type');
+        $status   = $request->get('status');
+        $search   = $request->get('search');
+
+        // -- Volunteer --
+        $volunteerQuery = VolunteerRequest::with('organization')->latest();
+        if ($orgId)  $volunteerQuery->where('organization_id', $orgId);
+        if ($search) $volunteerQuery->where(function($q) use ($search) {
+            $q->where('title', 'like', "%$search%")
+              ->orWhere('description', 'like', "%$search%");
+        });
+
+        // -- Donation --
+        $donationQuery = Donation::with('organization')->latest();
+        if ($orgId)  $donationQuery->where('organization_id', $orgId);
+        if ($status) $donationQuery->where('status', $status);
+        if ($search) $donationQuery->where(function($q) use ($search) {
+            $q->where('title', 'like', "%$search%")
+              ->orWhere('description', 'like', "%$search%");
+        });
+
+        // Build activity feed
+        $activities = collect();
+
+        if (!$type || $type === 'volunteer') {
+            foreach ($volunteerQuery->get() as $v) {
+                $activities->push((object)[
+                    'type'              => 'volunteer',
+                    'id'                => $v->id,
+                    'title'             => $v->title,
+                    'description'       => $v->description,
+                    'status'            => $v->event_type ?? '-',
+                    'org_name'          => $v->organization->organization_name ?? '-',
+                    'org_id'            => $v->organization_id,
+                    'event_date'        => $v->event_date,
+                    'deadline'          => $v->deadline,
+                    'volunteer_quota'   => $v->volunteer_quota,
+                    'location'          => $v->location,
+                    'created_at'        => $v->created_at,
+                ]);
+            }
+        }
+
+        if (!$type || $type === 'donation') {
+            foreach ($donationQuery->get() as $d) {
+                $activities->push((object)[
+                    'type'        => 'donation',
+                    'id'          => $d->id,
+                    'title'       => $d->title,
+                    'description' => $d->description,
+                    'status'      => $d->status,
+                    'org_name'    => $d->organization->organization_name ?? '-',
+                    'org_id'      => $d->organization_id,
+                    'event_date'  => null,
+                    'deadline'    => null,
+                    'item_name'   => $d->item_name ?? null,
+                    'created_at'  => $d->created_at,
+                ]);
+            }
+        }
+
+        $activities = $activities->sortByDesc('created_at')->values();
+
+        // Stats
+        $totalVolunteer   = VolunteerRequest::count();
+        $totalDonation    = Donation::count();
+        $openDonations    = Donation::where('status', 'open')->count();
+        $doneDonations    = Donation::where('status', 'completed')->count();
+
+        $organizations = Organization::where('verification_status', 'verified')
+            ->orderBy('organization_name')->get();
+
+        return view('admin.activity-monitor', compact(
+            'activities', 'organizations', 'orgId', 'type', 'status', 'search',
+            'totalVolunteer', 'totalDonation', 'openDonations', 'doneDonations'
+        ));
     }
 }

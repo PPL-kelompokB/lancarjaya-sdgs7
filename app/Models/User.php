@@ -26,6 +26,7 @@ class User extends Authenticatable
         'address',
         'phone',
         'role',
+        'points',
     ];
 
     /**
@@ -64,5 +65,10 @@ class User extends Authenticatable
             'user_id',
             'organization_id'
         )->withTimestamps();
+    }
+
+    public function redeemedVouchers()
+    {
+        return $this->hasMany(UserVoucher::class);
     }
 }
