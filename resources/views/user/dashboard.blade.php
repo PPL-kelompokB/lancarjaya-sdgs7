@@ -422,6 +422,14 @@
                                                 <p><span class="font-semibold text-on-surface">Periode:</span> {{ $donation->start_date ?: '-' }} s/d {{ $donation->end_date ?: '-' }}</p>
                                             </div>
                                         </div>
+                                        <!-- Tombol Lihat Detail -->
+                                        <div class="border-t border-outline-variant/10 px-5 py-3">
+                                            <a href="{{ route('user.explore.donation', $donation->id) }}"
+                                               class="inline-flex items-center gap-1.5 text-sm font-bold text-secondary hover:text-primary transition-colors">
+                                                <span class="material-symbols-outlined text-base">open_in_new</span>
+                                                Lihat Detail Donasi
+                                            </a>
+                                        </div>
                                     </div>
                                 @endforeach
                             </div>
