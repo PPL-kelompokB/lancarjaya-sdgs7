@@ -14,8 +14,17 @@ class UserController extends Controller
     // DASHBOARD
     public function dashboard()
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         $user = Auth::user();
-        $donations = collect();
+
+        // Ambil donasi yang terkait dengan organisasi yang diikuti user,
+        // atau tampilkan semua donasi terbuka jika tidak ada relasi user_id langsung
+        $donations = \App\Models\Donation::with('organization')
+            ->latest()
+            ->get();
 
         return view('user.dashboard', compact('user', 'donations'));
     }

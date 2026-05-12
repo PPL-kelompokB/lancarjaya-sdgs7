@@ -27,23 +27,34 @@ class Donation extends Model
     ];
 
     /**
-     * Relasi ke Organization
+     * Relasi ke User (pendonasi)
      */
-    public function dashboard()
-        {
-            $user = Auth::user();
-            $donations = collect();
-
-            return view('user.dashboard-user', compact('user', 'donations'));
-        }
-
     public function user()
     {
-            return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
+    /**
+     * Relasi ke Organization
+     */
     public function organization()
     {
         return $this->belongsTo(Organization::class);
+    }
+
+    /**
+     * Relasi polymorphic ke Like
+     */
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
+
+    /**
+     * Relasi polymorphic ke Comment
+     */
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
     }
 }
