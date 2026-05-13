@@ -65,4 +65,14 @@ class User extends Authenticatable
             'organization_id'
         )->withTimestamps();
     }
+
+    public function userPoints()
+    {
+        return $this->hasOne(\App\Models\UserPoints::class);
+    }
+
+    public function voucherRedemptions()
+    {
+        return $this->hasMany(\App\Models\VoucherRedemption::class);
+    }
 }

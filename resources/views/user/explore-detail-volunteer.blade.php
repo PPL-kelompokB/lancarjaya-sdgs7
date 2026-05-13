@@ -80,6 +80,109 @@
                 {{ $volunteer->description }}
             </p>
 
+            <!-- DETAIL INFORMASI -->
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-[#eae1da] pt-6">
+                
+                <!-- Event Type -->
+                <div class="bg-[#f6ece6] rounded-2xl p-4">
+                    <p class="text-xs font-bold text-[#003527] uppercase tracking-wide mb-1">
+                        📅 Tipe Event
+                    </p>
+                    <p class="text-lg font-semibold text-[#003527]">
+                        @if($volunteer->event_type === 'online')
+                            🌐 Online
+                        @elseif($volunteer->event_type === 'offline')
+                            📍 Offline
+                        @else
+                            🔀 Hybrid
+                        @endif
+                    </p>
+                </div>
+
+                <!-- Event Date -->
+                <div class="bg-[#f6ece6] rounded-2xl p-4">
+                    <p class="text-xs font-bold text-[#003527] uppercase tracking-wide mb-1">
+                        📆 Tanggal Event
+                    </p>
+                    <p class="text-lg font-semibold text-[#003527]">
+                        {{ $volunteer->event_date ? \Carbon\Carbon::parse($volunteer->event_date)->format('d M Y') : '-' }}
+                    </p>
+                </div>
+
+                <!-- Deadline -->
+                <div class="bg-[#f6ece6] rounded-2xl p-4">
+                    <p class="text-xs font-bold text-[#003527] uppercase tracking-wide mb-1">
+                        ⏰ Deadline Pendaftaran
+                    </p>
+                    <p class="text-lg font-semibold text-[#003527]">
+                        {{ $volunteer->deadline ? \Carbon\Carbon::parse($volunteer->deadline)->format('d M Y') : '-' }}
+                    </p>
+                </div>
+
+                <!-- Volunteer Quota -->
+                <div class="bg-[#f6ece6] rounded-2xl p-4">
+                    <p class="text-xs font-bold text-[#003527] uppercase tracking-wide mb-1">
+                        👥 Kuota Volunteer
+                    </p>
+                    <p class="text-lg font-semibold text-[#003527]">
+                        {{ $volunteer->volunteer_quota ?? 0 }} orang
+                    </p>
+                </div>
+
+                <!-- Location -->
+                @if($volunteer->location)
+                <div class="bg-[#f6ece6] rounded-2xl p-4 md:col-span-2">
+                    <p class="text-xs font-bold text-[#003527] uppercase tracking-wide mb-1">
+                        📍 Lokasi
+                    </p>
+                    <p class="text-lg font-semibold text-[#003527]">
+                        {{ $volunteer->location }}
+                    </p>
+                </div>
+                @endif
+
+                <!-- Required Skills -->
+                @if($volunteer->required_skills)
+                <div class="bg-[#f6ece6] rounded-2xl p-4 md:col-span-2">
+                    <p class="text-xs font-bold text-[#003527] uppercase tracking-wide mb-2">
+                        🎯 Keahlian yang Dibutuhkan
+                    </p>
+                    <p class="text-sm text-[#404944]">
+                        {{ $volunteer->required_skills }}
+                    </p>
+                </div>
+                @endif
+
+            </div>
+
+            <!-- TASK DESCRIPTION -->
+            @if($volunteer->task_description)
+            <div class="mt-6">
+                <h2 class="text-xl font-bold text-[#003527] mb-3">
+                    📋 Deskripsi Tugas
+                </h2>
+                <div class="bg-[#f6ece6] rounded-2xl p-4">
+                    <p class="text-sm text-[#404944] leading-relaxed whitespace-pre-line">
+                        {{ $volunteer->task_description }}
+                    </p>
+                </div>
+            </div>
+            @endif
+
+            <!-- CATATAN TAMBAHAN -->
+            @if($volunteer->notes)
+            <div class="mt-6">
+                <h2 class="text-xl font-bold text-[#003527] mb-3">
+                    📝 Catatan Tambahan
+                </h2>
+                <div class="bg-[#f6ece6] rounded-2xl p-4">
+                    <p class="text-sm text-[#404944] leading-relaxed whitespace-pre-line">
+                        {{ $volunteer->notes }}
+                    </p>
+                </div>
+            </div>
+            @endif
+
             <!-- LIKE & COMMENT -->
             <div class="mt-8 border-t border-[#eae1da] pt-5">
 

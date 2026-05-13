@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthUserController;
 use App\Http\Controllers\OrgController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\UserVoucherController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\VolunteerRequestController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\UserExploreController;
 use App\Http\Controllers\OrganizationFollowController;
 use App\Http\Controllers\InteractionController;
 use App\Models\Organization;
+use App\Http\Controllers\EcoDonateRatingController;
 
 Route::get('/', function () {
     return view('landing-page');
@@ -34,6 +36,7 @@ Route::post('/register/organization', [OrgController::class, 'registerOrganizati
 // Admin Routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/monitoring', [AdminController::class, 'monitoring'])->name('admin.monitoring');
     Route::get('/admin/organizations/{id}', [AdminController::class, 'showOrganization'])->name('admin.organizations.show');
     Route::post('/admin/organizations/{id}/approve', [AdminController::class, 'approve'])->name('admin.organizations.approve');
     Route::post('/admin/organizations/{id}/reject', [AdminController::class, 'reject'])->name('admin.organizations.reject');
@@ -77,6 +80,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/like/{type}/{id}', [InteractionController::class, 'like'])->name('like');
     Route::post('/comment/{type}/{id}', [InteractionController::class, 'comment'])->name('comment');
     Route::get('/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
+
+    // 🎁 USER VOUCHER REDEMPTION (PENUKARAN POIN)
+    Route::get('/user/vouchers', [UserVoucherController::class, 'index'])->name('user.voucher.index');
+    Route::get('/user/vouchers/{voucherId}', [UserVoucherController::class, 'show'])->name('user.voucher.show');
+    Route::post('/user/vouchers/{voucherId}/redeem', [UserVoucherController::class, 'redeem'])->name('user.voucher.redeem');
+    Route::get('/user/vouchers/history/all', [UserVoucherController::class, 'history'])->name('user.voucher.history');
 });
 
 // Organization Routes

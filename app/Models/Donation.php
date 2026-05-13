@@ -24,24 +24,23 @@ class Donation extends Model
         'end_date',
         'status',
         'logistic_status',
+
+        // VALIDATION
+        'validation_status',
+        'validation_note',
     ];
+
+    /**
+     * Relasi ke User
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * Relasi ke Organization
      */
-    public function dashboard()
-        {
-            $user = Auth::user();
-            $donations = collect();
-
-            return view('user.dashboard-user', compact('user', 'donations'));
-        }
-
-    public function user()
-    {
-            return $this->belongsTo(User::class);
-    }
-
     public function organization()
     {
         return $this->belongsTo(Organization::class);
