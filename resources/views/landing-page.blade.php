@@ -1,450 +1,699 @@
 <!DOCTYPE html>
+<html class="scroll-smooth" lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>EcoDon — Donasi Barang & Volunteer Lingkungan</title>
 
-<html class="scroll-smooth" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>EcoDon — Turn Waste into Clean Energy</title>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "secondary-fixed-dim": "#4edea3",
-                    "surface-container-low": "#fcf2eb",
-                    "inverse-surface": "#342f2b",
-                    "background": "#fff8f5",
-                    "primary-fixed-dim": "#95d3ba",
-                    "error": "#ba1a1a",
-                    "on-tertiary": "#ffffff",
-                    "on-surface": "#1f1b17",
-                    "error-container": "#ffdad6",
-                    "on-tertiary-fixed": "#1a1c1c",
-                    "on-background": "#1f1b17",
-                    "surface-bright": "#fff8f5",
-                    "outline-variant": "#bfc9c3",
-                    "on-surface-variant": "#404944",
-                    "on-primary": "#ffffff",
-                    "primary-container": "#064e3b",
-                    "surface": "#fff8f5",
-                    "on-tertiary-fixed-variant": "#454747",
-                    "inverse-primary": "#95d3ba",
-                    "tertiary-fixed": "#e2e2e2",
-                    "surface-container-highest": "#eae1da",
-                    "on-secondary": "#ffffff",
-                    "surface-container-lowest": "#ffffff",
-                    "on-secondary-fixed-variant": "#005236",
-                    "on-secondary-container": "#00714d",
-                    "surface-variant": "#eae1da",
-                    "secondary": "#006c49",
-                    "outline": "#707974",
-                    "on-primary-container": "#80bea6",
-                    "on-secondary-fixed": "#002113",
-                    "on-primary-fixed": "#002117",
-                    "tertiary": "#2d2f2e",
-                    "surface-container": "#f6ece6",
-                    "primary": "#003527",
-                    "on-error-container": "#93000a",
-                    "secondary-container": "#6cf8bb",
-                    "on-tertiary-container": "#b1b2b1",
-                    "tertiary-fixed-dim": "#c6c7c6",
-                    "inverse-on-surface": "#f9efe8",
-                    "surface-tint": "#2b6954",
-                    "tertiary-container": "#434545",
-                    "on-primary-fixed-variant": "#0b513d",
-                    "primary-fixed": "#b0f0d6",
-                    "secondary-fixed": "#6ffbbe",
-                    "surface-container-high": "#f0e6e0",
-                    "on-error": "#ffffff",
-                    "surface-dim": "#e2d8d2"
-            },
-            "borderRadius": {
-                    "DEFAULT": "1rem",
-                    "lg": "2rem",
-                    "xl": "3rem",
-                    "full": "9999px"
-            },
-            "fontFamily": {
-                    "headline": ["Manrope"],
-                    "body": ["Inter"],
-                    "label": ["Inter"]
-            }
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            background: "#fff8f5",
+            surface: "#fff8f5",
+            "surface-container-low": "#fcf2eb",
+            "surface-container": "#f6ece6",
+            "surface-container-high": "#f0e6e0",
+            "surface-container-highest": "#eae1da",
+            primary: "#003527",
+            "primary-container": "#064e3b",
+            secondary: "#006c49",
+            "secondary-container": "#6cf8bb",
+            "on-secondary-container": "#002113",
+            "on-surface": "#1f1b17",
+            "on-surface-variant": "#404944",
+            outline: "#707974",
+            "outline-variant": "#bfc9c3"
           },
-        },
+          borderRadius: {
+            DEFAULT: "1rem",
+            lg: "1.5rem",
+            xl: "2rem",
+            full: "9999px"
+          },
+          fontFamily: {
+            headline: ["Manrope", "sans-serif"],
+            body: ["Inter", "sans-serif"]
+          },
+          boxShadow: {
+            soft: "0 18px 45px rgba(31, 27, 23, 0.08)"
+          }
+        }
       }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .hero-gradient {
-            background: radial-gradient(circle at 70% 30%, rgba(176, 240, 214, 0.4) 0%, rgba(255, 248, 245, 0) 60%);
-        }
-        .cta-gradient {
-            background: linear-gradient(135deg, #003527 0%, #064e3b 100%);
-        }
-    </style>
+    }
+  </script>
+
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+    }
+
+    .cta-gradient {
+      background: linear-gradient(135deg, #003527 0%, #006c49 100%);
+    }
+
+    .hero-blob {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(108, 248, 187, 0.65), transparent 30%),
+        radial-gradient(circle at 80% 20%, rgba(149, 211, 186, 0.45), transparent 28%),
+        radial-gradient(circle at 60% 85%, rgba(246, 236, 230, 1), transparent 42%),
+        linear-gradient(135deg, #fff8f5 0%, #f6ece6 100%);
+    }
+
+    .eco-pattern {
+      background-image:
+        radial-gradient(rgba(0, 108, 73, 0.12) 1px, transparent 1px),
+        radial-gradient(rgba(0, 53, 39, 0.08) 1px, transparent 1px);
+      background-position: 0 0, 18px 18px;
+      background-size: 36px 36px;
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+
+    .fade-up.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tab-active {
+      background: #003527;
+      color: #fff8f5;
+    }
+
+    /* Navbar active underline */
+    .nav-link {
+      position: relative;
+      padding-bottom: 0.35rem;
+      transition: color 0.25s ease;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: #006c49;
+      transition: width 0.25s ease;
+    }
+
+    .nav-link.active {
+      color: #006c49;
+    }
+
+    .nav-link.active::after {
+      width: 100%;
+    }
+  </style>
 </head>
+
 <body class="bg-background text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container">
-<!-- TopNavBar -->
-<nav class="fixed top-0 w-full z-50 bg-[#fff8f5]/80 dark:bg-stone-950/80 backdrop-blur-xl shadow-[0px_20px_40px_rgba(31,27,23,0.06)]">
-<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
-<a class="text-2xl font-bold text-[#003527] dark:text-[#006c49] font-headline tracking-tight" href="#">EcoDon</a>
-<div class="hidden md:flex items-center gap-8 font-['Manrope'] tracking-tight">
-<a class="text-[#006c49] font-bold border-b-2 border-[#006c49] pb-1 hover:text-[#006c49] transition-colors duration-300" href="#">Impact</a>
-<a class="text-[#1f1b17] dark:text-stone-300 hover:text-[#006c49] transition-colors duration-300" href="#">Organizations</a>
-<a class="text-[#1f1b17] dark:text-stone-300 hover:text-[#006c49] transition-colors duration-300" href="#">Blog</a>
-</div>
-<div class="flex items-center gap-4">
- <a href="/login">   
-    <button class="px-5 py-2.5 text-[#003527] font-semibold font-headline transition-all hover:opacity-80">Sign In</button>
-</a>
-<a href="/register">
-    <button class="px-6 py-2.5 cta-gradient text-white rounded-full font-semibold font-headline shadow-lg hover:scale-95 active:opacity-80 transition-all">Join Now</button>
-</a>
-</div>
-</div>
-</nav>
-<main class="pt-24 overflow-hidden">
-<!-- Hero Section -->
-<section class="relative px-8 py-20 lg:py-32 max-w-7xl mx-auto hero-gradient">
-<div class="grid lg:grid-cols-2 gap-16 items-center">
-<div class="z-10">
-<span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold uppercase tracking-wider mb-6">
-<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">eco</span> 
-                        The Future of Energy
-                    </span>
-<h1 class="text-5xl lg:text-7xl font-headline font-extrabold text-primary leading-[1.1] tracking-tight mb-8">
-                        Turn Your Waste <br/>into <span class="text-secondary">Clean Energy</span>
-</h1>
-<p class="text-lg text-on-surface-variant max-w-xl mb-10 leading-relaxed">
-                        Join the world's most transparent circular economy platform. We convert your recyclable materials and donations into renewable power for local communities.
-                    </p>
-<div class="flex flex-wrap gap-4">
-<button class="px-8 py-4 cta-gradient text-white rounded-full font-bold text-lg shadow-xl hover:scale-95 transition-all">Donate Now</button>
-<button class="px-8 py-4 bg-surface-container-highest text-on-surface rounded-full font-bold text-lg hover:bg-surface-container-high transition-all">Explore Needs</button>
-</div>
-</div>
-<div class="relative">
-<div class="aspect-square rounded-xl overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-700">
-<img alt="Modern Sustainability" class="w-full h-full object-cover" data-alt="Modern clean recycling facility with minimalist architecture, soft daylight, and lush indoor greenery, futuristic industrial aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaXgF0s315rg_lAyB8nqMIEY7pMbm8wJQjKThadd9GiGzEaZ0wKS7D0TjMS5x6Pz1ZG9AM1vmxHOvzsYXhQAebfbI9n2jgIDQ-4jJxDT5NqlqeK-uXUAtRiYxvCiMiaWk5PWiof5bYElV5-WOsDC9QKbbgYewsuBaLS6PgdOGNMJTZbrSX48t_-iKjZuQAkvfO6oSFv-c0Qdx1_p6LsUxkoFv6bpIXH11yDAWBqvcbQk-0k3A57QN_Gg_59i1LTsdcLAziPP2rK3nE"/>
-</div>
-<div class="absolute -bottom-10 -left-10 p-8 bg-white/90 backdrop-blur-md rounded-lg shadow-xl max-w-xs hidden md:block">
-<p class="text-primary font-bold text-2xl mb-1">1.2M kWh</p>
-<p class="text-on-surface-variant text-sm font-medium">Clean energy generated this month from user contributions.</p>
-</div>
-</div>
-</div>
-</section>
-<!-- Features Bento Grid -->
-<section class="px-8 py-24 bg-surface-container-low">
-<div class="max-w-7xl mx-auto">
-<div class="mb-16 text-center max-w-2xl mx-auto">
-<h2 class="text-4xl font-headline font-bold text-primary mb-4">Every Contribution Matters</h2>
-<p class="text-on-surface-variant">Choose how you want to fuel the revolution. Whether it's materials, funds, or your time, we ensure maximum impact.</p>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
-<!-- Donate Materials -->
-<div class="md:col-span-2 lg:col-span-2 bg-surface-container rounded-lg p-8 hover:bg-surface-bright transition-all group">
-<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container mb-6 group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined">recycling</span>
-</div>
-<h3 class="text-xl font-headline font-bold text-primary mb-3">Donate Materials</h3>
-<p class="text-on-surface-variant mb-6">Convert plastics, metals, and organic waste into raw fuel for our eco-reactors.</p>
-<a class="inline-flex items-center gap-2 text-secondary font-bold hover:underline" href="#">Start recycling <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
-</div>
-<!-- Donate Money -->
-<div class="md:col-span-1 lg:col-span-2 bg-primary text-on-primary rounded-lg p-8 relative overflow-hidden group">
-<div class="relative z-10">
-<div class="w-12 h-12 rounded-full bg-primary-fixed-dim flex items-center justify-center text-primary mb-6">
-<span class="material-symbols-outlined">payments</span>
-</div>
-<h3 class="text-xl font-headline font-bold mb-3 text-white">Financial Support</h3>
-<p class="text-primary-fixed opacity-80 mb-6">Fund the expansion of our clean energy grid and local infrastructure projects.</p>
-<button class="px-6 py-2 bg-white text-primary rounded-full font-bold text-sm">Donate Now</button>
-</div>
-<div class="absolute -right-10 -bottom-10 opacity-10 group-hover:scale-125 transition-transform duration-1000">
-<span class="material-symbols-outlined text-[160px]">volunteer_activism</span>
-</div>
-</div>
-<!-- Volunteer -->
-<div class="md:col-span-3 lg:col-span-2 bg-surface-container rounded-lg p-8 flex flex-col justify-between">
-<div>
-<div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mb-6">
-<span class="material-symbols-outlined">group</span>
-</div>
-<h3 class="text-xl font-headline font-bold text-primary mb-3">Volunteer</h3>
-<p class="text-on-surface-variant">Join local collection drives or help manage community energy hubs.</p>
-</div>
-<div class="mt-8 pt-8 border-t border-outline-variant/30">
-<div class="flex -space-x-3">
-<img alt="Volunteer" class="h-10 w-10 rounded-full border-2 border-white" data-alt="Close up portrait of a smiling volunteer man in a green shirt outdoors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhQh7LI4Do45ldI-tV9Pmf6eVDUKPPra_GDQpiHqVOXp6XBgwwEfqPomp5te6b7T4VpjUg7zR5TWjm0UmlmkJnuBrJ2xqY-W-ufahsGXfILtCDpkyewF2g-_RD7fAA8H3dZqC_MBdcIJY1_zPavZHUWH-GO-a036hMv2KYpR9mvNEmYbeuYu5LcwkMsC8Zl5RHXpgz3vRa5SXgr98ZgBmzjBEgARoi_u3Osgaqln7WHLccH5mLSJoPwpvvy58sMErmcZtDRXZJGnlK"/>
-<img alt="Volunteer" class="h-10 w-10 rounded-full border-2 border-white" data-alt="Close up portrait of a young professional woman smiling at the camera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCn-GK9kG9ODUWacabbGtrLVn2jdC6uhv8Mf1lAe5-o6wSpxP-rWkiWNM007TYflL4VvFOeA1smAlkKON3njEzJUwYFFZwkFUF03UFMr2f-8lMzPTNi7LZvL72aaDgfouPpv6VqMMNEYBeA0Np88g2sijTImF5XTOirlEdTncYkr9Dv8wh_HFbQiCkcs3YAI7XM5mBeOMwwcy8X_VeaQZuWLHl7XCWn-dksjJTf-Crr7lTP0u4Ok8VzPVsq5cw8IykQPfFTl4Vop1F1"/>
-<div class="h-10 w-10 rounded-full bg-surface-container-highest border-2 border-white flex items-center justify-center text-[10px] font-bold text-on-surface-variant">+42k</div>
-</div>
-</div>
-</div>
-<!-- Impact Tracker -->
-<div class="md:col-span-2 lg:col-span-3 bg-surface-container-highest rounded-lg p-10 flex flex-col md:flex-row gap-10 items-center">
-<div class="flex-1">
-<h3 class="text-2xl font-headline font-bold text-primary mb-4">Track Impact &amp; Rewards</h3>
-<p class="text-on-surface-variant mb-6">Monitor your carbon offset in real-time. Every kilogram of waste earns you EcoPoints redeemable for local services.</p>
-<div class="flex gap-4">
-<div class="p-3 bg-white rounded-lg shadow-sm">
-<p class="text-xs text-on-surface-variant font-bold uppercase">Impact Score</p>
-<p class="text-xl font-headline font-extrabold text-secondary">8,420</p>
-</div>
-<div class="p-3 bg-white rounded-lg shadow-sm">
-<p class="text-xs text-on-surface-variant font-bold uppercase">Offset</p>
-<p class="text-xl font-headline font-extrabold text-secondary">1.2 Tons</p>
-</div>
-</div>
-</div>
-<div class="w-full md:w-1/3 aspect-video bg-white rounded-lg shadow-inner overflow-hidden">
-<img alt="Data dashboard" class="w-full h-full object-cover" data-alt="Clean minimalist digital dashboard showing eco metrics and line charts with soft green accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCflg39i7RFEsUQhPkAQpsPGA_1Ivm8WGpsOtw56PaZt9tRRDOymdlAMOt_LvU6HUDtjgYxD0wFgMNBGali7kiDhYYEGwic4V5YMTo0BK0pc_5M37ZRkv6EYXhAgbsEgA7RezRSNnBYpfODHf3Vz2VX12stiQnENZzSCY4iUyTySfd4MbwHZnOpMj5a-AnFCO1AN1kBkkWWTBtQdwBuTRtBf0TRXXxUwB9kRrNYtDRNBSAccxtS_WH83kMPwwP-J10wpzJS4sZZn_xg"/>
-</div>
-</div>
-<!-- Transparency -->
-<div class="md:col-span-1 lg:col-span-3 bg-secondary-container text-on-secondary-container rounded-lg p-10 overflow-hidden relative">
-<h3 class="text-2xl font-headline font-bold mb-4 relative z-10">Transparent Organization System</h3>
-<p class="opacity-90 max-w-md relative z-10">Our blockchain-verified ledger ensures every penny and every pound of waste is accounted for. Follow your donation's journey from pickup to power.</p>
-<div class="mt-8 flex items-center gap-3 relative z-10">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified</span>
-<span class="font-bold tracking-tight">ISO 14001 Certified System</span>
-</div>
-<div class="absolute right-0 bottom-0 translate-x-1/4 translate-y-1/4">
-<div class="w-64 h-64 border-[32px] border-secondary/10 rounded-full"></div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- How It Works -->
-<section class="px-8 py-24 max-w-7xl mx-auto">
-<div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-<div>
-<h2 class="text-4xl font-headline font-bold text-primary mb-4">How It Works</h2>
-<p class="text-on-surface-variant max-w-xl">Our circular model is designed for simplicity. We take care of the complex logistics while you reap the rewards.</p>
-</div>
-<div class="hidden lg:flex items-center gap-2 text-on-surface-variant text-sm font-medium">
-<span>Scroll to explore</span>
-<span class="material-symbols-outlined">trending_flat</span>
-</div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 relative">
-<!-- Connective Line (Desktop) -->
-<div class="hidden lg:block absolute top-12 left-0 w-full h-[1px] bg-outline-variant/30 -z-10"></div>
-<!-- Step 1 -->
-<div class="bg-surface-container-lowest p-8 rounded-lg border border-outline-variant/20 shadow-sm relative group">
-<div class="w-12 h-12 rounded-full bg-surface-bright border-2 border-secondary flex items-center justify-center font-headline font-bold text-secondary mb-6 z-10 relative">1</div>
-<h4 class="text-lg font-bold text-primary mb-2">Donate</h4>
-<p class="text-sm text-on-surface-variant">Schedule a pickup or drop off your recyclable waste at any EcoDon Hub.</p>
-</div>
-<!-- Step 2 -->
-<div class="bg-surface-container-lowest p-8 rounded-lg border border-outline-variant/20 shadow-sm relative group md:mt-12 lg:mt-24">
-<div class="w-12 h-12 rounded-full bg-surface-bright border-2 border-secondary flex items-center justify-center font-headline font-bold text-secondary mb-6 z-10 relative">2</div>
-<h4 class="text-lg font-bold text-primary mb-2">Process</h4>
-<p class="text-sm text-on-surface-variant">Your waste is sorted and processed into clean thermal energy and biogas.</p>
-</div>
-<!-- Step 3 -->
-<div class="bg-surface-container-lowest p-8 rounded-lg border border-outline-variant/20 shadow-sm relative group">
-<div class="w-12 h-12 rounded-full bg-surface-bright border-2 border-secondary flex items-center justify-center font-headline font-bold text-secondary mb-6 z-10 relative">3</div>
-<h4 class="text-lg font-bold text-primary mb-2">Impact</h4>
-<p class="text-sm text-on-surface-variant">Clean energy is fed into the municipal grid, powering homes and schools.</p>
-</div>
-<!-- Step 4 -->
-<div class="bg-surface-container-lowest p-8 rounded-lg border border-outline-variant/20 shadow-sm relative group md:mt-12 lg:mt-24">
-<div class="w-12 h-12 rounded-full bg-secondary flex items-center justify-center font-headline font-bold text-white mb-6 z-10 relative shadow-lg shadow-secondary/30">4</div>
-<h4 class="text-lg font-bold text-primary mb-2">Reward</h4>
-<p class="text-sm text-on-surface-variant">Receive tax receipts and EcoPoints to spend on sustainable local brands.</p>
-</div>
-</div>
-</section>
-<!-- Leaderboard & Social Proof -->
-<section class="px-8 py-24 bg-surface">
-<div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-16 items-start">
-<div class="lg:col-span-5">
-<h2 class="text-4xl font-headline font-bold text-primary mb-6">Top Donors</h2>
-<p class="text-on-surface-variant mb-10">Celebrating the heroes of our digital arboretum. These individuals and teams have paved the way for a greener tomorrow.</p>
-<div class="space-y-4">
-<!-- Top Donor Item -->
-<div class="flex items-center gap-4 p-4 bg-surface-container rounded-lg border border-outline-variant/10 hover:border-secondary transition-colors group">
-<span class="text-xl font-headline font-bold text-secondary w-8">01</span>
-<img alt="Alex Chen" class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="Portrait of a young man with glasses and a warm smile in a studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCKyH6T-ZeQP_qEMvAhfyI8-6fhwVKJrFogcBLfA-45oX-YQUlnT6OOUjahTsRadxKRWtiaDvnXbjAYRVpNYmaaLS7U1cAzkX0-gUP_c_2bgIkT0EOcRcWkYL737RW548X6iE22nrjpUNxMcLJGLD_4Rj4L4SfJvdWXoZNXMTN_JgGQAUtiraWDSdB4r_3Aku_NPxbTMKvm31ngM9FotIupVFRafBOVyJBBw_3n3UxcMWtk1_np2GiO0ByRws6LI1zlzpIiWyoa68c"/>
-<div class="flex-1">
-<h4 class="font-bold text-primary">Alex Chen</h4>
-<p class="text-xs text-on-surface-variant uppercase tracking-tighter">Sustainability Partner</p>
-</div>
-<div class="text-right">
-<p class="font-headline font-bold text-primary">24,500</p>
-<p class="text-[10px] font-bold text-secondary">POINTS</p>
-</div>
-</div>
-<!-- Top Donor Item -->
-<div class="flex items-center gap-4 p-4 bg-surface-container rounded-lg border border-outline-variant/10 hover:border-secondary transition-colors group">
-<span class="text-xl font-headline font-bold text-secondary w-8 opacity-50">02</span>
-<img alt="Sarah Miller" class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="Business woman portrait looking confident and professional" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1-LnvkFhy5EAcA8ZRU1lC0lGm6GZbh8uQ0d2We34l9X7BVvVRiGukkE1LYbDp16fmKOfXnlPohyWoiB_gYCGTUiBpRKlCz3P90uT4oZwJXxr8zPRGKJHZWeunDphtopdrm5-fLI7R-XbGgpJgIar5nxc_wDskjncxejKnmPc_78zsleCkHoCOpkddEnktTdOSzYtdkkX2vAZe2rZp7J5ivahav3lkBLFmP1qtHQcAcYWU9wAGlX5lBlIf3VhBrrIUYRNddGWN7q5V"/>
-<div class="flex-1">
-<h4 class="font-bold text-primary">Sarah Miller</h4>
-<p class="text-xs text-on-surface-variant uppercase tracking-tighter">Community Leader</p>
-</div>
-<div class="text-right">
-<p class="font-headline font-bold text-primary">19,120</p>
-<p class="text-[10px] font-bold text-secondary">POINTS</p>
-</div>
-</div>
-<!-- Top Donor Item -->
-<div class="flex items-center gap-4 p-4 bg-surface-container rounded-lg border border-outline-variant/10 hover:border-secondary transition-colors group">
-<span class="text-xl font-headline font-bold text-secondary w-8 opacity-30">03</span>
-<img alt="Liam O'Brian" class="w-12 h-12 rounded-full object-cover shadow-sm" data-alt="Portrait of a smiling mature man in casual clothing" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMA1jvBR8BBKfLrRZlAlETQv174YFcHKBkZGy5p3EUFP_xKRu28KmvVVFxSvP7n7A4scWAWmvthLU6do9X76Q6I1CTw9028GMw2Qb1JdstRMoVDSeABA1uJpLacYFuAK_rGgR0R8asH7Zm3AK63KugyZHWE7q7Xb0w4okKBrAiYmEYLqpZy5Mp8E-Z9-CkImx2QCDLbigJ3x8ZgqNn1CJ1eKXZZfYkr46yty-ChnbRvJS1Yhjt88Nd_d2iBxQXkx6bvGRLUdv3bxYn"/>
-<div class="flex-1">
-<h4 class="font-bold text-primary">Liam O'Brian</h4>
-<p class="text-xs text-on-surface-variant uppercase tracking-tighter">Eco Advocate</p>
-</div>
-<div class="text-right">
-<p class="font-headline font-bold text-primary">16,400</p>
-<p class="text-[10px] font-bold text-secondary">POINTS</p>
-</div>
-</div>
-</div>
-<button class="w-full mt-8 py-4 bg-surface-container-highest text-primary font-bold rounded-lg hover:bg-outline-variant/20 transition-all">View Full Leaderboard</button>
-</div>
-<div class="lg:col-span-7 h-full">
-<div class="bg-[#003527] rounded-xl p-10 h-full relative overflow-hidden flex flex-col justify-end min-h-[500px]">
-<div class="absolute inset-0 opacity-40 mix-blend-overlay">
-<img alt="Lush forest" class="w-full h-full object-cover" data-alt="Dense green fern leaves in a mystical forest with soft moody lighting and deep shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcqOe-g0gAW8aSgFIwM64WqIlwtsBVt2e5L_UbA_pzBb5En4Lonyes4F8Uen-zFWByKFQGfDa3YUnCOCDAUeAWx0Hp7kshXknAMAZplHqSStaseKq2PipTQfPdTRvcB9uTtBNKZ0JKFcEz6JLu0Pvw3xB5EryRREt-ftRuVL_tkBlAxsk-BIn0itowUsR_J5kLIEAdBYb5XLYS8jgKVDU6CsdOOZ_YDI0LdmEWR6z4_zC_4NjC2NfWM8EsjpCfyJgpwVkjum3QMyN5"/>
-</div>
-<div class="relative z-10">
-<div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-8">
-<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">format_quote</span>
-</div>
-<h3 class="text-3xl font-headline font-bold text-white mb-6 leading-tight">"EcoDon turned our neighborhood waste problem into a source of pride. We literally heat our local pool with recycled materials."</h3>
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white/20">
-<img alt="Testimonial" class="w-full h-full object-cover" data-alt="Portrait of a young woman smiling brightly outdoors in natural sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-m8tACmUqzwMTYvvcslLzLPHutLjUoTY6CcAMS6GfIZSgoFzy5Qec1tYVRGLtX_R7b3B7kZtoKo226coB4DE7TSb4Oci0MD9zMFGe069R9N-graNVTSqLGDyjVfFN_kBvHV5eFnAjRIIQN3RP-EkQa-Omq710QFO74JRk11VGo0UNzR7Lx13bYCyxehY-8dLguLjCybfLSCKAVW9qSrRgydKRFjoR-FzxEFcLQ85Wt1oAbC5pEVY_YYXvV6ZXYrqw9gtsp10v-vhG"/>
-</div>
-<div>
-<p class="text-white font-bold">Emma Richardson</p>
-<p class="text-primary-fixed opacity-60 text-sm">Community Organizer, GreenWay District</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Blog Section -->
-<section class="px-8 py-24 bg-surface-container-low/50">
-<div class="max-w-7xl mx-auto">
-<div class="flex justify-between items-end mb-12">
-<div>
-<h2 class="text-4xl font-headline font-bold text-primary mb-2">Sustainable Insights</h2>
-<p class="text-on-surface-variant">Stay updated with the latest in circular technology and eco-activism.</p>
-</div>
-<a class="hidden md:flex items-center gap-2 text-secondary font-bold hover:underline" href="#">All Articles <span class="material-symbols-outlined text-sm">arrow_outward</span></a>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-<!-- Blog Card 1 -->
-<div class="bg-surface rounded-lg overflow-hidden group border border-outline-variant/10 shadow-sm">
-<div class="aspect-[16/10] overflow-hidden relative">
-<img alt="Waste to Energy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern geometric sculpture made of recycled steel in a public park at sunset" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOpcdXEC19LhoTqPnVDFakWNCAdh9UShOTZhOsy1xpaYr1IF3UBfBBqHFKYvp9b3vz8rWqYynKXV3HiZMs4kNVQWy-4ns5VPUV_IJCv3rn918RO2UhWxouoTWoeRRC72L7NFnp7zHAVKwqlzLhclg-6OOYOLVkCxjvoJRc50YyVOlCfC5EutGNpdL9vDMpAuO2HeU-lZVavtms5KNykHJ_taAErePp-ua7QN5DQmqE7uAsWWRgSyaPM4e0sy1wm0cL4bgoMYN3fSGL"/>
-<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-primary uppercase">Technology</div>
-</div>
-<div class="p-8">
-<p class="text-xs text-on-surface-variant font-medium mb-2">Mar 12, 2024 • 5 min read</p>
-<h3 class="text-xl font-headline font-bold text-primary mb-4 group-hover:text-secondary transition-colors">The Alchemy of Waste: How We Create Biogas</h3>
-<p class="text-on-surface-variant text-sm mb-6 line-clamp-2">Discover the cutting-edge anaerobic digestion process that powers our local micro-grids.</p>
-<a class="text-sm font-bold text-primary hover:text-secondary flex items-center gap-1" href="#">Read More <span class="material-symbols-outlined text-xs">chevron_right</span></a>
-</div>
-</div>
-<!-- Blog Card 2 -->
-<div class="bg-surface rounded-lg overflow-hidden group border border-outline-variant/10 shadow-sm">
-<div class="aspect-[16/10] overflow-hidden relative">
-<img alt="Nature" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Breathtaking landscape of a calm lake reflecting snowy mountains and green pine trees" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1gs2FxWFOgP044cN0501MSh8qqcDUm3TAxjpnrqiVLeCn_eRp3j_eCjLmZzvs9DGhPusSK5Z7GvhChAxHdwVCHB02p7dKXoJjRWohvdfCit5-iW5fI-rwhPS-YeT6r4nUhao9WK2WbfgPzbSZZ4j_n8NyCcHfvSAmY8oHRFu6rRhB31Q_0AWKuNDiv3_SMbe1zkvDsGewnNdCHmMjh3dILiFM5kbValJWLZp9yo1KMX_q0qjgz2nhTTnwEalJlMvKbbZkMMHZqpPH"/>
-<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-primary uppercase">Impact</div>
-</div>
-<div class="p-8">
-<p class="text-xs text-on-surface-variant font-medium mb-2">Feb 28, 2024 • 8 min read</p>
-<h3 class="text-xl font-headline font-bold text-primary mb-4 group-hover:text-secondary transition-colors">Protecting Our Digital Arboretum</h3>
-<p class="text-on-surface-variant text-sm mb-6 line-clamp-2">Why we treat the digital ecosystem as seriously as our physical forests and waterways.</p>
-<a class="text-sm font-bold text-primary hover:text-secondary flex items-center gap-1" href="#">Read More <span class="material-symbols-outlined text-xs">chevron_right</span></a>
-</div>
-</div>
-<!-- Blog Card 3 -->
-<div class="bg-surface rounded-lg overflow-hidden group border border-outline-variant/10 shadow-sm">
-<div class="aspect-[16/10] overflow-hidden relative">
-<img alt="Community" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Two people shaking hands over a rustic wooden table with small green plants in the background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXrvwuoJ3y3JsITMeU3ZIsqYqMDibpaeRcReIw9SU0syJjIJ-RwhkM7Uw8cIN1VNV0R9CijN8XE2pB6KX8qxaHBwyvrU_1HdOMI8CdlQzWJlXt-OAXIk0pTL3WE0vyDX-xkgUoCZU28lpLKmxuTeY81ZGWtek4jLWiOSHld4OFF4n-Y12zjTZ07uw8P6N6oCk-Fd2bI7c_3ORjZ0yYaOtV6bCqTRjT81nGkyxXzyMVQH2Lm1Q4gZO5ODYJPCIq3DQXAzZm5AuiXvsi"/>
-<div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-primary uppercase">Community</div>
-</div>
-<div class="p-8">
-<p class="text-xs text-on-surface-variant font-medium mb-2">Feb 15, 2024 • 4 min read</p>
-<h3 class="text-xl font-headline font-bold text-primary mb-4 group-hover:text-secondary transition-colors">Joining the Hub: Local Guide</h3>
-<p class="text-on-surface-variant text-sm mb-6 line-clamp-2">A step-by-step guide on how to organize a donation drive in your own neighborhood.</p>
-<a class="text-sm font-bold text-primary hover:text-secondary flex items-center gap-1" href="#">Read More <span class="material-symbols-outlined text-xs">chevron_right</span></a>
-</div>
-</div>
-</div>
-</div>
-</section>
-</main>
-<!-- Footer -->
-<footer class="bg-[#003527] dark:bg-black w-full py-20 px-8 text-[#fff8f5] font-['Inter'] text-sm">
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 max-w-7xl mx-auto">
-<div>
-<a class="text-2xl font-bold text-white font-headline mb-6 block" href="#">EcoDon</a>
-<p class="text-stone-400 mb-8 max-w-xs leading-relaxed">
-                    Pioneering the transition to a waste-free world through community action and clean energy innovation.
-                </p>
-<div class="flex gap-4">
-<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors" href="#">
-<svg class="w-5 h-5 fill-current" viewbox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path></svg>
-</a>
-<a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-secondary transition-colors" href="#">
-<svg class="w-5 h-5 fill-current" viewbox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.266.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
-</a>
-</div>
-</div>
-<div>
-<h4 class="text-white font-bold mb-6">Quick Links</h4>
-<ul class="space-y-4">
-<li><a class="text-stone-400 hover:text-[#006c49] transition-colors" href="#">Impact Report</a></li>
-<li><a class="text-stone-400 hover:text-[#006c49] transition-colors" href="#">Our Process</a></li>
-<li><a class="text-stone-400 hover:text-[#006c49] transition-colors" href="#">Find a Hub</a></li>
-<li><a class="text-stone-400 hover:text-[#006c49] transition-colors" href="#">Partner With Us</a></li>
-</ul>
-</div>
-<div>
-<h4 class="text-white font-bold mb-6">Support</h4>
-<ul class="space-y-4">
-<li><a class="text-stone-400 hover:text-[#006c49] transition-colors" href="#">Help Center</a></li>
-<li><a class="text-stone-400 hover:text-[#006c49] transition-colors" href="#">Privacy Policy</a></li>
-<li><a class="text-stone-400 hover:text-[#006c49] transition-colors" href="#">Terms of Service</a></li>
-<li><a class="text-stone-400 hover:text-[#006c49] transition-colors" href="#">Cookie Settings</a></li>
-</ul>
-</div>
-<div>
-<h4 class="text-white font-bold mb-6">Newsletter</h4>
-<p class="text-stone-400 mb-6">Get weekly updates on local clean energy milestones.</p>
-<div class="flex">
-<input class="bg-white/5 border-none rounded-l-lg px-4 py-3 text-white focus:ring-1 focus:ring-secondary w-full" placeholder="Email" type="email"/>
-<button class="bg-secondary px-4 rounded-r-lg hover:opacity-90 transition-opacity">
-<span class="material-symbols-outlined">send</span>
-</button>
-</div>
-</div>
-</div>
-<div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
-<p class="text-stone-500">© 2024 EcoDon. Protecting our digital arboretum.</p>
-<div class="flex gap-8">
-<a class="text-stone-500 hover:text-white" href="#">Sustainability Report</a>
-<a class="text-stone-500 hover:text-white" href="#">Contact</a>
-</div>
-</div>
-</footer>
-</body></html>
+  <!-- Navbar -->
+  <nav class="fixed top-0 w-full z-50 bg-[#fff8f5]/85 backdrop-blur-xl shadow-[0_10px_28px_rgba(31,27,23,0.06)]">
+    <div class="flex justify-between items-center px-6 md:px-8 py-4 max-w-7xl mx-auto">
+      <a class="text-2xl font-extrabold text-primary font-headline tracking-tight" href="#">EcoDon</a>
+
+      <div class="hidden md:flex items-center gap-8 font-headline text-sm font-semibold">
+        <a class="nav-link active" href="#impact">Impact</a>
+        <a class="nav-link" href="#kebutuhan">Kebutuhan</a>
+        <a class="nav-link" href="#blog">Blog</a>
+        <a class="nav-link" href="#cara-kerja">Cara Kerja</a>
+      </div>
+
+      <div class="hidden md:flex items-center gap-3">
+        <a href="/login">
+          <button class="px-5 py-2.5 text-primary font-bold font-headline transition-all hover:opacity-75">Sign In</button>
+        </a>
+        <a href="/register">
+          <button class="px-6 py-2.5 cta-gradient text-white rounded-full font-bold font-headline shadow-lg hover:scale-95 active:opacity-80 transition-all">Join Now</button>
+        </a>
+      </div>
+
+      <button id="mobileMenuButton" class="md:hidden w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-primary">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="hidden md:hidden px-6 pb-5">
+      <div class="grid gap-3 p-4 rounded-lg bg-white shadow-soft">
+        <a class="mobile-nav text-primary font-bold" href="#impact">Impact</a>
+        <a class="mobile-nav text-primary font-bold" href="#kebutuhan">Kebutuhan</a>
+        <a class="mobile-nav text-primary font-bold" href="#blog">Blog</a>
+        <a class="mobile-nav text-primary font-bold" href="#cara-kerja">Cara Kerja</a>
+        <div class="flex gap-3 pt-2">
+          <a class="flex-1" href="/login">
+            <button class="w-full px-4 py-2.5 rounded-full bg-surface-container-highest text-primary font-bold">Sign In</button>
+          </a>
+          <a class="flex-1" href="/register">
+            <button class="w-full px-4 py-2.5 rounded-full cta-gradient text-white font-bold">Join Now</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-24 overflow-hidden">
+    <!-- Hero -->
+    <section class="relative px-6 md:px-8 py-16 lg:py-28 max-w-7xl mx-auto">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="z-10 fade-up">
+          <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-container text-xs font-extrabold uppercase tracking-wider mb-6">
+            <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">eco</span>
+            Donasi Limbah Jadi Lebih Terarah
+          </span>
+
+          <h1 class="text-4xl md:text-5xl lg:text-7xl font-headline font-extrabold text-primary leading-[1.08] tracking-tight mb-7">
+            Salurkan Limbah, <br />
+            Dukung <span class="text-secondary">Aksi Lingkungan</span>
+          </h1>
+
+          <p class="text-base md:text-lg text-on-surface-variant max-w-xl mb-9 leading-relaxed">
+            EcoDon membantu pendonasi menemukan organisasi sosial yang membutuhkan donasi barang dan dukungan volunteer dalam satu platform yang mudah diakses.
+          </p>
+
+          <div class="flex flex-wrap gap-4">
+            <a href="/login">
+              <button class="px-8 py-4 cta-gradient text-white rounded-full font-bold text-base md:text-lg shadow-xl hover:scale-95 transition-all">
+                Mulai Donasi
+              </button>
+            </a>
+            <a href="#kebutuhan">
+              <button class="px-8 py-4 bg-surface-container-highest text-on-surface rounded-full font-bold text-base md:text-lg hover:bg-surface-container-high transition-all">
+                Lihat Kebutuhan
+              </button>
+            </a>
+          </div>
+        </div>
+
+        <div class="relative fade-up">
+          <div class="hero-blob eco-pattern aspect-square rounded-xl p-6 md:p-10 shadow-2xl">
+            <div class="grid grid-cols-2 gap-4 h-full">
+              <button data-feature="donasi" class="feature-card text-left bg-white/85 backdrop-blur rounded-lg p-5 shadow-soft border border-white hover:-translate-y-1 transition-all">
+                <span class="material-symbols-outlined text-secondary text-4xl mb-4">recycling</span>
+                <h3 class="font-headline text-xl font-extrabold text-primary">Donasi Barang</h3>
+                <p class="text-sm text-on-surface-variant mt-2">Salurkan barang atau limbah sesuai kebutuhan organisasi.</p>
+              </button>
+
+              <button data-feature="volunteer" class="feature-card text-left bg-white/85 backdrop-blur rounded-lg p-5 shadow-soft border border-white hover:-translate-y-1 transition-all mt-8">
+                <span class="material-symbols-outlined text-secondary text-4xl mb-4">groups</span>
+                <h3 class="font-headline text-xl font-extrabold text-primary">Volunteer</h3>
+                <p class="text-sm text-on-surface-variant mt-2">Ikut kegiatan sosial yang dibuka oleh organisasi.</p>
+              </button>
+
+              <button data-feature="blog" class="feature-card text-left bg-white/85 backdrop-blur rounded-lg p-5 shadow-soft border border-white hover:-translate-y-1 transition-all -mt-4">
+                <span class="material-symbols-outlined text-secondary text-4xl mb-4">article</span>
+                <h3 class="font-headline text-xl font-extrabold text-primary">Blog Edukasi</h3>
+                <p class="text-sm text-on-surface-variant mt-2">Baca dan bagikan cerita tentang aksi lingkungan.</p>
+              </button>
+
+              <div class="bg-primary text-white rounded-lg p-5 shadow-soft flex flex-col justify-between">
+                <div>
+                  <span class="material-symbols-outlined text-secondary-container text-4xl mb-4">verified</span>
+                  <h3 class="font-headline text-xl font-extrabold">Organisasi Terverifikasi</h3>
+                </div>
+                <p class="text-sm text-white/75 mt-4">Badge membantu pengguna mengenali organisasi yang kredibel.</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="featureInfo" class="absolute -bottom-8 left-4 right-4 md:left-10 md:right-auto p-5 bg-white/95 backdrop-blur-md rounded-lg shadow-xl md:max-w-sm">
+            <p class="text-primary font-extrabold font-headline text-xl mb-1">Donasi Barang</p>
+            <p class="text-on-surface-variant text-sm leading-relaxed">Pengguna dapat melihat kebutuhan organisasi dan menyalurkan barang yang sesuai.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Impact / Features -->
+    <section id="impact" class="px-6 md:px-8 py-20 bg-surface-container-low">
+      <div class="max-w-7xl mx-auto">
+        <div class="mb-12 text-center max-w-2xl mx-auto fade-up">
+          <h2 class="text-3xl md:text-4xl font-headline font-extrabold text-primary mb-4">Fokus Utama EcoDon</h2>
+          <p class="text-on-surface-variant">Platform ini dirancang untuk membantu proses publikasi kebutuhan, penyaluran donasi barang, kegiatan volunteer, dan edukasi lingkungan.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <a href="#kebutuhan" class="fade-up group bg-surface-container rounded-lg p-8 hover:bg-white hover:-translate-y-1 hover:shadow-soft transition-all">
+            <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container mb-6 group-hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined">inventory_2</span>
+            </div>
+            <h3 class="text-xl font-headline font-extrabold text-primary mb-3">Kebutuhan Donasi</h3>
+            <p class="text-on-surface-variant mb-6">Organisasi dapat menampilkan kebutuhan barang secara jelas agar pendonasi tahu apa yang perlu disalurkan.</p>
+            <span class="inline-flex items-center gap-2 text-secondary font-bold">Lihat kebutuhan <span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+          </a>
+
+          <a href="#kebutuhan" class="fade-up group bg-primary text-white rounded-lg p-8 hover:-translate-y-1 hover:shadow-soft transition-all">
+            <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container mb-6 group-hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined">volunteer_activism</span>
+            </div>
+            <h3 class="text-xl font-headline font-extrabold mb-3">Volunteer</h3>
+            <p class="text-white/75 mb-6">Pengguna dapat menemukan kegiatan volunteer dan mendaftar sesuai minat serta kebutuhan organisasi.</p>
+            <span class="inline-flex items-center gap-2 text-secondary-container font-bold">Cari kegiatan <span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+          </a>
+
+          <a href="#blog" class="fade-up group bg-surface-container rounded-lg p-8 hover:bg-white hover:-translate-y-1 hover:shadow-soft transition-all">
+            <div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary mb-6 group-hover:scale-110 transition-transform">
+              <span class="material-symbols-outlined">edit_note</span>
+            </div>
+            <h3 class="text-xl font-headline font-extrabold text-primary mb-3">Blog Lingkungan</h3>
+            <p class="text-on-surface-variant mb-6">Pengguna dan organisasi dapat berbagi informasi, pengalaman, dan edukasi terkait lingkungan.</p>
+            <span class="inline-flex items-center gap-2 text-secondary font-bold">Baca blog <span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Needs -->
+    <section id="kebutuhan" class="px-6 md:px-8 py-20 max-w-7xl mx-auto">
+      <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 mb-10 fade-up">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-headline font-extrabold text-primary mb-3">Kebutuhan Terbaru</h2>
+          <p class="text-on-surface-variant max-w-2xl">Pilih kategori untuk melihat contoh kebutuhan yang dapat dipublikasikan organisasi di EcoDon.</p>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <button class="need-tab tab-active px-5 py-2.5 rounded-full font-bold transition-all" data-filter="all">Semua</button>
+          <button class="need-tab px-5 py-2.5 rounded-full bg-surface-container-highest text-primary font-bold transition-all" data-filter="barang">Donasi Barang</button>
+          <button class="need-tab px-5 py-2.5 rounded-full bg-surface-container-highest text-primary font-bold transition-all" data-filter="volunteer">Volunteer</button>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <article class="need-card fade-up bg-white rounded-lg p-6 border border-outline-variant/20 shadow-sm" data-type="barang">
+          <div class="flex items-center justify-between mb-5">
+            <span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-extrabold">Donasi Barang</span>
+            <span class="material-symbols-outlined text-secondary">compost</span>
+          </div>
+          <h3 class="text-xl font-headline font-extrabold text-primary mb-2">Limbah Organik Rumah Tangga</h3>
+          <p class="text-on-surface-variant text-sm mb-5">Dibutuhkan bahan organik bersih untuk kegiatan pengolahan kompos komunitas.</p>
+          <div class="flex items-center justify-between text-sm">
+            <span class="font-bold text-primary">Komunitas Hijau</span>
+            <button class="open-detail text-secondary font-extrabold" data-title="Limbah Organik Rumah Tangga" data-body="Kebutuhan ini berfokus pada limbah organik bersih seperti kulit buah dan sisa sayur yang dapat digunakan untuk pengolahan kompos komunitas.">Detail</button>
+          </div>
+        </article>
+
+        <article class="need-card fade-up bg-white rounded-lg p-6 border border-outline-variant/20 shadow-sm" data-type="barang">
+          <div class="flex items-center justify-between mb-5">
+            <span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-extrabold">Donasi Barang</span>
+            <span class="material-symbols-outlined text-secondary">oil_barrel</span>
+          </div>
+          <h3 class="text-xl font-headline font-extrabold text-primary mb-2">Minyak Jelantah Terkumpul</h3>
+          <p class="text-on-surface-variant text-sm mb-5">Organisasi membuka pengumpulan minyak jelantah untuk diolah secara bertanggung jawab.</p>
+          <div class="flex items-center justify-between text-sm">
+            <span class="font-bold text-primary">Bank Sampah Mitra</span>
+            <button class="open-detail text-secondary font-extrabold" data-title="Minyak Jelantah Terkumpul" data-body="Pengguna dapat menyalurkan minyak jelantah dalam wadah tertutup. Organisasi akan melakukan pencatatan dan proses penerimaan barang.">Detail</button>
+          </div>
+        </article>
+
+        <article class="need-card fade-up bg-white rounded-lg p-6 border border-outline-variant/20 shadow-sm" data-type="volunteer">
+          <div class="flex items-center justify-between mb-5">
+            <span class="px-3 py-1 rounded-full bg-primary text-white text-xs font-extrabold">Volunteer</span>
+            <span class="material-symbols-outlined text-secondary">groups_3</span>
+          </div>
+          <h3 class="text-xl font-headline font-extrabold text-primary mb-2">Relawan Sortir Donasi</h3>
+          <p class="text-on-surface-variant text-sm mb-5">Dibutuhkan relawan untuk membantu sortir barang dan pencatatan donasi masuk.</p>
+          <div class="flex items-center justify-between text-sm">
+            <span class="font-bold text-primary">EcoHub Selatan</span>
+            <button class="open-detail text-secondary font-extrabold" data-title="Relawan Sortir Donasi" data-body="Kegiatan volunteer ini membantu organisasi dalam memilah donasi barang dan mencatat data kontribusi pengguna.">Detail</button>
+          </div>
+        </article>
+
+        <article class="need-card fade-up bg-white rounded-lg p-6 border border-outline-variant/20 shadow-sm" data-type="volunteer">
+          <div class="flex items-center justify-between mb-5">
+            <span class="px-3 py-1 rounded-full bg-primary text-white text-xs font-extrabold">Volunteer</span>
+            <span class="material-symbols-outlined text-secondary">campaign</span>
+          </div>
+          <h3 class="text-xl font-headline font-extrabold text-primary mb-2">Edukasi Pemilahan Sampah</h3>
+          <p class="text-on-surface-variant text-sm mb-5">Relawan dibutuhkan untuk membantu kegiatan edukasi lingkungan di area komunitas.</p>
+          <div class="flex items-center justify-between text-sm">
+            <span class="font-bold text-primary">Teman Pilah</span>
+            <button class="open-detail text-secondary font-extrabold" data-title="Edukasi Pemilahan Sampah" data-body="Relawan akan membantu penyampaian materi sederhana tentang pemilahan sampah dan pencatatan peserta kegiatan.">Detail</button>
+          </div>
+        </article>
+
+        <article class="need-card fade-up bg-white rounded-lg p-6 border border-outline-variant/20 shadow-sm" data-type="barang">
+          <div class="flex items-center justify-between mb-5">
+            <span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-extrabold">Donasi Barang</span>
+            <span class="material-symbols-outlined text-secondary">local_drink</span>
+          </div>
+          <h3 class="text-xl font-headline font-extrabold text-primary mb-2">Botol Plastik Bersih</h3>
+          <p class="text-on-surface-variant text-sm mb-5">Dibutuhkan botol plastik yang sudah dibersihkan untuk kegiatan daur ulang.</p>
+          <div class="flex items-center justify-between text-sm">
+            <span class="font-bold text-primary">Rumah Daur Ulang</span>
+            <button class="open-detail text-secondary font-extrabold" data-title="Botol Plastik Bersih" data-body="Botol plastik yang diterima sebaiknya dalam kondisi kosong dan bersih agar proses sortir lebih mudah dilakukan.">Detail</button>
+          </div>
+        </article>
+
+        <article class="need-card fade-up bg-white rounded-lg p-6 border border-outline-variant/20 shadow-sm" data-type="volunteer">
+          <div class="flex items-center justify-between mb-5">
+            <span class="px-3 py-1 rounded-full bg-primary text-white text-xs font-extrabold">Volunteer</span>
+            <span class="material-symbols-outlined text-secondary">event_available</span>
+          </div>
+          <h3 class="text-xl font-headline font-extrabold text-primary mb-2">Pendamping Kegiatan Komunitas</h3>
+          <p class="text-on-surface-variant text-sm mb-5">Organisasi membutuhkan relawan untuk membantu koordinasi kegiatan lapangan.</p>
+          <div class="flex items-center justify-between text-sm">
+            <span class="font-bold text-primary">Green Action</span>
+            <button class="open-detail text-secondary font-extrabold" data-title="Pendamping Kegiatan Komunitas" data-body="Relawan bertugas membantu alur registrasi peserta, dokumentasi kegiatan, dan koordinasi sederhana saat acara berlangsung.">Detail</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="cara-kerja" class="px-6 md:px-8 py-20 bg-surface-container-low">
+      <div class="max-w-7xl mx-auto">
+        <div class="mb-12 max-w-2xl fade-up">
+          <h2 class="text-3xl md:text-4xl font-headline font-extrabold text-primary mb-4">Cara Kerja EcoDon</h2>
+          <p class="text-on-surface-variant">Alur dibuat sederhana agar pendonasi dan organisasi dapat saling terhubung dengan lebih jelas.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div class="fade-up bg-white p-7 rounded-lg border border-outline-variant/20">
+            <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center font-headline font-extrabold text-primary mb-5">1</div>
+            <h4 class="text-lg font-extrabold text-primary mb-2">Cari Kebutuhan</h4>
+            <p class="text-sm text-on-surface-variant">Pengguna melihat kebutuhan donasi barang atau volunteer yang dipublikasikan organisasi.</p>
+          </div>
+
+          <div class="fade-up bg-white p-7 rounded-lg border border-outline-variant/20">
+            <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center font-headline font-extrabold text-primary mb-5">2</div>
+            <h4 class="text-lg font-extrabold text-primary mb-2">Ajukan Donasi</h4>
+            <p class="text-sm text-on-surface-variant">Pengguna mengisi form donasi barang atau pendaftaran volunteer sesuai kebutuhan.</p>
+          </div>
+
+          <div class="fade-up bg-white p-7 rounded-lg border border-outline-variant/20">
+            <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center font-headline font-extrabold text-primary mb-5">3</div>
+            <h4 class="text-lg font-extrabold text-primary mb-2">Divalidasi Organisasi</h4>
+            <p class="text-sm text-on-surface-variant">Organisasi menerima, menolak, atau memperbarui status pengajuan yang masuk.</p>
+          </div>
+
+          <div class="fade-up bg-primary p-7 rounded-lg text-white">
+            <div class="w-12 h-12 rounded-full bg-secondary flex items-center justify-center font-headline font-extrabold text-white mb-5">4</div>
+            <h4 class="text-lg font-extrabold mb-2">Pantau Aktivitas</h4>
+            <p class="text-sm text-white/75">Pengguna dapat melihat riwayat kontribusi, status donasi, poin reward, dan informasi kegiatan.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blog -->
+    <section id="blog" class="px-6 md:px-8 py-20 max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10 fade-up">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-headline font-extrabold text-primary mb-3">Blog EcoDon</h2>
+          <p class="text-on-surface-variant max-w-2xl">Ruang berbagi cerita, edukasi, dan informasi kegiatan dari pengguna maupun organisasi.</p>
+        </div>
+        <div class="relative w-full md:w-80">
+          <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+          <input id="blogSearch" class="w-full rounded-full border-outline-variant bg-white pl-12 pr-4 py-3 focus:ring-secondary focus:border-secondary" placeholder="Cari artikel..." type="text" />
+        </div>
+      </div>
+
+      <div id="blogList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <article class="blog-card fade-up bg-white rounded-lg overflow-hidden border border-outline-variant/20 shadow-sm" data-title="cara memilah limbah organik">
+          <div class="h-44 eco-pattern bg-surface-container-highest flex items-center justify-center">
+            <span class="material-symbols-outlined text-secondary text-7xl">compost</span>
+          </div>
+          <div class="p-7">
+            <p class="text-xs text-on-surface-variant font-bold mb-2">Edukasi • 5 min read</p>
+            <h3 class="text-xl font-headline font-extrabold text-primary mb-3">Cara Memilah Limbah Organik dari Rumah</h3>
+            <p class="text-on-surface-variant text-sm mb-6">Panduan sederhana untuk memisahkan limbah organik agar lebih mudah disalurkan.</p>
+            <button class="blog-read text-sm font-extrabold text-secondary" data-title="Cara Memilah Limbah Organik dari Rumah">Baca Selengkapnya</button>
+          </div>
+        </article>
+
+        <article class="blog-card fade-up bg-white rounded-lg overflow-hidden border border-outline-variant/20 shadow-sm" data-title="cerita volunteer lingkungan komunitas">
+          <div class="h-44 eco-pattern bg-surface-container-highest flex items-center justify-center">
+            <span class="material-symbols-outlined text-secondary text-7xl">diversity_3</span>
+          </div>
+          <div class="p-7">
+            <p class="text-xs text-on-surface-variant font-bold mb-2">Volunteer • 4 min read</p>
+            <h3 class="text-xl font-headline font-extrabold text-primary mb-3">Cerita Volunteer di Kegiatan Lingkungan</h3>
+            <p class="text-on-surface-variant text-sm mb-6">Pengalaman singkat tentang bagaimana relawan membantu kegiatan sortir donasi.</p>
+            <button class="blog-read text-sm font-extrabold text-secondary" data-title="Cerita Volunteer di Kegiatan Lingkungan">Baca Selengkapnya</button>
+          </div>
+        </article>
+
+        <article class="blog-card fade-up bg-white rounded-lg overflow-hidden border border-outline-variant/20 shadow-sm" data-title="donasi barang yang sering dibutuhkan">
+          <div class="h-44 eco-pattern bg-surface-container-highest flex items-center justify-center">
+            <span class="material-symbols-outlined text-secondary text-7xl">inventory</span>
+          </div>
+          <div class="p-7">
+            <p class="text-xs text-on-surface-variant font-bold mb-2">Donasi • 6 min read</p>
+            <h3 class="text-xl font-headline font-extrabold text-primary mb-3">Jenis Barang yang Sering Dibutuhkan</h3>
+            <p class="text-on-surface-variant text-sm mb-6">Beberapa contoh barang dan limbah yang biasanya dibutuhkan organisasi mitra.</p>
+            <button class="blog-read text-sm font-extrabold text-secondary" data-title="Jenis Barang yang Sering Dibutuhkan">Baca Selengkapnya</button>
+          </div>
+        </article>
+      </div>
+
+      <p id="emptyBlog" class="hidden text-center text-on-surface-variant mt-10">Artikel tidak ditemukan.</p>
+    </section>
+
+    <!-- CTA -->
+    <section class="px-6 md:px-8 py-20">
+      <div class="max-w-7xl mx-auto cta-gradient rounded-xl p-8 md:p-12 text-white relative overflow-hidden">
+        <div class="absolute right-0 bottom-0 opacity-10">
+          <span class="material-symbols-outlined text-[220px]">eco</span>
+        </div>
+        <div class="relative z-10 max-w-2xl">
+          <h2 class="text-3xl md:text-4xl font-headline font-extrabold mb-4">Mulai kontribusi kecil dari hari ini.</h2>
+          <p class="text-white/75 mb-8">Daftar sebagai pengguna untuk melihat kebutuhan donasi barang, mengikuti organisasi, atau mendaftar kegiatan volunteer.</p>
+          <div class="flex flex-wrap gap-4">
+            <a href="/register">
+              <button class="px-7 py-3.5 bg-white text-primary rounded-full font-extrabold hover:scale-95 transition-all">Join Now</button>
+            </a>
+            <a href="/login">
+              <button class="px-7 py-3.5 bg-white/10 text-white rounded-full font-extrabold hover:bg-white/15 transition-all">Sign In</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 z-[80] hidden items-center justify-center px-6">
+    <div id="modalBackdrop" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+    <div class="relative bg-white max-w-lg w-full rounded-xl shadow-2xl p-7">
+      <button id="closeModal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-surface-container-highest flex items-center justify-center">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+      <div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-primary mb-5">
+        <span class="material-symbols-outlined">info</span>
+      </div>
+      <h3 id="modalTitle" class="text-2xl font-headline font-extrabold text-primary mb-3">Detail</h3>
+      <p id="modalBody" class="text-on-surface-variant leading-relaxed">Informasi detail.</p>
+      <div class="mt-7 flex justify-end">
+        <a href="/login">
+          <button class="px-6 py-3 cta-gradient text-white rounded-full font-extrabold">Lanjutkan</button>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-primary w-full py-16 px-6 md:px-8 text-[#fff8f5] font-body text-sm">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 max-w-7xl mx-auto">
+      <div>
+        <a class="text-2xl font-extrabold text-white font-headline mb-5 block" href="#">EcoDon</a>
+        <p class="text-white/60 mb-7 max-w-xs leading-relaxed">
+          Platform donasi berbasis lingkungan yang menghubungkan pendonasi, organisasi sosial, dan kegiatan volunteer.
+        </p>
+        <div class="flex gap-3">
+          <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary transition-colors" href="#">
+            <span class="material-symbols-outlined text-lg">alternate_email</span>
+          </a>
+          <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary transition-colors" href="#">
+            <span class="material-symbols-outlined text-lg">public</span>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-white font-extrabold mb-5">Menu</h4>
+        <ul class="space-y-3">
+          <li><a class="text-white/60 hover:text-secondary-container transition-colors" href="#impact">Impact</a></li>
+          <li><a class="text-white/60 hover:text-secondary-container transition-colors" href="#kebutuhan">Kebutuhan</a></li>
+          <li><a class="text-white/60 hover:text-secondary-container transition-colors" href="#blog">Blog</a></li>
+          <li><a class="text-white/60 hover:text-secondary-container transition-colors" href="#cara-kerja">Cara Kerja</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-white font-extrabold mb-5">Aksi</h4>
+        <ul class="space-y-3">
+          <li><a class="text-white/60 hover:text-secondary-container transition-colors" href="/login">Mulai Donasi</a></li>
+          <li><a class="text-white/60 hover:text-secondary-container transition-colors" href="/login">Daftar Volunteer</a></li>
+          <li><a class="text-white/60 hover:text-secondary-container transition-colors" href="/register">Buat Akun</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-white font-extrabold mb-5">Update EcoDon</h4>
+        <p class="text-white/60 mb-5">Dapatkan informasi terbaru terkait kebutuhan donasi dan kegiatan volunteer.</p>
+        <form id="newsletterForm" class="flex">
+          <input class="bg-white/10 border-none rounded-l-lg px-4 py-3 text-white placeholder:text-white/40 focus:ring-1 focus:ring-secondary w-full" placeholder="Email" type="email" required />
+          <button class="bg-secondary px-4 rounded-r-lg hover:opacity-90 transition-opacity" type="submit">
+            <span class="material-symbols-outlined">send</span>
+          </button>
+        </form>
+        <p id="newsletterMsg" class="hidden mt-3 text-secondary-container font-semibold">Terima kasih, email kamu sudah tercatat.</p>
+      </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto mt-12 pt-7 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-white/45">© 2026 EcoDon. Platform donasi berbasis lingkungan.</p>
+      <div class="flex gap-6">
+        <a class="text-white/45 hover:text-white" href="#">Privacy</a>
+        <a class="text-white/45 hover:text-white" href="#">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const mobileMenuButton = document.getElementById("mobileMenuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    mobileMenuButton.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+
+    document.querySelectorAll(".mobile-nav").forEach((link) => {
+      link.addEventListener("click", () => mobileMenu.classList.add("hidden"));
+    });
+
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.forEach((item) => item.classList.remove("active"));
+        link.classList.add("active");
+      });
+    });
+
+    const featureCopy = {
+      donasi: {
+        title: "Donasi Barang",
+        body: "Pengguna dapat melihat kebutuhan organisasi dan menyalurkan barang yang sesuai."
+      },
+      volunteer: {
+        title: "Volunteer",
+        body: "Pengguna dapat memilih kegiatan volunteer dan mendaftar melalui platform."
+      },
+      blog: {
+        title: "Blog Edukasi",
+        body: "Blog menjadi ruang berbagi informasi, cerita, dan edukasi lingkungan."
+      }
+    };
+
+    document.querySelectorAll(".feature-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        const key = card.dataset.feature;
+        document.querySelector("#featureInfo p:first-child").textContent = featureCopy[key].title;
+        document.querySelector("#featureInfo p:last-child").textContent = featureCopy[key].body;
+      });
+    });
+
+    const tabs = document.querySelectorAll(".need-tab");
+    const cards = document.querySelectorAll(".need-card");
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((item) => {
+          item.classList.remove("tab-active");
+          item.classList.add("bg-surface-container-highest", "text-primary");
+        });
+
+        tab.classList.add("tab-active");
+        tab.classList.remove("bg-surface-container-highest", "text-primary");
+
+        const filter = tab.dataset.filter;
+        cards.forEach((card) => {
+          const isVisible = filter === "all" || card.dataset.type === filter;
+          card.classList.toggle("hidden", !isVisible);
+        });
+      });
+    });
+
+    const modal = document.getElementById("modal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalBody = document.getElementById("modalBody");
+    const closeModal = document.getElementById("closeModal");
+    const modalBackdrop = document.getElementById("modalBackdrop");
+
+    function openModal(title, body) {
+      modalTitle.textContent = title;
+      modalBody.textContent = body;
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function hideModal() {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    document.querySelectorAll(".open-detail").forEach((button) => {
+      button.addEventListener("click", () => {
+        openModal(button.dataset.title, button.dataset.body);
+      });
+    });
+
+    document.querySelectorAll(".blog-read").forEach((button) => {
+      button.addEventListener("click", () => {
+        openModal(button.dataset.title, "Artikel ini akan menampilkan detail konten blog ketika fitur blog sudah terhubung dengan data sistem.");
+      });
+    });
+
+    closeModal.addEventListener("click", hideModal);
+    modalBackdrop.addEventListener("click", hideModal);
+
+    const blogSearch = document.getElementById("blogSearch");
+    const blogCards = document.querySelectorAll(".blog-card");
+    const emptyBlog = document.getElementById("emptyBlog");
+
+    blogSearch.addEventListener("input", (event) => {
+      const keyword = event.target.value.toLowerCase().trim();
+      let visibleCount = 0;
+
+      blogCards.forEach((card) => {
+        const matched = card.dataset.title.includes(keyword);
+        card.classList.toggle("hidden", !matched);
+        if (matched) visibleCount += 1;
+      });
+
+      emptyBlog.classList.toggle("hidden", visibleCount !== 0);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".fade-up").forEach((element) => observer.observe(element));
+
+    document.getElementById("newsletterForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      document.getElementById("newsletterMsg").classList.remove("hidden");
+      event.target.reset();
+    });
+  </script>
+</body>
+</html>

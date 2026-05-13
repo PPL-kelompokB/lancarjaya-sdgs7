@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <title>Volunteer Detail</title>
+    <meta charset="UTF-8">
+    <title>{{ $volunteer->title }} - EcoDon</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- FONT AWESOME -->
@@ -9,101 +10,270 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
-<body class="bg-gray-50">
+@php
+    $org = $volunteer->organization;
+    $orgName = $org->organization_name ?? 'Organization';
+    $orgImage = $org->profile_image ?? null;
+    $orgInitial = strtoupper(substr($orgName, 0, 1));
+@endphp
 
-<div class="max-w-4xl mx-auto p-6">
+<body class="bg-[#fff8f5] text-[#1f1b17]">
 
-    <a href="{{ url('/user/explore') }}"
-       class="text-[#006c49] font-medium hover:underline">
-        ← Back To Explore
+<div class="max-w-4xl mx-auto px-6 py-10">
+
+    <!-- BACK -->
+    <a href="{{ route('user.explore') }}"
+       class="inline-flex mb-6 text-[#006c49] font-bold hover:underline">
+        ← Back to Explore
     </a>
 
-    <div class="bg-white rounded-2xl shadow mt-4 p-6">
+    <div class="bg-white rounded-3xl shadow border border-[#eae1da] overflow-hidden">
 
-        <h1 class="text-3xl font-bold">{{ $volunteer->title }}</h1>
-
-        <p class="text-sm text-gray-500 mt-2">
-            by {{ $volunteer->organization->name ?? 'Organization' }}
-        </p>
-
+        <!-- IMAGE -->
         @if($volunteer->image)
-            <img src="{{ asset('storage/'.$volunteer->image) }}"
-                 class="mt-4 rounded-lg">
+            <img src="{{ asset('storage/' . $volunteer->image) }}"
+                 class="w-full max-h-[420px] object-cover">
         @endif
 
-        <div class="mt-6 text-gray-700">
-            {{ $volunteer->description }}
-        </div>
+        <div class="p-6 md:p-8">
 
-        <!-- LIKE + COMMENT -->
-        <div class="flex items-center gap-6 mt-6">
+            <!-- BADGE -->
+            <span class="inline-flex px-3 py-1 rounded-full bg-[#e6f5ef] text-[#006c49] text-xs font-bold uppercase">
+                Volunteer
+            </span>
 
-            <!-- LIKE -->
-            <form action="{{ route('volunteer.like', $volunteer->id) }}"
-                  method="POST">
-                @csrf
+            <!-- TITLE -->
+            <h1 class="text-3xl md:text-4xl font-extrabold text-[#003527] mt-4">
+                {{ $volunteer->title }}
+            </h1>
 
-                <button type="submit"
-                    class="text-3xl hover:scale-110 transition">
+            <!-- AUTHOR -->
+            <a href="{{ route('organization.public.profile', $org->id) }}"
+               class="flex items-center gap-3 mt-5">
 
-                    @if($liked)
-                        <i class="fas fa-heart text-red-600"></i>
+                <div class="w-12 h-12 rounded-full bg-[#f6ece6] flex items-center justify-center overflow-hidden border border-[#eae1da]">
+                    @if($orgImage)
+                        <img src="{{ asset('storage/' . $orgImage) }}"
+                             class="w-full h-full object-cover">
                     @else
-                        <i class="far fa-heart text-gray-700"></i>
+                        <span class="font-bold text-[#003527]">
+                            {{ $orgInitial }}
+                        </span>
                     @endif
+                </div>
 
-                </button>
-            </form>
+                <div>
+                    <div class="flex items-center gap-1">
+                        <p class="font-bold text-[#003527]">
+                            {{ $orgName }}
+                        </p>
 
-            <!-- COMMENT -->
-            <button onclick="toggleComment()"
-                class="text-3xl hover:scale-110 transition text-gray-700">
+                        @if($org && $org->verification_status === 'verified')
+                            <span class="text-[#006c49] text-sm">✔</span>
+                        @endif
+                    </div>
 
-                <i class="far fa-comment"></i>
-            </button>
-
-        </div>
-
-        <!-- COMMENT BOX -->
-        <div id="commentBox" class="hidden mt-8">
-
-            <h3 class="font-bold text-lg mb-4">Comments</h3>
-
-            @forelse($comments as $c)
-                <div class="border-b py-3">
-                    <p class="font-semibold text-sm text-gray-800">
-                        {{ $c->user->name }}
-                    </p>
-
-                    <p class="text-gray-700 mt-1">
-                        {{ $c->comment }}
+                    <p class="text-xs text-gray-500">
+                        {{ $volunteer->created_at->format('d M Y') }}
                     </p>
                 </div>
-            @empty
-                <p class="text-gray-500">No comments yet</p>
-            @endforelse
+            </a>
 
-            <!-- FORM COMMENT -->
-            <form action="{{ route('volunteer.comment', $volunteer->id) }}"
-                  method="POST"
-                  class="mt-6">
-                @csrf
+            <!-- DESCRIPTION -->
+            <p class="mt-6 text-[#404944] leading-relaxed whitespace-pre-line">
+                {{ $volunteer->description }}
+            </p>
 
-                <textarea
-                    name="comment"
-                    rows="3"
-                    placeholder="Write comment..."
-                    class="w-full border border-[#eae1da] rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-[#006c49]"
-                    required></textarea>
+            <!-- DETAIL INFORMASI -->
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-[#eae1da] pt-6">
+                
+                <!-- Event Type -->
+                <div class="bg-[#f6ece6] rounded-2xl p-4">
+                    <p class="text-xs font-bold text-[#003527] uppercase tracking-wide mb-1">
+                        📅 Tipe Event
+                    </p>
+                    <p class="text-lg font-semibold text-[#003527]">
+                        @if($volunteer->event_type === 'online')
+                            🌐 Online
+                        @elseif($volunteer->event_type === 'offline')
+                            📍 Offline
+                        @else
+                            🔀 Hybrid
+                        @endif
+                    </p>
+                </div>
 
-                <button
-                    class="mt-3 bg-[#006c49] text-white px-5 py-2 rounded-xl hover:bg-[#00553a] transition">
-                    Post Comment
-                </button>
-            </form>
+                <!-- Event Date -->
+                <div class="bg-[#f6ece6] rounded-2xl p-4">
+                    <p class="text-xs font-bold text-[#003527] uppercase tracking-wide mb-1">
+                        📆 Tanggal Event
+                    </p>
+                    <p class="text-lg font-semibold text-[#003527]">
+                        {{ $volunteer->event_date ? \Carbon\Carbon::parse($volunteer->event_date)->format('d M Y') : '-' }}
+                    </p>
+                </div>
+
+                <!-- Deadline -->
+                <div class="bg-[#f6ece6] rounded-2xl p-4">
+                    <p class="text-xs font-bold text-[#003527] uppercase tracking-wide mb-1">
+                        ⏰ Deadline Pendaftaran
+                    </p>
+                    <p class="text-lg font-semibold text-[#003527]">
+                        {{ $volunteer->deadline ? \Carbon\Carbon::parse($volunteer->deadline)->format('d M Y') : '-' }}
+                    </p>
+                </div>
+
+                <!-- Volunteer Quota -->
+                <div class="bg-[#f6ece6] rounded-2xl p-4">
+                    <p class="text-xs font-bold text-[#003527] uppercase tracking-wide mb-1">
+                        👥 Kuota Volunteer
+                    </p>
+                    <p class="text-lg font-semibold text-[#003527]">
+                        {{ $volunteer->volunteer_quota ?? 0 }} orang
+                    </p>
+                </div>
+
+                <!-- Location -->
+                @if($volunteer->location)
+                <div class="bg-[#f6ece6] rounded-2xl p-4 md:col-span-2">
+                    <p class="text-xs font-bold text-[#003527] uppercase tracking-wide mb-1">
+                        📍 Lokasi
+                    </p>
+                    <p class="text-lg font-semibold text-[#003527]">
+                        {{ $volunteer->location }}
+                    </p>
+                </div>
+                @endif
+
+                <!-- Required Skills -->
+                @if($volunteer->required_skills)
+                <div class="bg-[#f6ece6] rounded-2xl p-4 md:col-span-2">
+                    <p class="text-xs font-bold text-[#003527] uppercase tracking-wide mb-2">
+                        🎯 Keahlian yang Dibutuhkan
+                    </p>
+                    <p class="text-sm text-[#404944]">
+                        {{ $volunteer->required_skills }}
+                    </p>
+                </div>
+                @endif
+
+            </div>
+
+            <!-- TASK DESCRIPTION -->
+            @if($volunteer->task_description)
+            <div class="mt-6">
+                <h2 class="text-xl font-bold text-[#003527] mb-3">
+                    📋 Deskripsi Tugas
+                </h2>
+                <div class="bg-[#f6ece6] rounded-2xl p-4">
+                    <p class="text-sm text-[#404944] leading-relaxed whitespace-pre-line">
+                        {{ $volunteer->task_description }}
+                    </p>
+                </div>
+            </div>
+            @endif
+
+            <!-- CATATAN TAMBAHAN -->
+            @if($volunteer->notes)
+            <div class="mt-6">
+                <h2 class="text-xl font-bold text-[#003527] mb-3">
+                    📝 Catatan Tambahan
+                </h2>
+                <div class="bg-[#f6ece6] rounded-2xl p-4">
+                    <p class="text-sm text-[#404944] leading-relaxed whitespace-pre-line">
+                        {{ $volunteer->notes }}
+                    </p>
+                </div>
+            </div>
+            @endif
+
+            <!-- LIKE & COMMENT -->
+            <div class="mt-8 border-t border-[#eae1da] pt-5">
+
+                <div class="flex items-center gap-5 text-sm text-[#707974]">
+                    @auth
+                        <form action="{{ route('like', ['volunteer', $volunteer->id]) }}" method="POST">
+                            @csrf
+                            <button class="hover:text-red-500 font-semibold">
+                                ❤️ {{ $volunteer->likes()->count() }}
+                            </button>
+                        </form>
+                    @else
+                        <span>❤️ {{ $volunteer->likes()->count() }}</span>
+                    @endauth
+
+                    <span>💬 {{ $volunteer->comments()->count() }}</span>
+                </div>
+
+                <!-- COMMENT LIST -->
+                <div class="mt-6">
+                    <h2 class="text-xl font-bold text-[#003527] mb-4">
+                        Comments
+                    </h2>
+
+                    @forelse($volunteer->comments()->with('user')->latest()->get() as $comment)
+                        <div class="bg-[#fff8f5] border border-[#eae1da] rounded-2xl px-4 py-3 mb-3">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-9 h-9 rounded-full bg-[#f6ece6] flex items-center justify-center overflow-hidden">
+                                    @if($comment->user->profile_image)
+                                        <img src="{{ asset('storage/' . $comment->user->profile_image) }}"
+                                             class="w-full h-full object-cover">
+                                    @else
+                                        <span class="text-sm font-bold text-[#003527]">
+                                            {{ strtoupper(substr($comment->user->name, 0, 1)) }}
+                                        </span>
+                                    @endif
+                                </div>
+
+                                <div>
+                                    <p class="font-bold text-sm text-[#003527]">
+                                        {{ $comment->user->name }}
+                                    </p>
+                                    <p class="text-xs text-gray-500">
+                                        {{ $comment->created_at->diffForHumans() }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <p class="text-sm text-[#404944]">
+                                {{ $comment->body }}
+                            </p>
+                        </div>
+                    @empty
+                        <p class="text-sm text-gray-500">
+                            Belum ada komentar.
+                        </p>
+                    @endforelse
+                </div>
+
+                <!-- COMMENT FORM -->
+                @auth
+                    <form action="{{ route('comment', ['volunteer', $volunteer->id]) }}" method="POST" class="mt-6">
+                        @csrf
+
+                        <textarea
+                            name="body"
+                            rows="3"
+                            placeholder="Tulis komentar..."
+                            class="w-full rounded-2xl border border-[#eae1da] px-4 py-3 text-sm focus:ring-2 focus:ring-[#006c49]"
+                            required
+                        ></textarea>
+
+                        <div class="flex justify-end mt-3">
+                            <button class="px-6 py-2 bg-[#006c49] text-white rounded-full font-bold hover:bg-[#003527]">
+                                Kirim
+                            </button>
+                        </div>
+                    </form>
+                @else
+                    <p class="mt-6 text-sm text-gray-500">
+                        Login untuk komentar.
+                    </p>
+                @endauth
+
+            </div>
 
         </div>
-
     </div>
 
 </div>

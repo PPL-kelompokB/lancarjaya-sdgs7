@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Organization extends Model
@@ -43,5 +43,15 @@ class Organization extends Model
     public function volunteerRequests()
     {
         return $this->hasMany(VolunteerRequest::class);
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'organization_followers',
+            'organization_id',
+            'user_id'
+        )->withTimestamps();
     }
 }

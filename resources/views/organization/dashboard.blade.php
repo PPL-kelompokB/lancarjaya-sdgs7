@@ -131,10 +131,27 @@
                 <span class="text-sm font-medium">Blog</span>
             </a>
 
-            <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="{{ route('organization.donation.create') }}">
-                <span class="material-symbols-outlined">card_giftcard</span>
-                <span class="text-sm font-medium">Donation Programs</span>
+            <a  href="{{ route('user.explore') }}"
+                class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="#">
+                <span class="material-symbols-outlined">home</span>
+                <span class="text-sm font-medium">Explore</span>
             </a>
+
+            @if($organization->verification_status === 'verified')
+                <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="{{ route('organization.donation.create') }}">
+                    <span class="material-symbols-outlined">card_giftcard</span>
+                    <span class="text-sm font-medium">Donation Programs</span>
+                </a>
+            @else
+                <button
+                    type="button"
+                    onclick="alert('Akun anda masih dalam proses review')"
+                    class="w-[calc(100%-2rem)] text-left text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all"
+                >
+                    <span class="material-symbols-outlined">card_giftcard</span>
+                    <span class="text-sm font-medium">Donation Programs</span>
+                </button>
+            @endif
 
             <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="{{ route('organization.volunteer-request.create') }}">
                 <span class="material-symbols-outlined">group</span>
@@ -289,8 +306,20 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pb-20">
 
             @if(session('success'))
-                <div class="mb-6 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
-                    {{ session('success') }}
+                <div id="successAlert" class="mb-6 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 flex items-center justify-between gap-4">
+                    <span>{{ session('success') }}</span>
+                    <button type="button" id="closeSuccessAlert" class="font-bold text-green-700 hover:text-green-900">
+                        &times;
+                    </button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div id="errorAlert" class="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 flex items-center justify-between gap-4">
+                    <span>{{ session('error') }}</span>
+                    <button type="button" id="closeErrorAlert" class="font-bold text-red-700 hover:text-red-900">
+                        &times;
+                    </button>
                 </div>
             @endif
 
@@ -310,7 +339,12 @@
                 <button type="button" class="tab-btn pb-4 text-on-surface-variant font-headline font-bold relative hover:text-primary transition-colors" data-tab="blog">
                     Blog
                 </button>
-                <button type="button" class="tab-btn active pb-4 text-primary font-headline font-bold relative transition-colors" data-tab="donation-programs">
+                <button
+                    type="button"
+                    class="tab-btn active pb-4 text-primary font-headline font-bold relative transition-colors"
+                    data-tab="donation-programs"
+                    @if($organization->verification_status !== 'verified') data-review-blocked="1" @endif
+                >
                     Donation Programs
                 </button>
                 <button type="button" class="tab-btn pb-4 text-on-surface-variant font-headline font-bold relative hover:text-primary transition-colors whitespace-nowrap" data-tab="volunteer-activity">
@@ -335,22 +369,55 @@
                         @if(($organization->blogs->count() ?? 0) > 0)
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 @foreach($organization->blogs as $blog)
-                                    <article class="bg-white rounded-2xl border border-outline-variant/20 p-5">
+                                <article class="bg-white rounded-2xl border border-outline-variant/20 overflow-hidden">
+                                    @if(!empty($blog->image))
+                                        <img 
+                                            src="{{ asset('storage/' . $blog->image) }}"
+                                            class="w-full h-48 object-cover"
+                                            alt="{{ $blog->title }}"
+                                        >
+                                    @endif
+
+                                    <div class="p-5">
                                         <h4 class="text-lg font-headline font-bold text-primary line-clamp-2">
-                                            {{ $blog->title ?? 'Judul Blog' }}
+                                            {{ $blog->title }}
                                         </h4>
 
                                         <p class="mt-3 text-sm text-on-surface-variant line-clamp-4">
-                                            {{ $blog->content ?? $blog->excerpt ?? 'Belum ada ringkasan blog.' }}
+                                            {{ $blog->content }}
                                         </p>
 
-                                        @if(!empty($blog->created_at))
-                                            <p class="mt-4 text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
+                                        <div class="flex items-center gap-4 mt-4 text-sm text-on-surface-variant">
+                                            <span>❤️ {{ $blog->likes_count ?? 0 }} Likes</span>
+                                            <span>💬 {{ $blog->comments_count ?? 0 }} Comments</span>
+                                        </div>
+
+                                        <div class="flex justify-between items-center mt-5">
+                                            <p class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
                                                 {{ \Carbon\Carbon::parse($blog->created_at)->translatedFormat('d M Y') }}
                                             </p>
-                                        @endif
-                                    </article>
-                                @endforeach
+
+                                            <div class="flex gap-2">
+                                                <a href="{{ route('organization.blog.edit', $blog->id) }}"
+                                                class="px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 text-sm font-bold">
+                                                    Edit
+                                                </a>
+
+                                                <form action="{{ route('organization.blog.delete', $blog->id) }}" method="POST"
+                                                    onsubmit="return confirm('Yakin mau hapus blog ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button type="submit"
+                                                            class="px-4 py-2 rounded-full bg-red-100 text-red-700 text-sm font-bold">
+                                                        Hapus
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            @endforeach
                             </div>
                         @else
                             <div class="bg-white rounded-2xl p-6 border border-outline-variant/20 text-on-surface-variant">
@@ -412,6 +479,33 @@
                                                     <p><span class="font-semibold text-on-surface">Barang:</span> {{ $donation->item_name }}</p>
                                                     <p><span class="font-semibold text-on-surface">Jumlah:</span> {{ $donation->quantity ?? '-' }} {{ $donation->unit ?? '' }}</p>
                                                     <p><span class="font-semibold text-on-surface">Lokasi:</span> {{ $donation->address }}</p>
+                                                </div>
+
+                                                <div class="flex flex-wrap justify-end gap-2 mt-5 pt-4 border-t border-outline-variant/20">
+                                                    <a
+                                                        href="{{ route('donations.edit', $donation->id) }}"
+                                                        class="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 text-sm font-bold hover:bg-yellow-200 transition-colors"
+                                                    >
+                                                        <span class="material-symbols-outlined text-[18px]">edit</span>
+                                                        Edit
+                                                    </a>
+
+                                                    <form
+                                                        action="{{ route('donations.destroy', $donation->id) }}"
+                                                        method="POST"
+                                                        onsubmit="return confirm('Yakin mau hapus program donasi ini?')"
+                                                    >
+                                                        @csrf
+                                                        @method('DELETE')
+
+                                                        <button
+                                                            type="submit"
+                                                            class="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-red-100 text-red-700 text-sm font-bold hover:bg-red-200 transition-colors"
+                                                        >
+                                                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                                                            Hapus
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -825,6 +919,11 @@
 
             tabButtons.forEach((button) => {
                 button.addEventListener('click', () => {
+                    if (button.dataset.reviewBlocked === '1') {
+                        alert('Akun anda masih dalam proses review');
+                        return;
+                    }
+
                     const target = button.dataset.tab;
 
                     tabButtons.forEach((btn) => {
@@ -933,18 +1032,37 @@
             }
 
             const successAlert = document.getElementById('successAlert');
+            const closeSuccessAlert = document.getElementById('closeSuccessAlert');
+            const errorAlert = document.getElementById('errorAlert');
+            const closeErrorAlert = document.getElementById('closeErrorAlert');
+
             if (successAlert) {
-                setTimeout(() => {
-                    successAlert.remove();
+                if (closeSuccessAlert) {
+                    closeSuccessAlert.addEventListener('click', function () {
+                        successAlert.remove();
+                    });
+                }
+
+                setTimeout(function () {
+                    if (successAlert) {
+                        successAlert.remove();
+                    }
                 }, 3000);
             }
 
-            @if (session('success'))
-                <div id="successAlert" class="mx-4 mt-4 bg-green-100 text-green-700 p-4 rounded-xl flex justify-between items-center">
-                    <span>{{ session('success') }}</span>
-                    <button onclick="document.getElementById('successAlert').remove()" class="text-green-700 font-bold">✕</button>
-                </div>
-            @endif
+            if (errorAlert) {
+                if (closeErrorAlert) {
+                    closeErrorAlert.addEventListener('click', function () {
+                        errorAlert.remove();
+                    });
+                }
+
+                setTimeout(function () {
+                    if (errorAlert) {
+                        errorAlert.remove();
+                    }
+                }, 3000);
+            }
 
             @if ($errors->any())
                 openModal('profileModal');

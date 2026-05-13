@@ -45,7 +45,6 @@ class BlogController extends Controller
         return redirect()->route('user.blog.index')
             ->with('success', 'Blog berhasil dibuat!');
     }
-
     // EDIT
    public function edit($id)
 {
@@ -95,5 +94,11 @@ class BlogController extends Controller
 
         return redirect()->route('user.blog.index')
             ->with('success', 'Blog berhasil dihapus!');
+    }
+
+    public function show($id)
+    {
+        $blog = \App\Models\Blog::findOrFail($id);
+        return view('blogs.show', compact('blog'));
     }
 }

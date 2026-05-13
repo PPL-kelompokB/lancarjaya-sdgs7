@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use App\Models\Organization;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
@@ -53,5 +54,25 @@ class User extends Authenticatable
     public function organization()
     {
         return $this->hasOne(Organization::class);
+    }
+
+    public function followedOrganizations()
+    {
+        return $this->belongsToMany(
+            Organization::class,
+            'organization_followers',
+            'user_id',
+            'organization_id'
+        )->withTimestamps();
+    }
+
+    public function userPoints()
+    {
+        return $this->hasOne(\App\Models\UserPoints::class);
+    }
+
+    public function voucherRedemptions()
+    {
+        return $this->hasMany(\App\Models\VoucherRedemption::class);
     }
 }

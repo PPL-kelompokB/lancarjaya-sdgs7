@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Donation;
 use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -56,5 +57,15 @@ class UserController extends Controller
         ]);
 
         return back()->with('success', 'Foto berhasil diupload');
+    }
+
+    public function publicProfile($id)
+    {
+        $user = User::findOrFail($id);
+        $blogs = \App\Models\Blog::where('user_id', $user->id)->latest()->get();
+
+
+        return view('user.public-profile', compact('user'
+        , 'blogs'));
     }
 }

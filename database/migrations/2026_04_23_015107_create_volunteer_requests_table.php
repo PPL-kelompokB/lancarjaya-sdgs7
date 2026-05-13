@@ -23,8 +23,7 @@ return new class extends Migration
             $table->decimal('location_radius', 8, 2)->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
-            $table->integer('likes')->default(0);
-            $table->integer('comments')->default(0);
+        
         });
     }
 
