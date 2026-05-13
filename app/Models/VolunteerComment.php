@@ -8,18 +8,12 @@ class VolunteerComment extends Model
 {
     protected $fillable = [
         'user_id',
-        'commentable_type',
-        'commentable_id',
-        'body',
+        'volunteer_request_id',
+        'comment'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function commentable()
-    {
-        return $this->morphTo();
     }
 }

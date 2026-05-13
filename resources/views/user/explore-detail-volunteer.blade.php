@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>{{ $volunteer->title }} - EcoDon</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 @php
@@ -273,6 +277,12 @@
     </div>
 
 </div>
+
+<script>
+function toggleComment() {
+    document.getElementById('commentBox').classList.toggle('hidden');
+}
+</script>
 
 </body>
 </html>

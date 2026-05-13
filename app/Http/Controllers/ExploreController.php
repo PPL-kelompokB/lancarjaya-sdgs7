@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Blog;
+use App\Models\Like;
+use App\Models\Comment;
 use App\Models\Donation;
 use App\Models\VolunteerRequest;
+use App\Models\VolunteerComment;
 
 class ExploreController extends Controller
 {
@@ -111,6 +114,13 @@ class ExploreController extends Controller
         }
 
         foreach ($volunteers as $v) {
+            $likeCount = Like::where('likeable_id', $v->id)
+                ->where('likeable_type', VolunteerRequest::class)
+                ->count();
+
+            $commentCount = VolunteerComment::where('volunteer_request_id', $v->id)
+                ->count();
+
             $explore->push((object)[
                 'type' => 'volunteer',
                 'id' => $v->id,
@@ -154,6 +164,7 @@ class ExploreController extends Controller
 
     public function detailVolunteer($id)
     {
+
         $volunteer = VolunteerRequest::with('organization')->findOrFail($id);
         return view('user.explore-detail-volunteer', compact('volunteer'));
     }
