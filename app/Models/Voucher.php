@@ -20,4 +20,9 @@ class Voucher extends Model
         'status',
         'image',
     ];
+
+    public function userVouchers()
+    {
+        return $this->hasMany(UserVoucher::class);
+    }
 }

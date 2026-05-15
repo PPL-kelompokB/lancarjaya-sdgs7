@@ -38,8 +38,9 @@ class Donation extends Model
         }
 
     public function user()
-        {
+    {
             return $this->belongsTo(User::class);
+<<<<<<< HEAD
         }
 
     public function organization()
@@ -47,3 +48,12 @@ class Donation extends Model
             return $this->belongsTo(Organization::class);
         }
 }
+=======
+    }
+
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
+}
+>>>>>>> 49b0fcc4eb28c8626a36b75eb9e3a73d851e5315

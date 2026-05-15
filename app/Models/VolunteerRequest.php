@@ -27,4 +27,14 @@ class VolunteerRequest extends Model
     {
         return $this->belongsTo(Organization::class);
     }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
 }

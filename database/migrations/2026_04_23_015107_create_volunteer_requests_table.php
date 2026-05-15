@@ -23,8 +23,12 @@ return new class extends Migration
             $table->decimal('location_radius', 8, 2)->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
+<<<<<<< HEAD
             $table->integer('likes')->default(0);
             $table->integer('comments')->default(0);
+=======
+        
+>>>>>>> 49b0fcc4eb28c8626a36b75eb9e3a73d851e5315
         });
     }
 

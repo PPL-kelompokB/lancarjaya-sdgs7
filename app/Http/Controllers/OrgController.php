@@ -84,8 +84,10 @@ class OrgController extends Controller
         $volunteerRequests = VolunteerRequest::where('organization_id', $organization->id)
             ->latest()
             ->get();
+        $blogs = Blog::where('user_id', auth()->id())->latest()->get();
 
-        return view('organization.dashboard', compact('organization', 'volunteerRequests'));
+        return view('organization.dashboard', compact('organization', 'volunteerRequests', 'blogs'));
+        
     }
 
     public function updateProfile(Request $request)
@@ -156,17 +158,91 @@ public function updateProfileImage(Request $request)
         ->route('organization.dashboard')
         ->with('success', 'Foto profil organisasi berhasil diperbarui.');
 }
+
+    public function editBlog($id)
+    {
+        $blog = Blog::where('user_id', auth()->id())
+            ->where('id', $id)
+            ->firstOrFail();
+
+        return view('organization.editBlog', compact('blog'));
+    }
+
+    public function updateBlog(Request $request, $id)
+    {
+        $blog = Blog::where('user_id', auth()->id())
+            ->where('id', $id)
+            ->firstOrFail();
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $data = [
+            'title' => $request->title,
+            'content' => $request->content,
+        ];
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('blogs', 'public');
+        }
+
+        $blog->update($data);
+
+        return redirect()->route('organization.dashboard')
+            ->with('success', 'Blog berhasil diupdate!');
+    }
+
+    public function deleteBlog($id)
+    {
+        $blog = Blog::where('user_id', auth()->id())
+            ->where('id', $id)
+            ->firstOrFail();
+
+        $blog->delete();
+
+        return redirect()->route('organization.dashboard')
+            ->with('success', 'Blog berhasil dihapus!');
+    }
     public function storeBlog(Request $request)
-{
-    $organization = Organization::where('user_id', auth()->id())->first();
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
 
-    Blog::create([
-        'organization_id' => $organization->id,
-        'title' => $request->title,
-        'content' => $request->content
-    ]);
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('blogs', 'public');
+        }
 
-    return back()->with('success', 'Blog berhasil dibuat');
-}
+        Blog::create([
+            'user_id' => auth()->id(),
+            'title' => $request->title,
+            'content' => $request->content,
+            'image' => $imagePath,
+        ]);
+
+        return redirect()->route('organization.dashboard')
+            ->with('success', 'Blog berhasil dibuat!');
+    }
+
+    public function publicProfile($id)
+    {
+        $organization = Organization::with(['blogs', 'donations'])
+            ->findOrFail($id);
+
+        $volunteerRequests = VolunteerRequest::where('organization_id', $organization->id)
+            ->latest()
+            ->get();
+
+        return view('organization.public-profile', compact(
+            'organization',
+            'volunteerRequests'
+        ));
+    }
 
 }
