@@ -157,6 +157,13 @@
                 <span class="material-symbols-outlined">group</span>
                 <span class="text-sm font-medium">Volunteer Activity</span>
             </a>
+            <a 
+                class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" 
+                href="{{ route('organization.statistics') }}"
+            >
+                <span class="material-symbols-outlined">bar_chart</span>
+                <span class="text-sm font-medium">Statistics</span>
+            </a>
         </nav>
 
         <div class="px-4 mt-auto space-y-2">
@@ -350,6 +357,7 @@
                 <button type="button" class="tab-btn pb-4 text-on-surface-variant font-headline font-bold relative hover:text-primary transition-colors whitespace-nowrap" data-tab="volunteer-activity">
                     Volunteer Activity
                 </button>
+                
                 <button type="button" class="tab-btn pb-4 text-on-surface-variant font-headline font-bold relative hover:text-primary transition-colors whitespace-nowrap" data-tab="data-organisasi">
                     Data Organisasi
                 </button>

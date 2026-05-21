@@ -245,4 +245,28 @@ public function updateProfileImage(Request $request)
         ));
     }
 
+public function statistics()
+{
+    $organization = Organization::where('user_id', auth()->id())
+        ->with([
+            'blogs',
+            'donations',
+            'volunteerRequests'
+        ])
+        ->firstOrFail();
+
+    $donationLabels = $organization->donations->pluck('title');
+
+    $donationData = $organization->donations->pluck('donor_count');
+
+    return view('organization.statistics', compact(
+        'organization',
+        'donationLabels',
+        'donationData'
+    ));
+
+    return view('organization.statistics', compact('organization'));
+}
+
+
 }

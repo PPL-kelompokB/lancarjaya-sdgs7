@@ -2,83 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Donation;
+use App\Models\VolunteerRequest;
+use App\Models\Blog;
 
-class VoucherRedemption extends Model
+class User extends Authenticatable
 {
-    protected $fillable = [
-        'user_id',
-        'voucher_id',
-        'points_spent',
-        'redemption_code',
-        'status',
-        'redeemed_at',
-        'used_at',
-        'expired_at',
-    ];
+    // kode lama kamu...
 
-    protected $casts = [
-        'redeemed_at' => 'datetime',
-        'used_at' => 'datetime',
-        'expired_at' => 'datetime',
-    ];
-
-    public function user()
+    public function donations()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(Donation::class);
     }
 
-    public function voucher()
+    public function volunteerRequests()
     {
-        return $this->belongsTo(Voucher::class);
+        return $this->hasMany(VolunteerRequest::class);
     }
 
-    /**
-     * Generate unique redemption code
-     */
-    public static function generateRedemptionCode()
+    public function blogs()
     {
-        do {
-            $code = 'RDM-' . strtoupper(Str::random(8));
-        } while (self::where('redemption_code', $code)->exists());
-
-        return $code;
-    }
-
-    /**
-     * Check if voucher is still valid
-     */
-    public function isValid()
-    {
-        if ($this->status !== 'active') {
-            return false;
-        }
-
-        if ($this->expired_at && $this->expired_at < now()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Mark voucher as used
-     */
-    public function markAsUsed()
-    {
-        $this->status = 'used';
-        $this->used_at = now();
-        $this->save();
-    }
-
-    /**
-     * Mark voucher as expired
-     */
-    public function markAsExpired()
-    {
-        $this->status = 'expired';
-        $this->expired_at = now();
-        $this->save();
+        return $this->hasMany(Blog::class);
     }
 }

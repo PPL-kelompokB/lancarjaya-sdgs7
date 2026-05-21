@@ -183,6 +183,14 @@
             </div>
             @endif
 
+            <div class="flex justify-end mt-3">
+                <a href="{{ route('volunteer.register', $volunteer->id) }}" 
+                target="_blank" 
+                class="px-6 py-2 bg-[#006c49] text-white rounded-full font-bold hover:bg-[#003527] inline-block text-center">
+                    Daftar
+                </a>
+            </div>
+
             <!-- LIKE & COMMENT -->
             <div class="mt-8 border-t border-[#eae1da] pt-5">
 

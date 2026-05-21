@@ -17,6 +17,7 @@ use App\Http\Controllers\OrganizationFollowController;
 use App\Http\Controllers\InteractionController;
 use App\Models\Organization;
 use App\Http\Controllers\EcoDonateRatingController;
+use App\Http\Controllers\VolunteerController;
 
 Route::get('/', function () {
     return view('landing-page');
@@ -137,6 +138,9 @@ Route::middleware(['auth', 'role:organization'])->group(function () {
 
     Route::post('/organization/volunteer-request/store', [VolunteerRequestController::class, 'store'])
         ->name('organization.volunteer-request.store');
+
+    Route::get('/organization/statistics', [OrgController::class, 'statistics'])
+        ->name('organization.statistics');
 });
 
 Route::prefix('user')->group(function () {
@@ -187,3 +191,9 @@ Route::prefix('user')->group(function () {
     Route::get('/explore/volunteer/{id}', [ExploreController::class, 'detailVolunteer'])
         ->name('user.explore.volunteer');
 });
+
+// Route untuk membuka halaman form pendaftaran
+Route::get('/volunteer/{id}/register', [VolunteerController::class, 'showRegisterForm'])->name('volunteer.register');
+
+// Route untuk submit form dan CV (untuk tahap selanjutnya)
+Route::post('/volunteer/{id}/register', [VolunteerController::class, 'storeRegistration'])->name('volunteer.register.submit');

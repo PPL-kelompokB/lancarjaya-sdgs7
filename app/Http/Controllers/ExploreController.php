@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Models\Donation;
 use App\Models\VolunteerRequest;
+use App\Models\User;
 
 class ExploreController extends Controller
 {
@@ -16,15 +17,23 @@ class ExploreController extends Controller
         $blogs = Blog::with('user.organization')
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
+
                     $q->where('title', 'like', "%{$search}%")
                       ->orWhere('content', 'like', "%{$search}%")
+
                       ->orWhereHas('user', function ($user) use ($search) {
+
                           $user->where('name', 'like', "%{$search}%")
                                ->orWhere('email', 'like', "%{$search}%");
+
                       })
+
                       ->orWhereHas('user.organization', function ($org) use ($search) {
+
                           $org->where('organization_name', 'like', "%{$search}%");
+
                       });
+
                 });
             })
             ->latest()
@@ -33,11 +42,16 @@ class ExploreController extends Controller
         $donations = Donation::with('organization')
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
+
                     $q->where('title', 'like', "%{$search}%")
                       ->orWhere('description', 'like', "%{$search}%")
+
                       ->orWhereHas('organization', function ($org) use ($search) {
+
                           $org->where('organization_name', 'like', "%{$search}%");
+
                       });
+
                 });
             })
             ->latest()
@@ -46,11 +60,16 @@ class ExploreController extends Controller
         $volunteers = VolunteerRequest::with('organization')
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
+
                     $q->where('title', 'like', "%{$search}%")
                       ->orWhere('description', 'like', "%{$search}%")
+
                       ->orWhereHas('organization', function ($org) use ($search) {
+
                           $org->where('organization_name', 'like', "%{$search}%");
+
                       });
+
                 });
             })
             ->latest()
@@ -58,10 +77,18 @@ class ExploreController extends Controller
 
         $explore = collect();
 
+        /*
+        |--------------------------------------------------------------------------
+        | BLOGS
+        |--------------------------------------------------------------------------
+        */
+
         foreach ($blogs as $b) {
+
             $organization = $b->user?->organization;
 
             $explore->push((object)[
+
                 'type' => 'blog',
                 'id' => $b->id,
                 'title' => $b->title,
@@ -80,13 +107,23 @@ class ExploreController extends Controller
                 'user_profile_image' => $b->user?->profile_image,
 
                 'created_at' => $b->created_at,
+
                 'likes_count' => $b->likes()->count(),
                 'comments_count' => $b->comments()->count(),
+
             ]);
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | DONATIONS
+        |--------------------------------------------------------------------------
+        */
+
         foreach ($donations as $d) {
+
             $explore->push((object)[
+
                 'type' => 'donation',
                 'id' => $d->id,
                 'title' => $d->title,
@@ -105,13 +142,23 @@ class ExploreController extends Controller
                 'user_profile_image' => null,
 
                 'created_at' => $d->created_at,
+
                 'likes_count' => $d->likes()->count(),
                 'comments_count' => $d->comments()->count(),
+
             ]);
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | VOLUNTEERS
+        |--------------------------------------------------------------------------
+        */
+
         foreach ($volunteers as $v) {
+
             $explore->push((object)[
+
                 'type' => 'volunteer',
                 'id' => $v->id,
                 'title' => $v->title,
@@ -130,31 +177,80 @@ class ExploreController extends Controller
                 'user_profile_image' => null,
 
                 'created_at' => $v->created_at,
+
                 'likes_count' => $v->likes()->count(),
                 'comments_count' => $v->comments()->count(),
+
             ]);
         }
 
-        $explore = $explore->sortByDesc('created_at')->values();
+        /*
+        |--------------------------------------------------------------------------
+        | SORT
+        |--------------------------------------------------------------------------
+        */
 
-        return view('user.explore', compact('explore', 'search'));
+        $explore = $explore
+            ->sortByDesc('created_at')
+            ->values();
+
+        /*
+        |--------------------------------------------------------------------------
+        | LEADERBOARD
+        |--------------------------------------------------------------------------
+        */
+
+        $leaderboardUsers = User::where('role', 'user')
+            ->where('name', '!=', 'Pengguna')
+            ->with('userPoints')
+            ->get()
+
+            ->map(function ($user) {
+
+                $user->total_points =
+                    $user->userPoints->total_points ?? 0;
+
+                return $user;
+
+            })
+
+            ->sortByDesc('total_points')
+
+            ->take(10)
+
+            ->values();
+
+        /*
+        |--------------------------------------------------------------------------
+        | RETURN VIEW
+        |--------------------------------------------------------------------------
+        */
+
+        return view('user.explore', compact(
+            'explore',
+            'search',
+            'leaderboardUsers'
+        ));
     }
 
     public function detailBlog($id)
     {
         $blog = Blog::with('user.organization')->findOrFail($id);
+
         return view('user.explore-detail-blog', compact('blog'));
     }
 
     public function detailDonation($id)
     {
         $donation = Donation::with('organization')->findOrFail($id);
+
         return view('user.explore-detail-donation', compact('donation'));
     }
 
     public function detailVolunteer($id)
     {
         $volunteer = VolunteerRequest::with('organization')->findOrFail($id);
+
         return view('user.explore-detail-volunteer', compact('volunteer'));
     }
 }
