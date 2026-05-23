@@ -208,7 +208,7 @@
                         <button
                             class="px-10 py-4 bg-red-500 hover:bg-red-600 text-white text-lg font-bold rounded-2xl shadow-lg transition-all duration-300 hover:scale-105"
                         >
-                            ❌ Batalkan Pendaftaran
+                            Batalkan Pendaftaran
                         </button>
                     </form>
 
@@ -217,7 +217,7 @@
                     <a href="{{ route('volunteer.register', $volunteer->id) }}"
                     class="px-10 py-4 bg-[#006c49] hover:bg-[#003527] text-white text-lg font-bold rounded-2xl shadow-lg transition-all duration-300 hover:scale-105 inline-flex items-center gap-2">
 
-                        ✨ Daftar Sebagai Volunteer
+                        Daftar Sebagai Volunteer
 
                     </a>
 
