@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Models;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
+
+class Organization extends Model
+{
+    protected $fillable = [
+        'user_id',
+        'organization_name',
+        'organization_type',
+        'address',
+        'org_phone',
+        'pic_name',
+        'pic_email',
+        'pic_phone',
+        'founded_year',
+        'description',
+        'bank_name',
+        'account_holder_name',
+        'rekening_number',
+        'verification_status',
+        'verification_note',
+        'bank_proof',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class, 'user_id', 'user_id');
+    }
+
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
+    }
+
+    public function volunteerRequests()
+    {
+        return $this->hasMany(VolunteerRequest::class);
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'organization_followers',
+            'organization_id',
+            'user_id'
+        )->withTimestamps();
+    }
+}
