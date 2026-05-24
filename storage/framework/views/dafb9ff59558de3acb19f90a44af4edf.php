@@ -251,27 +251,33 @@
                         </div>
 
                         <div class="flex flex-col">
-                            <span class="text-2xl font-headline font-black text-primary">
-                                <?php echo e($donations->where('status', 'open')->count()); ?>
+                            <span class="text-2xl font-headline font-black text-yellow-600">
+                                <?php echo e($donations->where('status', 'pending')->count()); ?>
 
                             </span>
-                            <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Open</span>
+                            <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
+                                Pending
+                            </span>
                         </div>
 
                         <div class="flex flex-col">
-                            <span class="text-2xl font-headline font-black text-primary">
-                                <?php echo e($donations->where('status', 'in_progress')->count()); ?>
+                            <span class="text-2xl font-headline font-black text-blue-600">
+                                <?php echo e($donations->where('status', 'approved')->count()); ?>
 
                             </span>
-                            <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Diproses</span>
+                            <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
+                                Approved
+                            </span>
                         </div>
 
                         <div class="flex flex-col">
-                            <span class="text-2xl font-headline font-black text-secondary">
+                            <span class="text-2xl font-headline font-black text-green-600">
                                 <?php echo e($donations->where('status', 'completed')->count()); ?>
 
                             </span>
-                            <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Selesai</span>
+                            <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
+                                Completed
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -386,54 +392,114 @@
                             </div>
                         <?php else: ?>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
                                 <?php $__currentLoopData = $donations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $donation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+
                                     <div class="bg-white rounded-2xl overflow-hidden border border-outline-variant/20">
+
                                         <div class="p-5">
+
+                                            <!-- STATUS -->
                                             <div class="flex flex-wrap gap-2 mb-3">
-                                                <?php if($donation->status === 'open'): ?>
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-100 text-blue-700">Open</span>
-                                                <?php elseif($donation->status === 'in_progress'): ?>
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-yellow-100 text-yellow-700">In Progress</span>
+
+                                                <?php if($donation->status === 'pending'): ?>
+
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-yellow-100 text-yellow-700">
+                                                        Pending
+                                                    </span>
+
+                                                <?php elseif($donation->status === 'approved'): ?>
+
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-100 text-blue-700">
+                                                        Approved
+                                                    </span>
+
                                                 <?php elseif($donation->status === 'completed'): ?>
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-green-100 text-green-700">Completed</span>
-                                                <?php else: ?>
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-red-100 text-red-700">Cancelled</span>
+
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-green-100 text-green-700">
+                                                        Completed
+                                                    </span>
+
+                                                <?php elseif($donation->status === 'cancelled'): ?>
+
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-red-100 text-red-700">
+                                                        Cancelled
+                                                    </span>
+
                                                 <?php endif; ?>
 
-                                                <?php if($donation->logistic_status === 'waiting_pickup'): ?>
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-gray-100 text-gray-700">Waiting Pickup</span>
-                                                <?php elseif($donation->logistic_status === 'picked_up'): ?>
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-indigo-100 text-indigo-700">Picked Up</span>
-                                                <?php elseif($donation->logistic_status === 'in_transit'): ?>
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-orange-100 text-orange-700">In Transit</span>
-                                                <?php elseif($donation->logistic_status === 'arrived'): ?>
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-cyan-100 text-cyan-700">Arrived</span>
-                                                <?php elseif($donation->logistic_status === 'processed'): ?>
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-purple-100 text-purple-700">Processed</span>
-                                                <?php elseif($donation->logistic_status === 'distributed'): ?>
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">Distributed</span>
-                                                <?php endif; ?>
                                             </div>
 
+                                            <!-- TITLE -->
                                             <h4 class="text-lg font-headline font-bold text-primary mb-2">
                                                 <?php echo e($donation->donation->title); ?>
 
                                             </h4>
 
+                                            <!-- DESCRIPTION -->
                                             <p class="text-on-surface-variant text-sm mb-4">
                                                 <?php echo e($donation->donation->description ?: 'Belum ada deskripsi donasi.'); ?>
 
                                             </p>
 
+                                            <!-- DETAIL -->
                                             <div class="space-y-2 text-sm text-on-surface-variant">
-                                                <p><span class="font-semibold text-on-surface">Barang:</span> <?php echo e($donation->item_name ?: '-'); ?></p>
-                                                <p><span class="font-semibold text-on-surface">Jumlah:</span> <?php echo e($donation->quantity ?: '-'); ?> <?php echo e($donation->unit ?: ''); ?></p>
-                                                <p><span class="font-semibold text-on-surface">Organisasi:</span> <?php echo e(optional($donation->donation->organization)->organization_name ?: '-'); ?></p>
-                                                <p><span class="font-semibold text-on-surface">Periode:</span> <?php echo e($donation->start_date ?: '-'); ?> s/d <?php echo e($donation->end_date ?: '-'); ?></p>
+
+                                                <p>
+                                                    <span class="font-semibold text-on-surface">
+                                                        Barang:
+                                                    </span>
+
+                                                    <?php echo e($donation->item_name ?: '-'); ?>
+
+                                                </p>
+
+                                                <p>
+                                                    <span class="font-semibold text-on-surface">
+                                                        Jumlah:
+                                                    </span>
+
+                                                    <?php echo e($donation->quantity ?: '-'); ?>
+
+                                                    <?php echo e($donation->unit ?: ''); ?>
+
+                                                </p>
+
+                                                <p>
+                                                    <span class="font-semibold text-on-surface">
+                                                        Organisasi:
+                                                    </span>
+
+                                                    <?php echo e(optional($donation->donation->organization)->organization_name ?: '-'); ?>
+
+                                                </p>
+
+                                                <p>
+                                                    <span class="font-semibold text-on-surface">
+                                                        Pickup Date:
+                                                    </span>
+
+                                                    <?php echo e($donation->pickup_date ?: '-'); ?>
+
+                                                </p>
+
+                                                <p>
+                                                    <span class="font-semibold text-on-surface">
+                                                        Address:
+                                                    </span>
+
+                                                    <?php echo e($donation->pickup_address ?: '-'); ?>
+
+                                                </p>
+
                                             </div>
+
                                         </div>
+
                                     </div>
+
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
                             </div>
                         <?php endif; ?>
                     </section>

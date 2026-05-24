@@ -247,24 +247,30 @@
                         </div>
 
                         <div class="flex flex-col">
-                            <span class="text-2xl font-headline font-black text-primary">
-                                {{ $donations->where('status', 'open')->count() }}
+                            <span class="text-2xl font-headline font-black text-yellow-600">
+                                {{ $donations->where('status', 'pending')->count() }}
                             </span>
-                            <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Open</span>
+                            <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
+                                Pending
+                            </span>
                         </div>
 
                         <div class="flex flex-col">
-                            <span class="text-2xl font-headline font-black text-primary">
-                                {{ $donations->where('status', 'in_progress')->count() }}
+                            <span class="text-2xl font-headline font-black text-blue-600">
+                                {{ $donations->where('status', 'approved')->count() }}
                             </span>
-                            <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Diproses</span>
+                            <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
+                                Approved
+                            </span>
                         </div>
 
                         <div class="flex flex-col">
-                            <span class="text-2xl font-headline font-black text-secondary">
+                            <span class="text-2xl font-headline font-black text-green-600">
                                 {{ $donations->where('status', 'completed')->count() }}
                             </span>
-                            <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Selesai</span>
+                            <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
+                                Completed
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -378,52 +384,106 @@
                             </div>
                         @else
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
                                 @foreach($donations as $donation)
+
                                     <div class="bg-white rounded-2xl overflow-hidden border border-outline-variant/20">
+
                                         <div class="p-5">
+
+                                            <!-- STATUS -->
                                             <div class="flex flex-wrap gap-2 mb-3">
-                                                @if($donation->status === 'open')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-100 text-blue-700">Open</span>
-                                                @elseif($donation->status === 'in_progress')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-yellow-100 text-yellow-700">In Progress</span>
+
+                                                @if($donation->status === 'pending')
+
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-yellow-100 text-yellow-700">
+                                                        Pending
+                                                    </span>
+
+                                                @elseif($donation->status === 'approved')
+
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-100 text-blue-700">
+                                                        Approved
+                                                    </span>
+
                                                 @elseif($donation->status === 'completed')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-green-100 text-green-700">Completed</span>
-                                                @else
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-red-100 text-red-700">Cancelled</span>
+
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-green-100 text-green-700">
+                                                        Completed
+                                                    </span>
+
+                                                @elseif($donation->status === 'cancelled')
+
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-red-100 text-red-700">
+                                                        Cancelled
+                                                    </span>
+
                                                 @endif
 
-                                                @if($donation->logistic_status === 'waiting_pickup')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-gray-100 text-gray-700">Waiting Pickup</span>
-                                                @elseif($donation->logistic_status === 'picked_up')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-indigo-100 text-indigo-700">Picked Up</span>
-                                                @elseif($donation->logistic_status === 'in_transit')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-orange-100 text-orange-700">In Transit</span>
-                                                @elseif($donation->logistic_status === 'arrived')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-cyan-100 text-cyan-700">Arrived</span>
-                                                @elseif($donation->logistic_status === 'processed')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-purple-100 text-purple-700">Processed</span>
-                                                @elseif($donation->logistic_status === 'distributed')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">Distributed</span>
-                                                @endif
                                             </div>
 
+                                            <!-- TITLE -->
                                             <h4 class="text-lg font-headline font-bold text-primary mb-2">
                                                 {{ $donation->donation->title }}
                                             </h4>
 
+                                            <!-- DESCRIPTION -->
                                             <p class="text-on-surface-variant text-sm mb-4">
                                                 {{ $donation->donation->description ?: 'Belum ada deskripsi donasi.' }}
                                             </p>
 
+                                            <!-- DETAIL -->
                                             <div class="space-y-2 text-sm text-on-surface-variant">
-                                                <p><span class="font-semibold text-on-surface">Barang:</span> {{ $donation->item_name ?: '-' }}</p>
-                                                <p><span class="font-semibold text-on-surface">Jumlah:</span> {{ $donation->quantity ?: '-' }} {{ $donation->unit ?: '' }}</p>
-                                                <p><span class="font-semibold text-on-surface">Organisasi:</span> {{ optional($donation->donation->organization)->organization_name ?: '-' }}</p>
-                                                <p><span class="font-semibold text-on-surface">Periode:</span> {{ $donation->start_date ?: '-' }} s/d {{ $donation->end_date ?: '-' }}</p>
+
+                                                <p>
+                                                    <span class="font-semibold text-on-surface">
+                                                        Barang:
+                                                    </span>
+
+                                                    {{ $donation->item_name ?: '-' }}
+                                                </p>
+
+                                                <p>
+                                                    <span class="font-semibold text-on-surface">
+                                                        Jumlah:
+                                                    </span>
+
+                                                    {{ $donation->quantity ?: '-' }}
+                                                    {{ $donation->unit ?: '' }}
+                                                </p>
+
+                                                <p>
+                                                    <span class="font-semibold text-on-surface">
+                                                        Organisasi:
+                                                    </span>
+
+                                                    {{ optional($donation->donation->organization)->organization_name ?: '-' }}
+                                                </p>
+
+                                                <p>
+                                                    <span class="font-semibold text-on-surface">
+                                                        Pickup Date:
+                                                    </span>
+
+                                                    {{ $donation->pickup_date ?: '-' }}
+                                                </p>
+
+                                                <p>
+                                                    <span class="font-semibold text-on-surface">
+                                                        Address:
+                                                    </span>
+
+                                                    {{ $donation->pickup_address ?: '-' }}
+                                                </p>
+
                                             </div>
+
                                         </div>
+
                                     </div>
+
                                 @endforeach
+
                             </div>
                         @endif
                     </section>
