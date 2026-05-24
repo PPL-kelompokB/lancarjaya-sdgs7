@@ -55,4 +55,9 @@ class Donation extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+
+    public function submissions()
+    {
+        return $this->hasMany(DonationSubmission::class);
+    }
 }

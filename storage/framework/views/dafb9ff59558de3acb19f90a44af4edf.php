@@ -416,19 +416,19 @@
                                             </div>
 
                                             <h4 class="text-lg font-headline font-bold text-primary mb-2">
-                                                <?php echo e($donation->title); ?>
+                                                <?php echo e($donation->donation->title); ?>
 
                                             </h4>
 
                                             <p class="text-on-surface-variant text-sm mb-4">
-                                                <?php echo e($donation->description ?: 'Belum ada deskripsi donasi.'); ?>
+                                                <?php echo e($donation->donation->description ?: 'Belum ada deskripsi donasi.'); ?>
 
                                             </p>
 
                                             <div class="space-y-2 text-sm text-on-surface-variant">
                                                 <p><span class="font-semibold text-on-surface">Barang:</span> <?php echo e($donation->item_name ?: '-'); ?></p>
                                                 <p><span class="font-semibold text-on-surface">Jumlah:</span> <?php echo e($donation->quantity ?: '-'); ?> <?php echo e($donation->unit ?: ''); ?></p>
-                                                <p><span class="font-semibold text-on-surface">Organisasi:</span> <?php echo e(optional($donation->organization)->organization_name ?: '-'); ?></p>
+                                                <p><span class="font-semibold text-on-surface">Organisasi:</span> <?php echo e(optional($donation->donation->organization)->organization_name ?: '-'); ?></p>
                                                 <p><span class="font-semibold text-on-surface">Periode:</span> <?php echo e($donation->start_date ?: '-'); ?> s/d <?php echo e($donation->end_date ?: '-'); ?></p>
                                             </div>
                                         </div>
@@ -723,4 +723,5 @@
         });
     </script>
 </body>
-</html><?php /**PATH D:\programming files yk\eco-don\resources\views/user/dashboard.blade.php ENDPATH**/ ?>
+</html>
+<?php /**PATH D:\programming files yk\eco-don\resources\views/user/dashboard.blade.php ENDPATH**/ ?>

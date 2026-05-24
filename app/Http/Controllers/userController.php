@@ -15,7 +15,13 @@ class UserController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        $donations = collect();
+
+        $donations = \App\Models\DonationSubmission::with([
+            'donation.organization'
+        ])
+        ->where('user_id', $user->id)
+        ->latest()
+        ->get();
 
         return view('user.dashboard', compact('user', 'donations'));
     }

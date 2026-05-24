@@ -175,8 +175,6 @@ Route::prefix('user')->group(function () {
 
 });
 
-
-
 Route::prefix('user')->group(function () {
 
     Route::get('/explore', [ExploreController::class, 'index'])
@@ -201,3 +199,33 @@ Route::post('/volunteer/{id}/register', [VolunteerRequestController::class, 'sto
 
 Route::delete('/volunteer/{id}/cancel', [VolunteerRequestController::class, 'cancelRegistration'])
     ->name('volunteer.cancel');
+
+// Donation Routes
+Route::middleware(['auth'])->group(function () {
+
+    // Donation detail
+    Route::get('/user/explore/donation/{id}', [DonationController::class, 'show'])
+        ->name('donation.detail');
+
+    // Donate form
+    Route::get('/donation/{id}/form', [DonationController::class, 'showDonateForm'])
+        ->name('donation.form');
+
+    // Submit donation
+    Route::post('/donation/{id}/submit', [DonationController::class, 'submitDonation'])
+        ->name('donation.submit');
+
+    // My donations
+    Route::get('/my-donations', [DonationController::class, 'myDonations'])
+        ->name('donation.mine');
+
+    // Update status
+    Route::patch('/donation/submission/{id}/status', [DonationController::class, 'updateStatus'])
+        ->name('donation.status');
+
+});
+
+Route::get(
+    '/organization/donation/{id}',
+    [DonationController::class, 'organizationDetail']
+)->name('organization.donation.detail');

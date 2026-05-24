@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $organization->organization_name }} - EcoDon Dashboard</title>
+    <title><?php echo e($organization->organization_name); ?> - EcoDon Dashboard</title>
 
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -118,31 +118,31 @@
         </div>
 
         <nav class="flex-grow space-y-2">
-            <a class="bg-gradient-to-r from-[#003527] to-[#064e3b] text-white rounded-full px-4 py-3 mx-4 flex items-center gap-3" href="{{ url('/organization/dashboard') }}">
+            <a class="bg-gradient-to-r from-[#003527] to-[#064e3b] text-white rounded-full px-4 py-3 mx-4 flex items-center gap-3" href="<?php echo e(url('/organization/dashboard')); ?>">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
                 <span class="text-sm font-medium">Dashboard</span>
             </a>
 
             <a
                 class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all"
-                href="{{ route('organization.blog.create', $organization->id) }}"
+                href="<?php echo e(route('organization.blog.create', $organization->id)); ?>"
             >
                 <span class="material-symbols-outlined">article</span>
                 <span class="text-sm font-medium">Blog</span>
             </a>
 
-            <a  href="{{ route('user.explore') }}"
+            <a  href="<?php echo e(route('user.explore')); ?>"
                 class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="#">
                 <span class="material-symbols-outlined">home</span>
                 <span class="text-sm font-medium">Explore</span>
             </a>
 
-            @if($organization->verification_status === 'verified')
-                <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="{{ route('organization.donation.create') }}">
+            <?php if($organization->verification_status === 'verified'): ?>
+                <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="<?php echo e(route('organization.donation.create')); ?>">
                     <span class="material-symbols-outlined">card_giftcard</span>
                     <span class="text-sm font-medium">Donation Programs</span>
                 </a>
-            @else
+            <?php else: ?>
                 <button
                     type="button"
                     onclick="alert('Akun anda masih dalam proses review')"
@@ -151,15 +151,15 @@
                     <span class="material-symbols-outlined">card_giftcard</span>
                     <span class="text-sm font-medium">Donation Programs</span>
                 </button>
-            @endif
+            <?php endif; ?>
 
-            <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="{{ route('organization.volunteer-request.create') }}">
+            <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="<?php echo e(route('organization.volunteer-request.create')); ?>">
                 <span class="material-symbols-outlined">group</span>
                 <span class="text-sm font-medium">Volunteer Activity</span>
             </a>
             <a
                 class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all"
-                href="{{ route('organization.statistics') }}"
+                href="<?php echo e(route('organization.statistics')); ?>"
             >
                 <span class="material-symbols-outlined">bar_chart</span>
                 <span class="text-sm font-medium">Statistics</span>
@@ -168,8 +168,8 @@
 
         <div class="px-4 mt-auto space-y-2">
             <div class="pt-6 border-t border-outline-variant/20">
-                <form action="{{ route('logout') }}" method="POST" class="px-4">
-                    @csrf
+                <form action="<?php echo e(route('logout')); ?>" method="POST" class="px-4">
+                    <?php echo csrf_field(); ?>
                     <button type="submit" class="w-full text-stone-700 py-3 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all">
                         <span class="material-symbols-outlined">logout</span>
                         <span class="text-sm font-medium">Logout</span>
@@ -185,13 +185,13 @@
         <!-- Cover -->
         <div class="relative w-full">
             <div class="h-72 sm:h-80 w-full overflow-hidden bg-gradient-to-r from-[#003527] to-[#064e3b] relative">
-                @if(!empty($organization->cover_image))
+                <?php if(!empty($organization->cover_image)): ?>
                     <img
                         class="w-full h-full object-cover"
-                        src="{{ asset('storage/' . $organization->cover_image) }}"
+                        src="<?php echo e(asset('storage/' . $organization->cover_image)); ?>"
                         alt="Cover organisasi"
                     >
-                @endif
+                <?php endif; ?>
 
                 <div class="absolute inset-0 bg-black/10"></div>
 
@@ -213,17 +213,17 @@
 
                             <!-- Foto profil/logo -->
                             <div class="relative w-28 h-28 sm:w-36 sm:h-36 rounded-2xl overflow-hidden border-4 sm:border-8 border-surface bg-white shadow-xl -mt-16 sm:-mt-24">
-                                @if(!empty($organization->profile_image))
+                                <?php if(!empty($organization->profile_image)): ?>
                                     <img
                                         class="w-full h-full object-cover"
-                                        src="{{ asset('storage/' . $organization->profile_image) }}"
+                                        src="<?php echo e(asset('storage/' . $organization->profile_image)); ?>"
                                         alt="Logo organisasi"
                                     >
-                                @else
+                                <?php else: ?>
                                     <div class="w-full h-full flex items-center justify-center bg-[#f6ece6]">
                                         <span class="material-symbols-outlined text-[#003527] text-5xl">business</span>
                                     </div>
-                                @endif
+                                <?php endif; ?>
 
                                 <button
                                     type="button"
@@ -238,28 +238,31 @@
                             <div class="pb-2">
                                 <div class="flex items-center gap-2 flex-wrap">
                                     <h2 class="text-2xl sm:text-3xl font-headline font-extrabold tracking-tight text-primary">
-                                        {{ $organization->organization_name }}
+                                        <?php echo e($organization->organization_name); ?>
+
                                     </h2>
 
-                                    @if ($organization->verification_status === 'verified')
+                                    <?php if($organization->verification_status === 'verified'): ?>
                                         <span class="material-symbols-outlined text-secondary text-2xl" style="font-variation-settings: 'FILL' 1;">verified</span>
-                                    @endif
+                                    <?php endif; ?>
                                 </div>
 
                                 <div class="flex flex-wrap items-center gap-3 sm:gap-4 text-on-surface-variant mt-2">
                                     <span class="flex items-center gap-1 text-sm font-medium">
                                         <span class="material-symbols-outlined text-lg">category</span>
-                                        {{ $organization->organization_type }}
+                                        <?php echo e($organization->organization_type); ?>
+
                                     </span>
 
-                                    @if ($organization->founded_year)
+                                    <?php if($organization->founded_year): ?>
                                         <span class="w-1 h-1 bg-outline-variant rounded-full hidden sm:inline-block"></span>
-                                        <span class="text-sm font-medium">Berdiri {{ $organization->founded_year }}</span>
-                                    @endif
+                                        <span class="text-sm font-medium">Berdiri <?php echo e($organization->founded_year); ?></span>
+                                    <?php endif; ?>
                                 </div>
 
                                 <p class="mt-4 text-on-surface-variant max-w-2xl leading-relaxed text-sm sm:text-base">
-                                    {{ $organization->description ?: 'Belum ada deskripsi organisasi.' }}
+                                    <?php echo e($organization->description ?: 'Belum ada deskripsi organisasi.'); ?>
+
                                 </p>
                             </div>
                         </div>
@@ -279,28 +282,32 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-outline-variant/20">
                         <div class="flex flex-col">
                             <span class="text-2xl font-headline font-black text-primary">
-                                {{ $organization->verification_status === 'verified' ? 'Aktif' : 'Review' }}
+                                <?php echo e($organization->verification_status === 'verified' ? 'Aktif' : 'Review'); ?>
+
                             </span>
                             <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Status Akun</span>
                         </div>
 
                         <div class="flex flex-col">
                             <span class="text-2xl font-headline font-black text-primary">
-                                {{ $organization->blogs->count() ?? 0 }}
+                                <?php echo e($organization->blogs->count() ?? 0); ?>
+
                             </span>
                             <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Total Blog</span>
                         </div>
 
                         <div class="flex flex-col">
                             <span class="text-2xl font-headline font-black text-primary">
-                                {{ $organization->donations->count() ?? 0 }}
+                                <?php echo e($organization->donations->count() ?? 0); ?>
+
                             </span>
                             <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Program Donasi</span>
                         </div>
 
                         <div class="flex flex-col">
                             <span class="text-2xl font-headline font-black text-secondary">
-                                {{ $organization->pic_name }}
+                                <?php echo e($organization->pic_name); ?>
+
                             </span>
                             <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">PIC</span>
                         </div>
@@ -312,34 +319,34 @@
         <!-- Content -->
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pb-20">
 
-            @if(session('success'))
+            <?php if(session('success')): ?>
                 <div id="successAlert" class="mb-6 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 flex items-center justify-between gap-4">
-                    <span>{{ session('success') }}</span>
+                    <span><?php echo e(session('success')); ?></span>
                     <button type="button" id="closeSuccessAlert" class="font-bold text-green-700 hover:text-green-900">
                         &times;
                     </button>
                 </div>
-            @endif
+            <?php endif; ?>
 
-            @if(session('error'))
+            <?php if(session('error')): ?>
                 <div id="errorAlert" class="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 flex items-center justify-between gap-4">
-                    <span>{{ session('error') }}</span>
+                    <span><?php echo e(session('error')); ?></span>
                     <button type="button" id="closeErrorAlert" class="font-bold text-red-700 hover:text-red-900">
                         &times;
                     </button>
                 </div>
-            @endif
+            <?php endif; ?>
 
-            @if ($errors->any())
+            <?php if($errors->any()): ?>
                 <div class="mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                     <p class="font-semibold mb-2">Ada error pada form:</p>
                     <ul class="list-disc pl-5 space-y-1">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
                 </div>
-            @endif
+            <?php endif; ?>
 
             <!-- Tabs -->
             <div class="flex gap-8 sm:gap-12 mb-8 border-b border-outline-variant/10 overflow-x-auto hide-scrollbar" id="profileTabs">
@@ -350,7 +357,7 @@
                     type="button"
                     class="tab-btn active pb-4 text-primary font-headline font-bold relative transition-colors"
                     data-tab="donation-programs"
-                    @if($organization->verification_status !== 'verified') data-review-blocked="1" @endif
+                    <?php if($organization->verification_status !== 'verified'): ?> data-review-blocked="1" <?php endif; ?>
                 >
                     Donation Programs
                 </button>
@@ -374,47 +381,50 @@
                             <a href="#" class="text-sm font-bold text-secondary hover:underline">Lihat Semua</a>
                         </div>
 
-                        @if(($organization->blogs->count() ?? 0) > 0)
+                        <?php if(($organization->blogs->count() ?? 0) > 0): ?>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                @foreach($organization->blogs as $blog)
+                                <?php $__currentLoopData = $organization->blogs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <article class="bg-white rounded-2xl border border-outline-variant/20 overflow-hidden">
-                                    @if(!empty($blog->image))
+                                    <?php if(!empty($blog->image)): ?>
                                         <img
-                                            src="{{ asset('storage/' . $blog->image) }}"
+                                            src="<?php echo e(asset('storage/' . $blog->image)); ?>"
                                             class="w-full h-48 object-cover"
-                                            alt="{{ $blog->title }}"
+                                            alt="<?php echo e($blog->title); ?>"
                                         >
-                                    @endif
+                                    <?php endif; ?>
 
                                     <div class="p-5">
                                         <h4 class="text-lg font-headline font-bold text-primary line-clamp-2">
-                                            {{ $blog->title }}
+                                            <?php echo e($blog->title); ?>
+
                                         </h4>
 
                                         <p class="mt-3 text-sm text-on-surface-variant line-clamp-4">
-                                            {{ $blog->content }}
+                                            <?php echo e($blog->content); ?>
+
                                         </p>
 
                                         <div class="flex items-center gap-4 mt-4 text-sm text-on-surface-variant">
-                                            <span>❤️ {{ $blog->likes_count ?? 0 }} Likes</span>
-                                            <span>💬 {{ $blog->comments_count ?? 0 }} Comments</span>
+                                            <span>❤️ <?php echo e($blog->likes_count ?? 0); ?> Likes</span>
+                                            <span>💬 <?php echo e($blog->comments_count ?? 0); ?> Comments</span>
                                         </div>
 
                                         <div class="flex justify-between items-center mt-5">
                                             <p class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
-                                                {{ \Carbon\Carbon::parse($blog->created_at)->translatedFormat('d M Y') }}
+                                                <?php echo e(\Carbon\Carbon::parse($blog->created_at)->translatedFormat('d M Y')); ?>
+
                                             </p>
 
                                             <div class="flex gap-2">
-                                                <a href="{{ route('organization.blog.edit', $blog->id) }}"
+                                                <a href="<?php echo e(route('organization.blog.edit', $blog->id)); ?>"
                                                 class="px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 text-sm font-bold">
                                                     Edit
                                                 </a>
 
-                                                <form action="{{ route('organization.blog.delete', $blog->id) }}" method="POST"
+                                                <form action="<?php echo e(route('organization.blog.delete', $blog->id)); ?>" method="POST"
                                                     onsubmit="return confirm('Yakin mau hapus blog ini?')">
-                                                    @csrf
-                                                    @method('DELETE')
+                                                    <?php echo csrf_field(); ?>
+                                                    <?php echo method_field('DELETE'); ?>
 
                                                     <button type="submit"
                                                             class="px-4 py-2 rounded-full bg-red-100 text-red-700 text-sm font-bold">
@@ -425,13 +435,13 @@
                                         </div>
                                     </div>
                                 </article>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
-                        @else
+                        <?php else: ?>
                             <div class="bg-white rounded-2xl p-6 border border-outline-variant/20 text-on-surface-variant">
                                 Belum ada blog yang dibuat.
                             </div>
-                        @endif
+                        <?php endif; ?>
                     </section>
                 </div>
 
@@ -446,59 +456,61 @@
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                    @forelse($organization->donations as $donation)
+                                    <?php $__empty_1 = true; $__currentLoopData = $organization->donations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $donation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                         <div class="bg-white rounded-2xl overflow-hidden border border-outline-variant/20">
                                             <div class="p-5">
                                                 <div class="flex flex-wrap gap-2 mb-3">
-                                                    @if($donation->status === 'open')
+                                                    <?php if($donation->status === 'open'): ?>
                                                         <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-100 text-blue-700">Open</span>
-                                                    @elseif($donation->status === 'in_progress')
+                                                    <?php elseif($donation->status === 'in_progress'): ?>
                                                         <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-yellow-100 text-yellow-700">In Progress</span>
-                                                    @elseif($donation->status === 'completed')
+                                                    <?php elseif($donation->status === 'completed'): ?>
                                                         <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-green-100 text-green-700">Completed</span>
-                                                    @else
+                                                    <?php else: ?>
                                                         <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-red-100 text-red-700">Cancelled</span>
-                                                    @endif
+                                                    <?php endif; ?>
 
-                                                    @if($donation->logistic_status === 'waiting_pickup')
+                                                    <?php if($donation->logistic_status === 'waiting_pickup'): ?>
                                                         <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-gray-100 text-gray-700">Waiting Pickup</span>
-                                                    @elseif($donation->logistic_status === 'picked_up')
+                                                    <?php elseif($donation->logistic_status === 'picked_up'): ?>
                                                         <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-indigo-100 text-indigo-700">Picked Up</span>
-                                                    @elseif($donation->logistic_status === 'in_transit')
+                                                    <?php elseif($donation->logistic_status === 'in_transit'): ?>
                                                         <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-orange-100 text-orange-700">In Transit</span>
-                                                    @elseif($donation->logistic_status === 'arrived')
+                                                    <?php elseif($donation->logistic_status === 'arrived'): ?>
                                                         <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-cyan-100 text-cyan-700">Arrived</span>
-                                                    @elseif($donation->logistic_status === 'processed')
+                                                    <?php elseif($donation->logistic_status === 'processed'): ?>
                                                         <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-purple-100 text-purple-700">Processed</span>
-                                                    @elseif($donation->logistic_status === 'distributed')
+                                                    <?php elseif($donation->logistic_status === 'distributed'): ?>
                                                         <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">Distributed</span>
-                                                    @endif
+                                                    <?php endif; ?>
                                                 </div>
 
                                                 <h4 class="text-lg font-headline font-bold text-primary mb-2">
-                                                    {{ $donation->title }}
+                                                    <?php echo e($donation->title); ?>
+
                                                 </h4>
 
                                                 <p class="text-on-surface-variant text-sm mb-4">
-                                                    {{ $donation->description ?: 'Belum ada deskripsi program donasi.' }}
+                                                    <?php echo e($donation->description ?: 'Belum ada deskripsi program donasi.'); ?>
+
                                                 </p>
 
                                                 <div class="space-y-2 text-sm text-on-surface-variant">
-                                                    <p><span class="font-semibold text-on-surface">Barang:</span> {{ $donation->item_name }}</p>
-                                                    <p><span class="font-semibold text-on-surface">Jumlah:</span> {{ $donation->quantity ?? '-' }} {{ $donation->unit ?? '' }}</p>
-                                                    <p><span class="font-semibold text-on-surface">Lokasi:</span> {{ $donation->address }}</p>
+                                                    <p><span class="font-semibold text-on-surface">Barang:</span> <?php echo e($donation->item_name); ?></p>
+                                                    <p><span class="font-semibold text-on-surface">Jumlah:</span> <?php echo e($donation->quantity ?? '-'); ?> <?php echo e($donation->unit ?? ''); ?></p>
+                                                    <p><span class="font-semibold text-on-surface">Lokasi:</span> <?php echo e($donation->address); ?></p>
                                                 </div>
 
                                                 <div class="flex flex-wrap justify-end gap-2 mt-5 pt-4 border-t border-outline-variant/20">
                                                     <a
-                                                        href="{{ route('organization.donation.detail', $donation->id) }}"
+                                                        href="<?php echo e(route('organization.donation.detail', $donation->id)); ?>"
                                                         class="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[#006c49] text-white text-sm font-bold hover:bg-[#003527] transition-colors"
                                                     >
                                                         <span class="material-symbols-outlined text-[18px]">visibility</span>
                                                         Detail
                                                     </a>
                                                     <a
-                                                        href="{{ route('donations.edit', $donation->id) }}"
+                                                        href="<?php echo e(route('donations.edit', $donation->id)); ?>"
                                                         class="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 text-sm font-bold hover:bg-yellow-200 transition-colors"
                                                     >
                                                         <span class="material-symbols-outlined text-[18px]">edit</span>
@@ -506,12 +518,12 @@
                                                     </a>
 
                                                     <form
-                                                        action="{{ route('donations.destroy', $donation->id) }}"
+                                                        action="<?php echo e(route('donations.destroy', $donation->id)); ?>"
                                                         method="POST"
                                                         onsubmit="return confirm('Yakin mau hapus program donasi ini?')"
                                                     >
-                                                        @csrf
-                                                        @method('DELETE')
+                                                        <?php echo csrf_field(); ?>
+                                                        <?php echo method_field('DELETE'); ?>
 
                                                         <button
                                                             type="submit"
@@ -524,11 +536,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @empty
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                         <div class="md:col-span-2 bg-white rounded-2xl p-6 border border-outline-variant/20 text-on-surface-variant">
                                             Belum ada program donasi yang dibuat.
                                         </div>
-                                    @endforelse
+                                    <?php endif; ?>
                                 </div>
                             </section>
                         </div>
@@ -540,17 +552,17 @@
                                 <div class="space-y-3">
                                     <div class="bg-white rounded-xl px-4 py-3">
                                         <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Nama Organisasi</p>
-                                        <p class="font-semibold">{{ $organization->organization_name ?: '-' }}</p>
+                                        <p class="font-semibold"><?php echo e($organization->organization_name ?: '-'); ?></p>
                                     </div>
 
                                     <div class="bg-white rounded-xl px-4 py-3">
                                         <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Tipe Organisasi</p>
-                                        <p class="font-semibold">{{ $organization->organization_type ?: '-' }}</p>
+                                        <p class="font-semibold"><?php echo e($organization->organization_type ?: '-'); ?></p>
                                     </div>
 
                                     <div class="bg-white rounded-xl px-4 py-3">
                                         <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">PIC</p>
-                                        <p class="font-semibold">{{ $organization->pic_name ?: '-' }}</p>
+                                        <p class="font-semibold"><?php echo e($organization->pic_name ?: '-'); ?></p>
                                     </div>
                                 </div>
                             </section>
@@ -565,57 +577,60 @@
                         <div class="flex items-center justify-between gap-4 mb-6">
                             <h3 class="text-xl font-headline font-bold text-primary">Volunteer Activity</h3>
 
-                            <a href="{{ route('organization.volunteer-request.create') }}"
+                            <a href="<?php echo e(route('organization.volunteer-request.create')); ?>"
                             class="px-4 py-2 bg-primary text-white rounded-full text-sm">
                                 + Buat Request
                             </a>
                         </div>
 
-                        @if ($volunteerRequests->isEmpty())
+                        <?php if($volunteerRequests->isEmpty()): ?>
                             <div class="bg-white rounded-2xl p-6 border border-outline-variant/20 text-on-surface-variant">
                                 Belum ada data aktivitas volunteer untuk ditampilkan.
                             </div>
-                        @else
+                        <?php else: ?>
                             <div class="space-y-4">
-                                @foreach ($volunteerRequests as $item)
+                                <?php $__currentLoopData = $volunteerRequests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <div class="bg-white rounded-2xl p-5 border border-outline-variant/20">
 
-                                        {{-- GAMBAR --}}
-                                        @if ($item->image)
+                                        
+                                        <?php if($item->image): ?>
                                             <img
-                                                src="{{ asset('storage/' . $item->image) }}"
+                                                src="<?php echo e(asset('storage/' . $item->image)); ?>"
                                                 class="w-full h-auto rounded-xl mb-4"
                                             >
-                                        @endif
+                                        <?php endif; ?>
 
                                         <div class="flex justify-between items-start">
                                             <div>
                                                 <h4 class="text-lg font-semibold text-primary">
-                                                    {{ $item->title }}
+                                                    <?php echo e($item->title); ?>
+
                                                 </h4>
                                                 <p class="text-sm text-gray-500">
-                                                    {{ $item->location }} • {{ ucfirst($item->event_type) }}
+                                                    <?php echo e($item->location); ?> • <?php echo e(ucfirst($item->event_type)); ?>
+
                                                 </p>
                                             </div>
 
                                             <span class="text-sm bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full">
-                                                {{ $item->volunteer_quota }} orang
+                                                <?php echo e($item->volunteer_quota); ?> orang
                                             </span>
                                         </div>
 
                                         <p class="mt-3 text-sm text-gray-700">
-                                            {{ Str::limit($item->description, 100) }}
+                                            <?php echo e(Str::limit($item->description, 100)); ?>
+
                                         </p>
 
                                         <div class="mt-4 flex justify-between text-xs text-gray-500">
-                                            <span>Deadline: {{ \Carbon\Carbon::parse($item->deadline)->format('d M Y') }}</span>
-                                            <span>Tanggal: {{ \Carbon\Carbon::parse($item->event_date)->format('d M Y') }}</span>
+                                            <span>Deadline: <?php echo e(\Carbon\Carbon::parse($item->deadline)->format('d M Y')); ?></span>
+                                            <span>Tanggal: <?php echo e(\Carbon\Carbon::parse($item->event_date)->format('d M Y')); ?></span>
                                         </div>
 
                                     </div>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
-                        @endif
+                        <?php endif; ?>
 
                     </section>
                 </div>
@@ -629,27 +644,27 @@
                             <div class="space-y-4">
                                 <div>
                                     <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Nama Organisasi</p>
-                                    <div class="bg-white rounded-xl px-4 py-3">{{ $organization->organization_name }}</div>
+                                    <div class="bg-white rounded-xl px-4 py-3"><?php echo e($organization->organization_name); ?></div>
                                 </div>
 
                                 <div>
                                     <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Tipe Organisasi</p>
-                                    <div class="bg-white rounded-xl px-4 py-3">{{ $organization->organization_type }}</div>
+                                    <div class="bg-white rounded-xl px-4 py-3"><?php echo e($organization->organization_type); ?></div>
                                 </div>
 
                                 <div>
                                     <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Tahun Berdiri</p>
-                                    <div class="bg-white rounded-xl px-4 py-3">{{ $organization->founded_year ?: '-' }}</div>
+                                    <div class="bg-white rounded-xl px-4 py-3"><?php echo e($organization->founded_year ?: '-'); ?></div>
                                 </div>
 
                                 <div>
                                     <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">No. Telepon Organisasi</p>
-                                    <div class="bg-white rounded-xl px-4 py-3">{{ $organization->org_phone }}</div>
+                                    <div class="bg-white rounded-xl px-4 py-3"><?php echo e($organization->org_phone); ?></div>
                                 </div>
 
                                 <div>
                                     <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Alamat</p>
-                                    <div class="bg-white rounded-xl px-4 py-3">{{ $organization->address }}</div>
+                                    <div class="bg-white rounded-xl px-4 py-3"><?php echo e($organization->address); ?></div>
                                 </div>
                             </div>
                         </section>
@@ -660,17 +675,17 @@
                             <div class="space-y-4">
                                 <div>
                                     <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Nama PIC</p>
-                                    <div class="bg-white rounded-xl px-4 py-3">{{ $organization->pic_name }}</div>
+                                    <div class="bg-white rounded-xl px-4 py-3"><?php echo e($organization->pic_name); ?></div>
                                 </div>
 
                                 <div>
                                     <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Email PIC</p>
-                                    <div class="bg-white rounded-xl px-4 py-3 break-all">{{ $organization->pic_email }}</div>
+                                    <div class="bg-white rounded-xl px-4 py-3 break-all"><?php echo e($organization->pic_email); ?></div>
                                 </div>
 
                                 <div>
                                     <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">No. Telepon PIC</p>
-                                    <div class="bg-white rounded-xl px-4 py-3">{{ $organization->pic_phone }}</div>
+                                    <div class="bg-white rounded-xl px-4 py-3"><?php echo e($organization->pic_phone); ?></div>
                                 </div>
                             </div>
                         </section>
@@ -681,29 +696,29 @@
                             <div class="space-y-4">
                                 <div>
                                     <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Nama Bank</p>
-                                    <div class="bg-white rounded-xl px-4 py-3">{{ $organization->bank_name ?: '-' }}</div>
+                                    <div class="bg-white rounded-xl px-4 py-3"><?php echo e($organization->bank_name ?: '-'); ?></div>
                                 </div>
 
                                 <div>
                                     <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Atas Nama</p>
-                                    <div class="bg-white rounded-xl px-4 py-3">{{ $organization->account_holder_name ?: '-' }}</div>
+                                    <div class="bg-white rounded-xl px-4 py-3"><?php echo e($organization->account_holder_name ?: '-'); ?></div>
                                 </div>
 
                                 <div>
                                     <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Nomor Rekening</p>
-                                    <div class="bg-white rounded-xl px-4 py-3">{{ $organization->rekening_number ?: '-' }}</div>
+                                    <div class="bg-white rounded-xl px-4 py-3"><?php echo e($organization->rekening_number ?: '-'); ?></div>
                                 </div>
 
                                 <div>
                                     <p class="text-xs uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Bukti Rekening</p>
                                     <div class="bg-white rounded-xl px-4 py-3">
-                                        @if (!empty($organization->bank_proof))
-                                            <a href="{{ asset('storage/' . $organization->bank_proof) }}" target="_blank" class="text-secondary font-semibold hover:underline">
+                                        <?php if(!empty($organization->bank_proof)): ?>
+                                            <a href="<?php echo e(asset('storage/' . $organization->bank_proof)); ?>" target="_blank" class="text-secondary font-semibold hover:underline">
                                                 Lihat Bukti Rekening
                                             </a>
-                                        @else
+                                        <?php else: ?>
                                             -
-                                        @endif
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -733,16 +748,16 @@
 
             <h2 class="text-xl font-headline font-bold mb-5 text-primary">Edit Profil</h2>
 
-            <form action="{{ route('organization.profile.update') }}" method="POST" class="space-y-4">
-                @csrf
-                @method('PUT')
+            <form action="<?php echo e(route('organization.profile.update')); ?>" method="POST" class="space-y-4">
+                <?php echo csrf_field(); ?>
+                <?php echo method_field('PUT'); ?>
 
                 <div>
                     <label class="text-sm font-semibold">Nama Organisasi</label>
                     <input
                         type="text"
                         name="organization_name"
-                        value="{{ old('organization_name', $organization->organization_name) }}"
+                        value="<?php echo e(old('organization_name', $organization->organization_name)); ?>"
                         class="w-full mt-1 rounded-lg border border-outline-variant px-3 py-2"
                     >
                 </div>
@@ -752,7 +767,7 @@
                     <input
                         type="text"
                         name="organization_type"
-                        value="{{ old('organization_type', $organization->organization_type) }}"
+                        value="<?php echo e(old('organization_type', $organization->organization_type)); ?>"
                         class="w-full mt-1 rounded-lg border border-outline-variant px-3 py-2"
                     >
                 </div>
@@ -762,7 +777,7 @@
                     <input
                         type="number"
                         name="founded_year"
-                        value="{{ old('founded_year', $organization->founded_year) }}"
+                        value="<?php echo e(old('founded_year', $organization->founded_year)); ?>"
                         class="w-full mt-1 rounded-lg border border-outline-variant px-3 py-2"
                     >
                 </div>
@@ -773,7 +788,7 @@
                         name="description"
                         rows="4"
                         class="w-full mt-1 rounded-lg border border-outline-variant px-3 py-2"
-                    >{{ old('description', $organization->description) }}</textarea>
+                    ><?php echo e(old('description', $organization->description)); ?></textarea>
                 </div>
 
                 <div>
@@ -781,7 +796,7 @@
                     <input
                         type="text"
                         name="org_phone"
-                        value="{{ old('org_phone', $organization->org_phone) }}"
+                        value="<?php echo e(old('org_phone', $organization->org_phone)); ?>"
                         class="w-full mt-1 rounded-lg border border-outline-variant px-3 py-2"
                     >
                 </div>
@@ -792,7 +807,7 @@
                         name="address"
                         rows="3"
                         class="w-full mt-1 rounded-lg border border-outline-variant px-3 py-2"
-                    >{{ old('address', $organization->address) }}</textarea>
+                    ><?php echo e(old('address', $organization->address)); ?></textarea>
                 </div>
 
                 <div class="pt-2 border-t border-outline-variant/20">
@@ -804,7 +819,7 @@
                             <input
                                 type="text"
                                 name="pic_name"
-                                value="{{ old('pic_name', $organization->pic_name) }}"
+                                value="<?php echo e(old('pic_name', $organization->pic_name)); ?>"
                                 class="w-full mt-1 rounded-lg border border-outline-variant px-3 py-2"
                             >
                         </div>
@@ -814,7 +829,7 @@
                             <input
                                 type="email"
                                 name="pic_email"
-                                value="{{ old('pic_email', $organization->pic_email) }}"
+                                value="<?php echo e(old('pic_email', $organization->pic_email)); ?>"
                                 class="w-full mt-1 rounded-lg border border-outline-variant px-3 py-2"
                             >
                         </div>
@@ -824,7 +839,7 @@
                             <input
                                 type="text"
                                 name="pic_phone"
-                                value="{{ old('pic_phone', $organization->pic_phone) }}"
+                                value="<?php echo e(old('pic_phone', $organization->pic_phone)); ?>"
                                 class="w-full mt-1 rounded-lg border border-outline-variant px-3 py-2"
                             >
                         </div>
@@ -853,8 +868,8 @@
             <h2 class="text-xl font-headline font-bold mb-2 text-primary">Edit Cover</h2>
             <p class="text-sm text-on-surface-variant mb-5">Upload cover landscape. Rekomendasi ukuran 1600 x 600 px.</p>
 
-            <form action="{{ route('organization.cover-image.update') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-                @csrf
+            <form action="<?php echo e(route('organization.cover-image.update')); ?>" method="POST" enctype="multipart/form-data" class="space-y-4">
+                <?php echo csrf_field(); ?>
 
                 <div class="rounded-2xl border border-dashed border-outline-variant p-4 bg-surface-container-low">
                     <label class="block text-sm font-semibold mb-2">Pilih gambar cover</label>
@@ -895,8 +910,8 @@
             <h2 class="text-xl font-headline font-bold mb-2 text-primary">Edit Foto Profil</h2>
             <p class="text-sm text-on-surface-variant mb-5">Upload logo atau foto profil persegi. Rekomendasi ukuran 800 x 800 px.</p>
 
-            <form action="{{ route('organization.profile-image.update') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-                @csrf
+            <form action="<?php echo e(route('organization.profile-image.update')); ?>" method="POST" enctype="multipart/form-data" class="space-y-4">
+                <?php echo csrf_field(); ?>
 
                 <div class="rounded-2xl border border-dashed border-outline-variant p-4 bg-surface-container-low">
                     <label class="block text-sm font-semibold mb-2">Pilih foto profil / logo</label>
@@ -1079,10 +1094,11 @@
                 }, 3000);
             }
 
-            @if ($errors->any())
+            <?php if($errors->any()): ?>
                 openModal('profileModal');
-            @endif
+            <?php endif; ?>
         });
     </script>
 </body>
 </html>
+<?php /**PATH D:\programming files yk\eco-don\resources\views/organization/dashboard.blade.php ENDPATH**/ ?>

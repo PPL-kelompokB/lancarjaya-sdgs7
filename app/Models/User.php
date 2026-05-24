@@ -75,4 +75,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\VoucherRedemption::class);
     }
+
+    public function donationSubmissions()
+    {
+        return $this->hasMany(DonationSubmission::class);
+    }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Donation;
+use App\Models\DonationSubmission;
+use Illuminate\Support\Facades\Auth;
 
 class DonationController extends Controller
 {
@@ -149,5 +151,137 @@ class DonationController extends Controller
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    /**
+     * Show donation detail page
+     */
+    public function show($id)
+    {
+        $donation = Donation::with('organization')
+            ->findOrFail($id);
+
+        return view('user.explore-detail-donation', compact('donation'));
+    }
+
+    /**
+     * Show donate form
+     */
+    public function showDonateForm($id)
+    {
+        $donation = Donation::findOrFail($id);
+
+        return view('user.donate-form', compact('donation'));
+    }
+
+    /**
+     * Submit donation
+     */
+    public function submitDonation(Request $request, $id)
+    {
+        $donation = Donation::findOrFail($id);
+
+        $validated = $request->validate([
+            'item_name' => 'required|string|max:255',
+            'quantity' => 'required|integer|min:1',
+            'unit' => 'required|string|max:50',
+
+            'pickup_address' => 'required|string',
+
+            'phone_number' => 'required|string|max:20',
+
+            'pickup_date' => 'required|date',
+
+            'notes' => 'nullable|string',
+
+            'pickup_proof_image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        // Upload image
+        $imagePath = null;
+
+        if ($request->hasFile('pickup_proof_image')) {
+
+            $imagePath = $request
+                ->file('pickup_proof_image')
+                ->store('donation_proofs', 'public');
+        }
+
+        // Save submission
+        DonationSubmission::create([
+
+            'donation_id' => $donation->id,
+
+            'user_id' => Auth::id(),
+
+            'item_name' => $validated['item_name'],
+
+            'quantity' => $validated['quantity'],
+
+            'unit' => $validated['unit'],
+
+            'pickup_address' => $validated['pickup_address'],
+
+            'phone_number' => $validated['phone_number'],
+
+            'pickup_date' => $validated['pickup_date'],
+
+            'notes' => $validated['notes'] ?? null,
+
+            'pickup_proof_image' => $imagePath,
+
+            'status' => 'pending',
+        ]);
+
+        return redirect()
+            ->route('donation.detail', $donation->id)
+            ->with('success', 'Donation submitted successfully!');
+    }
+
+    /**
+     * Update donation submission status
+     */
+    public function updateStatus(Request $request, $submissionId)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:pending,approved,completed,cancelled',
+        ]);
+
+        $submission = DonationSubmission::findOrFail($submissionId);
+
+        $submission->status = $validated['status'];
+
+        $submission->save();
+
+        return back()->with(
+            'success',
+            'Donation status updated successfully.'
+        );
+    }
+
+    /**
+     * User donation history
+     */
+    public function myDonations()
+    {
+        $submissions = DonationSubmission::with('donation')
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
+        return view('user.my-donations', compact('submissions'));
+    }
+
+    public function organizationDetail($id)
+    {
+        $donation = Donation::with([
+            'organization',
+            'submissions.user'
+        ])->findOrFail($id);
+
+        return view(
+            'organization.donation-detail',
+            compact('donation')
+        );
     }
 }

@@ -408,17 +408,17 @@
                                             </div>
 
                                             <h4 class="text-lg font-headline font-bold text-primary mb-2">
-                                                {{ $donation->title }}
+                                                {{ $donation->donation->title }}
                                             </h4>
 
                                             <p class="text-on-surface-variant text-sm mb-4">
-                                                {{ $donation->description ?: 'Belum ada deskripsi donasi.' }}
+                                                {{ $donation->donation->description ?: 'Belum ada deskripsi donasi.' }}
                                             </p>
 
                                             <div class="space-y-2 text-sm text-on-surface-variant">
                                                 <p><span class="font-semibold text-on-surface">Barang:</span> {{ $donation->item_name ?: '-' }}</p>
                                                 <p><span class="font-semibold text-on-surface">Jumlah:</span> {{ $donation->quantity ?: '-' }} {{ $donation->unit ?: '' }}</p>
-                                                <p><span class="font-semibold text-on-surface">Organisasi:</span> {{ optional($donation->organization)->organization_name ?: '-' }}</p>
+                                                <p><span class="font-semibold text-on-surface">Organisasi:</span> {{ optional($donation->donation->organization)->organization_name ?: '-' }}</p>
                                                 <p><span class="font-semibold text-on-surface">Periode:</span> {{ $donation->start_date ?: '-' }} s/d {{ $donation->end_date ?: '-' }}</p>
                                             </div>
                                         </div>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - EcoDon</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, .brand-font { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-[#fff8f5] text-[#1f1b17] min-h-screen">
+
+<div class="min-h-screen flex">
+
+    <!-- Sidebar -->
+    <aside class="hidden lg:flex w-72 bg-[#fff8f5] border-r-0 flex-col p-6 shadow-[0px_20px_40px_rgba(31,27,23,0.06)]">
+        <div class="mb-10">
+            <span class="text-2xl font-bold text-[#003527]">EcoDon Admin</span>
+            <p class="mt-1 text-xs uppercase tracking-widest opacity-60">Dashboard Administrator</p>
+        </div>
+
+        <nav class="flex-1 space-y-2">
+            <a href="<?php echo e(route('admin.dashboard')); ?>"
+               class="flex items-center gap-3 rounded-full px-4 py-3 transition-all duration-200 <?php echo e(request()->routeIs('admin.dashboard') ? 'bg-[#003527] text-white' : 'text-[#1f1b17] hover:bg-[#f6ece6]'); ?>">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="text-sm font-semibold">Overview</span>
+            </a>
+
+            <a href="<?php echo e(route('admin.organizations.index')); ?>"
+               class="flex items-center gap-3 rounded-full px-4 py-3 transition-all duration-200 <?php echo e(request()->routeIs('admin.organizations.*') ? 'bg-[#003527] text-white' : 'text-[#1f1b17] hover:bg-[#f6ece6]'); ?>">
+                <span class="material-symbols-outlined">corporate_fare</span>
+                <span class="text-sm font-semibold">Organizations</span>
+            </a>
+
+            <a href="<?php echo e(route('admin.vouchers.index')); ?>"
+               class="flex items-center gap-3 rounded-full px-4 py-3 transition-all duration-200 <?php echo e(request()->routeIs('admin.vouchers.*') ? 'bg-[#003527] text-white' : 'text-[#1f1b17] hover:bg-[#f6ece6]'); ?>">
+                <span class="material-symbols-outlined">confirmation_number</span>
+                <span class="text-sm font-semibold">Manajemen Voucher</span>
+            </a>
+        </nav>
+
+        <div class="mt-auto pt-6">
+            <form action="<?php echo e(route('logout')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
+                <button type="submit"
+                        class="flex w-full items-center justify-center gap-2 rounded-full border border-[#d8ccc5] px-4 py-3 font-semibold text-[#003527] transition hover:bg-[#f6ece6]">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Logout</span>
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-4 sm:p-6 lg:p-10">
+
+        <!-- Mobile top -->
+        <div class="lg:hidden mb-6">
+            <h1 class="text-2xl font-extrabold text-[#003527] brand-font">EcoDon Admin</h1>
+            <p class="text-sm text-[#666]">Dashboard Administrator</p>
+        </div>
+
+        <div class="mb-8">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-[#003527]">
+                Dashboard Admin
+            </h2>
+            <p class="mt-2 text-sm sm:text-base text-[#404944]">
+                Pantau user, organisasi, verifikasi, dan progres donasi barang.
+            </p>
+        </div>
+
+        <?php if(session('success')): ?>
+            <div class="mb-5 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+                <?php echo e(session('success')); ?>
+
+            </div>
+        <?php endif; ?>
+
+        <!-- Statistik utama -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white rounded-2xl border border-[#e5ddd7] p-5 shadow-sm">
+                <p class="text-sm text-[#666]">Total User</p>
+                <h3 class="mt-2 text-3xl font-extrabold text-[#003527]"><?php echo e($totalUsers); ?></h3>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-[#e5ddd7] p-5 shadow-sm">
+                <p class="text-sm text-[#666]">Total Organisasi</p>
+                <h3 class="mt-2 text-3xl font-extrabold text-[#003527]"><?php echo e($totalOrganizations); ?></h3>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-[#e5ddd7] p-5 shadow-sm">
+                <p class="text-sm text-[#666]">Pending Verifikasi</p>
+                <h3 class="mt-2 text-3xl font-extrabold text-yellow-600"><?php echo e($pendingOrganizationsCount); ?></h3>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-[#e5ddd7] p-5 shadow-sm">
+                <p class="text-sm text-[#666]">Total Donasi Barang</p>
+                <h3 class="mt-2 text-3xl font-extrabold text-[#003527]"><?php echo e($totalDonations); ?></h3>
+            </div>
+        </section>
+
+        <!-- Statistik donasi -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-[#f6ece6] rounded-2xl border border-[#e5ddd7] p-5">
+                <p class="text-sm text-[#666]">Donasi Open</p>
+                <h3 class="mt-2 text-2xl font-bold text-blue-700"><?php echo e($openDonations); ?></h3>
+            </div>
+
+            <div class="bg-[#f6ece6] rounded-2xl border border-[#e5ddd7] p-5">
+                <p class="text-sm text-[#666]">Donasi In Progress</p>
+                <h3 class="mt-2 text-2xl font-bold text-yellow-700"><?php echo e($inProgressDonations); ?></h3>
+            </div>
+
+            <div class="bg-[#f6ece6] rounded-2xl border border-[#e5ddd7] p-5">
+                <p class="text-sm text-[#666]">Donasi Completed</p>
+                <h3 class="mt-2 text-2xl font-bold text-green-700"><?php echo e($completedDonations); ?></h3>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+            <!-- Organisasi Pending -->
+            <section class="bg-white rounded-2xl border border-[#e5ddd7] p-5 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold text-[#003527]">Organisasi Pending</h3>
+                    <span class="text-sm font-semibold text-[#666]">
+                        <?php echo e($organizations->count()); ?> organisasi
+                    </span>
+                </div>
+
+                <div class="space-y-4">
+                    <?php $__empty_1 = true; $__currentLoopData = $organizations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $org): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <div class="border border-[#eee2db] rounded-xl p-4">
+                            <h4 class="font-bold text-[#1f1b17]"><?php echo e($org->organization_name); ?></h4>
+                            <p class="text-sm text-[#666] mt-1">Tipe: <?php echo e($org->organization_type); ?></p>
+                            <p class="text-sm text-[#666]">PIC: <?php echo e($org->pic_name); ?></p>
+                            <p class="text-sm text-[#666]">Email PIC: <?php echo e($org->pic_email); ?></p>
+
+                            <div class="mt-3 flex gap-2 flex-wrap">
+                                <a href="<?php echo e(route('admin.organizations.show', $org->id)); ?>"
+                                   class="px-4 py-2 rounded-lg bg-[#003527] text-white text-sm font-semibold hover:opacity-90">
+                                    Detail Verifikasi
+                                </a>
+
+                                <form action="<?php echo e(route('admin.organizations.approve', $org->id)); ?>" method="POST">
+                                    <?php echo csrf_field(); ?>
+                                    <button type="submit"
+                                            class="px-4 py-2 rounded-lg border border-[#003527] text-[#003527] text-sm font-semibold hover:bg-[#f6ece6]">
+                                        Approve Cepat
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        <p class="text-sm text-[#666]">Tidak ada organisasi pending.</p>
+                    <?php endif; ?>
+                </div>
+            </section>
+
+            <!-- Donasi Terbaru -->
+            <section class="bg-white rounded-2xl border border-[#e5ddd7] p-5 shadow-sm">
+                <h3 class="text-xl font-bold text-[#003527] mb-4">Donasi Barang Terbaru</h3>
+
+                <div class="space-y-4">
+                    <?php $__empty_1 = true; $__currentLoopData = $latestDonations; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $donation): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <div class="border border-[#eee2db] rounded-xl p-4">
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <h4 class="font-bold text-[#1f1b17]"><?php echo e($donation->title); ?></h4>
+                                    <p class="text-sm text-[#666] mt-1">
+                                        Organisasi: <?php echo e($donation->organization->organization_name ?? '-'); ?>
+
+                                    </p>
+                                    <p class="text-sm text-[#666]">
+                                        Barang: <?php echo e($donation->item_name); ?>
+
+                                        <?php if($donation->quantity): ?>
+                                            - <?php echo e($donation->quantity); ?> <?php echo e($donation->unit); ?>
+
+                                        <?php endif; ?>
+                                    </p>
+                                    <p class="text-sm text-[#666]">
+                                        Lokasi: <?php echo e($donation->city ?? '-'); ?>, <?php echo e($donation->province ?? '-'); ?>
+
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 flex flex-wrap gap-2">
+                                <?php if($donation->status === 'open'): ?>
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-700">
+                                        Open
+                                    </span>
+                                <?php elseif($donation->status === 'in_progress'): ?>
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-700">
+                                        In Progress
+                                    </span>
+                                <?php elseif($donation->status === 'completed'): ?>
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                                        Completed
+                                    </span>
+                                <?php else: ?>
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">
+                                        Cancelled
+                                    </span>
+                                <?php endif; ?>
+
+                                <?php if($donation->logistic_status === 'waiting_pickup'): ?>
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-700">
+                                        Menunggu Pickup
+                                    </span>
+                                <?php elseif($donation->logistic_status === 'picked_up'): ?>
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-700">
+                                        Sudah Diambil
+                                    </span>
+                                <?php elseif($donation->logistic_status === 'in_transit'): ?>
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-700">
+                                        Dalam Pengiriman
+                                    </span>
+                                <?php elseif($donation->logistic_status === 'arrived'): ?>
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-cyan-100 text-cyan-700">
+                                        Sudah Sampai
+                                    </span>
+                                <?php elseif($donation->logistic_status === 'processed'): ?>
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-700">
+                                        Sedang Diolah
+                                    </span>
+                                <?php elseif($donation->logistic_status === 'distributed'): ?>
+                                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                                        Sudah Disalurkan
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        <p class="text-sm text-[#666]">Belum ada data donasi.</p>
+                    <?php endif; ?>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+</body>
+</html><?php /**PATH D:\programming files yk\eco-don\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>
