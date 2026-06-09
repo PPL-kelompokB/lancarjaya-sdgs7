@@ -99,7 +99,7 @@
                 </p>
 
                 <h2 class="text-4xl font-headline font-extrabold text-primary">
-                    {{ $organization->volunteerRequests->count() }}
+                    {{ $totalVolunteerParticipants }}
                 </h2>
 
                 <p class="text-xs text-green-600 mt-3">
@@ -172,15 +172,24 @@
                         Volunteer Activity
                     </h2>
 
-                    <span class="text-sm font-semibold text-secondary">
-                        Coming Soon
-                    </span>
 
                 </div>
 
-                <div class="h-80 rounded-2xl bg-white border border-outline-variant/20 flex items-center justify-center text-on-surface-variant">
-                    Grafik volunteer belum tersedia
+                <<div class="h-80 rounded-2xl bg-white border border-outline-variant/20 p-4">
+
+    @if(count($volunteerLabels) > 0)
+
+        <canvas id="volunteerChart"></canvas>
+
+    @else
+
+        <div class="h-full flex items-center justify-center text-on-surface-variant">
+            Belum ada data volunteer
                 </div>
+
+            @endif
+
+        </div>
 
             </section>
 
@@ -365,6 +374,61 @@
     </script>
 
     @endif
+
+    @if(count($volunteerLabels) > 0)
+
+        `<script>
+
+        const volunteerLabels = @json($volunteerLabels);
+        const volunteerData = @json($volunteerData);
+
+        const volunteerCtx =
+            document.getElementById('volunteerChart');
+
+        if (volunteerCtx) {
+
+            new Chart(volunteerCtx, {
+
+                type: 'bar',
+
+                data: {
+                    labels: volunteerLabels,
+
+                    datasets: [{
+                        label: 'Jumlah Pendaftar',
+                        data: volunteerData,
+                        backgroundColor: '#f59e0b',
+                        borderRadius: 12
+                    }]
+                },
+
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+
+            });
+
+        }
+
+</script>
+
+@endif
 
 </body>
 </html>

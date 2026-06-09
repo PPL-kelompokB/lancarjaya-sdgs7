@@ -23,7 +23,6 @@ class Donation extends Model
         'start_date',
         'end_date',
         'status',
-        'logistic_status',
 
         // VALIDATION
         'validation_status',
@@ -54,5 +53,10 @@ class Donation extends Model
      public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+     public function submissions()
+    {
+        return $this->hasMany(DonationSubmission::class);
     }
 }

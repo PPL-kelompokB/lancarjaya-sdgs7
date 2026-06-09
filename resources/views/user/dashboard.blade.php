@@ -127,9 +127,9 @@
                 <span class="text-sm font-medium">Dashboard</span>
             </a>
 
-            <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="#">
+            <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="{{ route('user.history.kegiatan') }}">
                 <span class="material-symbols-outlined">card_giftcard</span>
-                <span class="text-sm font-medium">Donasi Saya</span>
+                <span class="text-sm font-medium">History Kegiatan</span>
             </a>
 
             <a  href="{{ route('user.explore') }}"
@@ -138,10 +138,16 @@
                 <span class="text-sm font-medium">Explore</span>
             </a>
 
-             <a href="{{ route('user.blog.index') }}"
+            <a href="{{ route('user.blog.index') }}"
                 class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="#">
                 <span class="material-symbols-outlined">person</span>
                 <span class="text-sm font-medium">Blog Saya</span>
+            </a>
+
+            <a href="{{ route('user.voucher.index') }}"
+                class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="#">
+                <span class="material-symbols-outlined">confirmation_number</span>
+                <span class="text-sm font-medium">Voucher</span>
             </a>
 
 
@@ -238,10 +244,19 @@
                     </div>
 
                     <!-- Stats -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-outline-variant/20">
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mt-8 pt-6 border-t border-outline-variant/20">
                         <div class="flex flex-col">
+                            <span class="text-2xl font-headline font-black text-amber-500">
+                                {{ $points->total_points }}
+                            </span>
+                            <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
+                                Reward Point
+                            </span>
+                        </div>
+
+                    <div class="flex flex-col">
                             <span class="text-2xl font-headline font-black text-primary">
-                                {{ $donations->count() }}
+                                {{ $donations->where('status', 'approved')->count() }}
                             </span>
                             <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Total Donasi</span>
                         </div>

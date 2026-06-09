@@ -15,7 +15,11 @@ use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\UserExploreController;
 use App\Http\Controllers\OrganizationFollowController;
 use App\Http\Controllers\InteractionController;
+use App\Http\Controllers\MonitoringController;
 use App\Models\Organization;
+use App\Models\DonationSubmission;
+use Illuminate\Http\Request;
+use App\Models\Donation;
 use App\Http\Controllers\EcoDonateRatingController;
 use App\Http\Controllers\VolunteerController;
 
@@ -49,6 +53,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/vouchers/{id}/edit', [VoucherController::class, 'edit'])->name('admin.vouchers.edit');
     Route::put('/admin/vouchers/{id}', [VoucherController::class, 'update'])->name('admin.vouchers.update');
     Route::delete('/admin/vouchers/{id}', [VoucherController::class, 'destroy'])->name('admin.vouchers.destroy');
+
+    Route::get('/admin/monitoring', [MonitoringController::class, 'index'])
+        ->name('admin.monitoring.index');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -87,6 +94,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user/vouchers/{voucherId}', [UserVoucherController::class, 'show'])->name('user.voucher.show');
     Route::post('/user/vouchers/{voucherId}/redeem', [UserVoucherController::class, 'redeem'])->name('user.voucher.redeem');
     Route::get('/user/vouchers/history/all', [UserVoucherController::class, 'history'])->name('user.voucher.history');
+    
 });
 
 // Organization Routes
@@ -141,6 +149,22 @@ Route::middleware(['auth', 'role:organization'])->group(function () {
 
     Route::get('/organization/statistics', [OrgController::class, 'statistics'])
         ->name('organization.statistics');
+
+    Route::put(
+        '/submission/{submissionId}/status',
+        [DonationController::class, 'updateStatus']
+    )->name('submission.updateStatus');
+
+    Route::get(
+        '/volunteer/{id}/applicants',
+        [VolunteerController::class, 'showApplicants']
+    )->name('organization.volunteer.applicants');
+
+    Route::put(
+        '/volunteer/applicant/{id}/status',
+        [VolunteerController::class, 'updateApplicantStatus']
+    )->name('organization.volunteer.update.status');
+
 });
 
 Route::prefix('user')->group(function () {
@@ -175,8 +199,6 @@ Route::prefix('user')->group(function () {
 
 });
 
-
-
 Route::prefix('user')->group(function () {
 
     Route::get('/explore', [ExploreController::class, 'index'])
@@ -190,10 +212,132 @@ Route::prefix('user')->group(function () {
 
     Route::get('/explore/volunteer/{id}', [ExploreController::class, 'detailVolunteer'])
         ->name('user.explore.volunteer');
-});
 
+    Route::post(
+        '/volunteer/{id}/register',
+        [VolunteerController::class, 'storeRegistration']
+    )->name('volunteer.register.submit');
+
+    Route::get(
+        '/history-kegiatan',
+        [UserController::class, 'historyKegiatan']
+    )->name('user.history.kegiatan');
+
+    Route::get(
+        '/volunteer/{id}/review',
+        [UserController::class, 'showVolunteerReview']
+    )->name('user.volunteer.review');
+
+    Route::post(
+        '/volunteer/{id}/review',
+        [UserController::class, 'submitVolunteerReview']
+    )->name('user.volunteer.review.submit');
+
+});
 // Route untuk membuka halaman form pendaftaran
 Route::get('/volunteer/{id}/register', [VolunteerController::class, 'showRegisterForm'])->name('volunteer.register');
 
 // Route untuk submit form dan CV (untuk tahap selanjutnya)
 Route::post('/volunteer/{id}/register', [VolunteerController::class, 'storeRegistration'])->name('volunteer.register.submit');
+
+Route::get(
+    '/organization/donation/{id}',
+    [DonationController::class, 'organizationDetail']
+)->name('organization.donation.detail');
+
+Route::get('/donation/form/{id}', function ($id) {
+
+    $donation = Donation::findOrFail($id);
+
+    return view('user.donate-form', compact('donation'));
+
+})->name('donation.form');
+
+Route::post('/donation/submit/{id}', function (Request $request, $id) {
+
+    $request->validate([
+        'item_name' => 'required',
+        'quantity' => 'required',
+        'unit' => 'required',
+        'pickup_address' => 'required',
+        'phone_number' => 'required',
+        'pickup_date' => 'required',
+    ]);
+
+    $imagePath = null;
+
+    if ($request->hasFile('pickup_proof_image')) {
+
+        $imagePath = $request->file('pickup_proof_image')
+            ->store('donation_proofs', 'public');
+    }
+
+    DonationSubmission::create([
+
+        'donation_id' => $id,
+
+        'user_id' => auth()->id(),
+
+        'item_name' => $request->item_name,
+
+        'quantity' => $request->quantity,
+
+        'unit' => $request->unit,
+
+        'pickup_address' => $request->pickup_address,
+
+        'phone_number' => $request->phone_number,
+
+        'pickup_date' => $request->pickup_date,
+
+        'notes' => $request->notes,
+
+        'pickup_proof_image' => $imagePath,
+
+        'status' => 'pending',
+    ]);
+
+    return redirect()
+        ->route('user.dashboard')
+        ->with('success', 'Donation submitted successfully!');
+
+})->name('donation.submit');
+
+
+Route::prefix('organization')
+    ->middleware(['auth', 'role:organization'])
+    ->group(function () {
+
+        // DETAIL APPLICANTS
+        Route::get(
+            '/volunteer/{id}/applicants',
+            [VolunteerController::class, 'showApplicants']
+        )->name('organization.volunteer.applicants');
+
+        // UPDATE STATUS
+        Route::put(
+            '/volunteer/applicant/{id}/status',
+            [VolunteerController::class, 'updateApplicantStatus']
+        )->name('organization.volunteer.update.status');
+
+});
+
+Route::patch(
+    '/donations/{id}/finish',
+    [DonationController::class, 'finish']
+)->name('donations.finish');
+
+Route::patch(
+    '/volunteer/{id}/complete',
+    [VolunteerRequestController::class, 'complete']
+)->name('volunteer.complete');
+
+Route::get('/donation/{id}', [DonationController::class, 'show'])
+    ->name('user.donation.detail');
+
+Route::get('/volunteer/{id}', [VolunteerController::class, 'show'])
+    ->name('user.volunteer.detail');
+
+Route::post('/voucher/{voucher}/redeem',
+    [VoucherController::class, 'redeem'])
+    ->name('user.voucher.redeem');

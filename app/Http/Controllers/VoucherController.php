@@ -125,4 +125,13 @@ class VoucherController extends Controller
 
         return redirect()->route('admin.vouchers.index')->with('success', 'Voucher berhasil dihapus');
     }
+
+    public function redeem(Voucher $voucher)
+    {
+        return back()->with(
+            'success',
+            'Voucher berhasil ditukar!'
+        );
+    }
+
 }

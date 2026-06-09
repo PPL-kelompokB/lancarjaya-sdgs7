@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Donation;
+use App\Models\DonationSubmission;
+use Illuminate\Support\Facades\Auth;
+use App\Models\UserPoints;
 
 class DonationController extends Controller
 {
@@ -62,12 +65,55 @@ class DonationController extends Controller
             'start_date'      => $request->start_date,
             'end_date'        => $request->end_date,
             'status'          => 'open',
-            'logistic_status' => 'waiting_pickup',
         ]);
 
         return redirect()
             ->route('organization.dashboard')
             ->with('success', 'Program donasi berhasil dibuat.');
+    }
+
+     public function show($id)
+    {
+        $donation = Donation::with('organization')
+            ->findOrFail($id);
+
+        return view('user.explore-detail-donation', compact('donation'));
+    }
+
+   public function submitDonation(Request $request, $id)
+    {
+        $donation = Donation::findOrFail($id);
+
+        // CEK STATUS PROGRAM
+        if ($donation->status === 'completed') {
+            return back()->with(
+                'error',
+                'Program donasi sudah berakhir.'
+            );
+        }
+
+        if ($donation->status === 'cancelled') {
+            return back()->with(
+                'error',
+                'Program donasi dibatalkan.'
+            );
+        }
+
+        $validated = $request->validate([
+            'item_name' => 'required|string|max:255',
+            'quantity' => 'required|integer|min:1',
+            'unit' => 'required|string|max:50',
+
+            'pickup_address' => 'required|string',
+
+            'phone_number' => 'required|string|max:20',
+
+            'pickup_date' => 'required|date',
+
+            'notes' => 'nullable|string',
+
+            'pickup_proof_image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
     }
 
     public function edit($id)
@@ -79,6 +125,37 @@ class DonationController extends Controller
             ->firstOrFail();
 
         return view('organization.editDonation', compact('donation', 'organization'));
+    }
+
+    public function updateStatus(Request $request, $submissionId)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:pending,approved,pickup_on_the_way,picked_up,completed,cancelled',
+            'rejection_note' => 'nullable|string|max:1000',
+        ]);
+
+        $submission = DonationSubmission::findOrFail($submissionId);
+
+        $submission->status = $validated['status'];
+
+        // kalau reject → simpan alasan
+        if ($validated['status'] === 'cancelled') {
+
+            $submission->rejection_note =
+                $validated['rejection_note'];
+
+        } else {
+
+            // reset kalau status lain
+            $submission->rejection_note = null;
+        }
+
+        $submission->save();
+
+        return back()->with(
+            'success',
+            'Donation status updated successfully.'
+        );
     }
 
     public function update(Request $request, $id)
@@ -126,6 +203,33 @@ class DonationController extends Controller
             ->with('success', 'Program donasi berhasil diupdate.');
     }
 
+    public function finish($id)
+    {
+        $organization = auth()->user()->organization;
+
+        $donation = Donation::where('id', $id)
+            ->where('organization_id', $organization->id)
+            ->firstOrFail();
+
+        $donation->update([
+            'status' => 'completed'
+        ]);
+
+        return redirect()
+            ->route('organization.dashboard')
+            ->with('success', 'Program donasi berhasil diakhiri.');
+    }
+
+    public function myDonations()
+    {
+        $submissions = DonationSubmission::with('donation')
+            ->where('user_id', Auth::id())
+            ->latest()
+            ->get();
+
+        return view('user.my-donations', compact('submissions'));
+    }
+
     public function destroy($id)
     {
         $organization = auth()->user()->organization;
@@ -150,4 +254,36 @@ class DonationController extends Controller
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+
+    public function organizationDetail($id)
+    {
+        $donation = Donation::with([
+            'organization',
+            'submissions.user'
+        ])->findOrFail($id);
+
+        return view(
+            'organization.donation-detail',
+            compact('donation')
+        );
+    }
+
+    public function completeDonation($id)
+    {
+        $submission = DonationSubmission::findOrFail($id);
+
+        $submission->status = 'completed';
+        $submission->save();
+
+        UserPoints::addPoints(
+            $submission->user_id,
+            50
+        );
+
+        return back()->with(
+            'success',
+            'Donasi selesai dan poin berhasil diberikan.'
+        );
+    }
+
 }

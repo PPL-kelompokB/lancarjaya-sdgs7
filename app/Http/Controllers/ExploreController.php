@@ -38,9 +38,9 @@ class ExploreController extends Controller
             })
             ->latest()
             ->get();
-
-        $donations = Donation::with('organization')
-            ->when($search, function ($query) use ($search) {
+            $donations = Donation::with('organization')
+                ->where('status', '!=', 'completed')
+                ->when($search, function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
 
                     $q->where('title', 'like', "%{$search}%")
@@ -58,22 +58,23 @@ class ExploreController extends Controller
             ->get();
 
         $volunteers = VolunteerRequest::with('organization')
-            ->when($search, function ($query) use ($search) {
-                $query->where(function ($q) use ($search) {
+        ->where('status', '!=', 'completed')
+        ->when($search, function ($query) use ($search) {
+            $query->where(function ($q) use ($search) {
 
-                    $q->where('title', 'like', "%{$search}%")
-                      ->orWhere('description', 'like', "%{$search}%")
+                $q->where('title', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%")
 
-                      ->orWhereHas('organization', function ($org) use ($search) {
+                ->orWhereHas('organization', function ($org) use ($search) {
 
-                          $org->where('organization_name', 'like', "%{$search}%");
-
-                      });
+                    $org->where('organization_name', 'like', "%{$search}%");
 
                 });
-            })
-            ->latest()
-            ->get();
+
+            });
+        })
+        ->latest()
+        ->get();
 
         $explore = collect();
 

@@ -191,6 +191,162 @@
                 </a>
             </div>
 
+            <!-- REVIEW SECTION -->
+            <div class="mt-10 border-t border-[#eae1da] pt-8">
+
+                <!-- HEADER -->
+                <div class="flex items-center justify-between mb-8">
+
+                    <div>
+
+                        <h2 class="text-2xl font-bold text-[#003527]">
+                            ⭐ Ulasan Volunteer
+                        </h2>
+
+                        <p class="text-sm text-gray-500 mt-1">
+
+                            {{ $volunteer->reviews->count() }}
+                            ulasan volunteer
+
+                        </p>
+
+                    </div>
+
+                    <!-- AVG RATING -->
+                    @if($volunteer->reviews->count())
+
+                        <div class="text-right">
+
+                            <div class="flex items-center justify-end gap-2">
+
+                                <p class="text-4xl font-extrabold text-[#003527]">
+
+                                    {{ number_format($volunteer->reviews->avg('rating'), 1) }}
+
+                                </p>
+
+                                <div class="text-yellow-500 text-xl">
+
+                                    ⭐
+
+                                </div>
+
+                            </div>
+
+                            <p class="text-sm text-gray-500">
+
+                                Rating rata-rata
+
+                            </p>
+
+                        </div>
+
+                    @endif
+
+                </div>
+
+                <!-- REVIEW LIST -->
+                <div class="space-y-5">
+
+                    @forelse($volunteer->reviews()->with('user')->latest()->get() as $review)
+
+                        <div class="bg-[#f8f9fa] rounded-3xl p-6 border border-gray-200">
+
+                            <!-- TOP -->
+                            <div class="flex items-start justify-between">
+
+                                <div class="flex items-center gap-4">
+
+                                    <!-- AVATAR -->
+                                    <div class="w-12 h-12 rounded-full bg-[#006c49] text-white flex items-center justify-center font-bold text-lg">
+
+                                        {{ strtoupper(substr($review->user->name, 0, 1)) }}
+
+                                    </div>
+
+                                    <div>
+
+                                        <!-- NAME -->
+                                        <h3 class="font-bold text-[#003527]">
+
+                                            {{ $review->user->name }}
+
+                                        </h3>
+
+                                        <!-- DATE -->
+                                        <p class="text-xs text-gray-500">
+
+                                            {{ $review->created_at->diffForHumans() }}
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- STARS -->
+                                <div class="flex items-center gap-1">
+
+                                    @for($i = 1; $i <= 5; $i++)
+
+                                        @if($i <= $review->rating)
+
+                                            <span class="text-yellow-400 text-xl">
+                                                ⭐
+                                            </span>
+
+                                        @else
+
+                                            <span class="text-gray-300 text-xl">
+                                                ⭐
+                                            </span>
+
+                                        @endif
+
+                                    @endfor
+
+                                </div>
+
+                            </div>
+
+                            <!-- REVIEW TEXT -->
+                            <p class="mt-5 text-[#404944] leading-relaxed">
+
+                                {{ $review->review }}
+
+                            </p>
+
+                        </div>
+
+                    @empty
+
+                        <!-- EMPTY -->
+                        <div class="bg-[#f8f9fa] rounded-3xl p-10 border border-dashed border-gray-300 text-center">
+
+                            <div class="text-5xl mb-3">
+                                ⭐
+                            </div>
+
+                            <h3 class="text-lg font-bold text-[#003527] mb-2">
+
+                                Belum ada ulasan
+
+                            </h3>
+
+                            <p class="text-sm text-gray-500">
+
+                                Jadilah volunteer pertama yang memberi ulasan ✨
+
+                            </p>
+
+                        </div>
+
+                    @endforelse
+
+                </div>
+
+            </div>
+
             <!-- LIKE & COMMENT -->
             <div class="mt-8 border-t border-[#eae1da] pt-5">
 

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 use App\Models\User;
+use App\Models\Donation;
+use App\Models\VolunteerRequest;
 use Illuminate\Database\Eloquent\Model;
 
 class Organization extends Model
@@ -54,4 +56,5 @@ class Organization extends Model
             'user_id'
         )->withTimestamps();
     }
+
 }

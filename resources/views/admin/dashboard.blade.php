@@ -41,6 +41,12 @@
                 <span class="text-sm font-semibold">Organizations</span>
             </a>
 
+            <a href="{{ route('admin.monitoring.index') }}"
+               class="flex items-center gap-3 rounded-full px-4 py-3 transition-all duration-200 {{ request()->routeIs('admin.organizations.*') ? 'bg-[#003527] text-white' : 'text-[#1f1b17] hover:bg-[#f6ece6]' }}">
+                <span class="material-symbols-outlined">monitoring</span>
+                <span class="text-sm font-semibold">Monitoring</span>
+            </a>
+
             <a href="{{ route('admin.vouchers.index') }}"
                class="flex items-center gap-3 rounded-full px-4 py-3 transition-all duration-200 {{ request()->routeIs('admin.vouchers.*') ? 'bg-[#003527] text-white' : 'text-[#1f1b17] hover:bg-[#f6ece6]' }}">
                 <span class="material-symbols-outlined">confirmation_number</span>
@@ -234,6 +240,8 @@
                                         Sudah Disalurkan
                                     </span>
                                 @endif
+
+                                
                             </div>
                         </div>
                     @empty
