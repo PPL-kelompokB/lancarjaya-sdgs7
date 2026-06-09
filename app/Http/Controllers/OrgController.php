@@ -76,12 +76,7 @@ class OrgController extends Controller
         return redirect('/login')->with('success', 'Registrasi organisasi berhasil. Menunggu verifikasi admin.');
     }
 
-    public function dashboard()
-    {
-        $organization = \App\Models\Organization::where('user_id', auth()->id())->firstOrFail();
-
-        return view('organization.dashboard', compact('organization'));
-    }
+    
     public function updateProfile(Request $request)
 {
     $organization = Organization::where('user_id', Auth::id())->firstOrFail();
