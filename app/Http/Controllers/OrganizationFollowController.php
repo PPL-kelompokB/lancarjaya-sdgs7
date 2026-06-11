@@ -22,4 +22,9 @@ class OrganizationFollowController extends Controller
 
         return back();
     }
+
+    public function test( )
+    {
+        //
+    }
 }
