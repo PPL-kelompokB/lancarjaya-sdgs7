@@ -127,9 +127,9 @@
                 <span class="text-sm font-medium">Dashboard</span>
             </a>
 
-            <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="#">
+            <a class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="{{ route('user.history.kegiatan') }}">
                 <span class="material-symbols-outlined">card_giftcard</span>
-                <span class="text-sm font-medium">Donasi Saya</span>
+                <span class="text-sm font-medium">History Kegiatan</span>
             </a>
 
             <a  href="{{ route('user.explore') }}"
@@ -138,10 +138,16 @@
                 <span class="text-sm font-medium">Explore</span>
             </a>
 
-             <a href="{{ route('user.blog.index') }}"
+            <a href="{{ route('user.blog.index') }}"
                 class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="#">
                 <span class="material-symbols-outlined">person</span>
                 <span class="text-sm font-medium">Blog Saya</span>
+            </a>
+
+            <a href="{{ route('user.voucher.index') }}"
+                class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" href="#">
+                <span class="material-symbols-outlined">confirmation_number</span>
+                <span class="text-sm font-medium">Voucher</span>
             </a>
 
 
@@ -238,10 +244,19 @@
                     </div>
 
                     <!-- Stats -->
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-outline-variant/20">
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mt-8 pt-6 border-t border-outline-variant/20">
                         <div class="flex flex-col">
+                            <span class="text-2xl font-headline font-black text-amber-500">
+                                {{ $points->total_points }}
+                            </span>
+                            <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">
+                                Reward Point
+                            </span>
+                        </div>
+
+                    <div class="flex flex-col">
                             <span class="text-2xl font-headline font-black text-primary">
-                                {{ $donations->count() }}
+                                {{ $donations->where('status', 'approved')->count() }}
                             </span>
                             <span class="text-xs uppercase tracking-widest text-on-surface-variant font-semibold">Total Donasi</span>
                         </div>
@@ -382,28 +397,40 @@
                                     <div class="bg-white rounded-2xl overflow-hidden border border-outline-variant/20">
                                         <div class="p-5">
                                             <div class="flex flex-wrap gap-2 mb-3">
-                                                @if($donation->status === 'open')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-100 text-blue-700">Open</span>
-                                                @elseif($donation->status === 'in_progress')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-yellow-100 text-yellow-700">In Progress</span>
-                                                @elseif($donation->status === 'completed')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-green-100 text-green-700">Completed</span>
-                                                @else
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-red-100 text-red-700">Cancelled</span>
-                                                @endif
+                                                @if($donation->status === 'pending')
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-yellow-100 text-yellow-700">
+                                                        Pending
+                                                    </span>
 
-                                                @if($donation->logistic_status === 'waiting_pickup')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-gray-100 text-gray-700">Waiting Pickup</span>
-                                                @elseif($donation->logistic_status === 'picked_up')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-indigo-100 text-indigo-700">Picked Up</span>
-                                                @elseif($donation->logistic_status === 'in_transit')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-orange-100 text-orange-700">In Transit</span>
-                                                @elseif($donation->logistic_status === 'arrived')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-cyan-100 text-cyan-700">Arrived</span>
-                                                @elseif($donation->logistic_status === 'processed')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-purple-100 text-purple-700">Processed</span>
-                                                @elseif($donation->logistic_status === 'distributed')
-                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">Distributed</span>
+                                                @elseif($donation->status === 'approved')
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-100 text-blue-700">
+                                                        Approved
+                                                    </span>
+
+                                                @elseif($donation->status === 'pickup_on_the_way')
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-purple-100 text-purple-700">
+                                                        Pickup On The Way
+                                                    </span>
+
+                                                @elseif($donation->status === 'picked_up')
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-orange-100 text-orange-700">
+                                                        Picked Up
+                                                    </span>
+
+                                                @elseif($donation->status === 'completed')
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-green-100 text-green-700">
+                                                        Completed
+                                                    </span>
+
+                                                @elseif($donation->status === 'cancelled')
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-red-100 text-red-700">
+                                                        Rejected
+                                                    </span>
+
+                                                @else
+                                                    <span class="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-gray-100 text-gray-500">
+                                                        Unknown
+                                                    </span>
                                                 @endif
                                             </div>
 

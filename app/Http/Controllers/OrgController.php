@@ -245,9 +245,12 @@ public function updateProfileImage(Request $request)
         ));
     }
 
-public function statistics()
-{
-    $organization = Organization::where('user_id', auth()->id())
+    public function statistics()
+    {
+        $organization = Organization::where(
+            'user_id',
+            auth()->id()
+        )
         ->with([
             'blogs',
             'donations',
@@ -255,18 +258,62 @@ public function statistics()
         ])
         ->firstOrFail();
 
-    $donationLabels = $organization->donations->pluck('title');
+        /*
+        |--------------------------------------------------------------------------
+        | DONATION CHART
+        |--------------------------------------------------------------------------
+        */
 
-    $donationData = $organization->donations->pluck('donor_count');
+        $activeDonations = $organization->donations
+            ->where('status', '!=', 'canceled');
 
-    return view('organization.statistics', compact(
-        'organization',
-        'donationLabels',
-        'donationData'
-    ));
+        $donationLabels = $activeDonations
+            ->pluck('title');
 
-    return view('organization.statistics', compact('organization'));
-}
+        $donationData = $activeDonations
+            ->pluck('donor_count');
+
+        /*
+        |--------------------------------------------------------------------------
+        | VOLUNTEER CHART
+        |--------------------------------------------------------------------------
+        */
+
+        $volunteerLabels = [];
+        $volunteerData = [];
+
+        $totalVolunteerParticipants = 0;
+
+        foreach ($organization->volunteerRequests as $volunteer) {
+
+            if ($volunteer->status === 'canceled') {
+                continue;
+            }
+
+            $participantCount = \App\Models\VolunteerRegistration::where(
+                'volunteer_id',
+                $volunteer->id
+            )->count();
+
+            $volunteerLabels[] = $volunteer->title;
+
+            $volunteerData[] = $participantCount;
+
+            $totalVolunteerParticipants += $participantCount;
+        }
+
+        return view(
+            'organization.statistics',
+            compact(
+                'organization',
+                'donationLabels',
+                'donationData',
+                'volunteerLabels',
+                'volunteerData',
+                'totalVolunteerParticipants'
+            )
+        );
+    }
 
 
 }

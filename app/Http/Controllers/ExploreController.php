@@ -7,6 +7,7 @@ use App\Models\Blog;
 use App\Models\Donation;
 use App\Models\VolunteerRequest;
 use App\Models\User;
+use App\Models\VolunteerRegistration;
 
 class ExploreController extends Controller
 {
@@ -38,9 +39,8 @@ class ExploreController extends Controller
             })
             ->latest()
             ->get();
-
-        $donations = Donation::with('organization')
-            ->when($search, function ($query) use ($search) {
+            $donations = Donation::with('organization')
+                ->when($search, function ($query) use ($search) {
                 $query->where(function ($q) use ($search) {
 
                     $q->where('title', 'like', "%{$search}%")
@@ -58,22 +58,22 @@ class ExploreController extends Controller
             ->get();
 
         $volunteers = VolunteerRequest::with('organization')
-            ->when($search, function ($query) use ($search) {
-                $query->where(function ($q) use ($search) {
+        ->when($search, function ($query) use ($search) {
+            $query->where(function ($q) use ($search) {
 
-                    $q->where('title', 'like', "%{$search}%")
-                      ->orWhere('description', 'like', "%{$search}%")
+                $q->where('title', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%")
 
-                      ->orWhereHas('organization', function ($org) use ($search) {
+                ->orWhereHas('organization', function ($org) use ($search) {
 
-                          $org->where('organization_name', 'like', "%{$search}%");
-
-                      });
+                    $org->where('organization_name', 'like', "%{$search}%");
 
                 });
-            })
-            ->latest()
-            ->get();
+
+            });
+        })
+        ->latest()
+        ->get();
 
         $explore = collect();
 
@@ -249,8 +249,21 @@ class ExploreController extends Controller
 
     public function detailVolunteer($id)
     {
-        $volunteer = VolunteerRequest::with('organization')->findOrFail($id);
+        $volunteer = VolunteerRequest::findOrFail($id);
 
-        return view('user.explore-detail-volunteer', compact('volunteer'));
+        $alreadyRegistered = VolunteerRegistration::where(
+            'user_id',
+            auth()->id()
+        )
+        ->where(
+            'volunteer_id',
+            $volunteer->id
+        )
+        ->exists();
+
+        return view(
+            'user.explore-detail-volunteer',
+            compact('volunteer', 'alreadyRegistered')
+        );
     }
 }

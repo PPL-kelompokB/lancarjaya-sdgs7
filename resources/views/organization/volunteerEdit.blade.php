@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buat Volunteer Request - EcoDon</title>
+    <title>Edit Volunteer Request - EcoDon</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -45,11 +45,11 @@
                 </p>
 
                 <h1 class="mt-3 text-3xl md:text-4xl font-extrabold">
-                    Buat Volunteer Request
+                    Edit Volunteer Request
                 </h1>
 
                 <p class="mt-3 text-white/80 max-w-2xl">
-                    Cari relawan yang tepat untuk membantu kegiatan sosial organisasi Anda.
+                    Perbarui informasi volunteer request yang telah dibuat.
                 </p>
             </div>
 
@@ -103,16 +103,11 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('organization.volunteer-request.store') }}"
-                          method="POST"
-                          enctype="multipart/form-data"
-                          class="space-y-8">
-
+                    <form action="{{ route('organization.volunteer.update', $volunteer->id) }}"
+                        method="POST"
+                        enctype="multipart/form-data">
                         @csrf
-
-                        <input type="hidden"
-                               name="organization_id"
-                               value="{{ $organization->id }}">
+                        @method('PUT')
 
                         {{-- Informasi Kegiatan --}}
                         <section>
@@ -130,7 +125,7 @@
                                     <input
                                         type="text"
                                         name="title"
-                                        value="{{ old('title') }}"
+                                        value="{{ old('title', $volunteer->title) }}"
                                         class="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-secondary"
                                         placeholder="Contoh: Bakti Sosial Pendidikan Desa">
                                 </div>
@@ -144,7 +139,7 @@
                                         name="description"
                                         rows="5"
                                         class="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-secondary"
-                                        placeholder="Jelaskan kegiatan volunteer secara lengkap...">{{ old('description') }}</textarea>
+                                        placeholder="Jelaskan kegiatan volunteer secara lengkap...">{{ old('description', $volunteer->description) }}</textarea>
                                 </div>
 
                                 <div>
@@ -153,6 +148,15 @@
                                     </label>
 
                                     <div class="border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center">
+
+                                         @if($volunteer->image)
+                                            <img
+                                                src="{{ asset('storage/' . $volunteer->image) }}"
+                                                alt="{{ $volunteer->title }}"
+                                                class="w-full max-w-md mx-auto rounded-xl mb-4"
+                                            >
+                                        @endif
+
                                         <input
                                             type="file"
                                             name="image"
@@ -185,7 +189,7 @@
                                         name="task_description"
                                         rows="5"
                                         class="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-secondary"
-                                        placeholder="Contoh: Registrasi peserta, dokumentasi, distribusi logistik...">{{ old('task_description') }}</textarea>
+                                        placeholder="Contoh: Registrasi peserta, dokumentasi, distribusi logistik...">{{ old('task_description', $volunteer->task_description) }}</textarea>
                                 </div>
 
                                 <div>
@@ -196,7 +200,7 @@
                                     <input
                                         type="text"
                                         name="required_skills"
-                                        value="{{ old('required_skills') }}"
+                                        value="{{ old('required_skills', $volunteer->required_skills) }}"
                                         class="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-secondary"
                                         placeholder="Komunikasi, Desain, Public Speaking">
                                 </div>
@@ -210,7 +214,7 @@
                                         type="number"
                                         min="1"
                                         name="volunteer_quota"
-                                        value="{{ old('volunteer_quota') }}"
+                                        value="{{ old('volunteer_quota', $volunteer->volunteer_quota) }}"
                                         class="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-secondary"
                                         placeholder="Contoh: 20">
                                 </div>
@@ -234,7 +238,7 @@
                                     <input
                                         type="date"
                                         name="deadline"
-                                        value="{{ old('deadline') }}"
+                                        value="{{ old('deadline', $volunteer->deadline) }}"
                                         class="w-full rounded-2xl border border-gray-300 px-4 py-3">
                                 </div>
 
@@ -246,7 +250,7 @@
                                     <input
                                         type="date"
                                         name="event_date"
-                                        value="{{ old('event_date') }}"
+                                        value="{{ old('event_date', $volunteer->event_date) }}"
                                         class="w-full rounded-2xl border border-gray-300 px-4 py-3">
                                 </div>
 
@@ -262,17 +266,17 @@
                                         <option value="">Pilih Tipe</option>
 
                                         <option value="online"
-                                            {{ old('event_type') == 'online' ? 'selected' : '' }}>
+                                            {{ old('event_type', $volunteer->event_type) == 'online' ? 'selected' : '' }}>
                                             Online
                                         </option>
 
                                         <option value="offline"
-                                            {{ old('event_type') == 'offline' ? 'selected' : '' }}>
+                                            {{ old('event_type', $volunteer->event_type) == 'offline' ? 'selected' : '' }}>
                                             Offline
                                         </option>
 
                                         <option value="hybrid"
-                                            {{ old('event_type') == 'hybrid' ? 'selected' : '' }}>
+                                            {{ old('event_type', $volunteer->event_type) == 'hybrid' ? 'selected' : '' }}>
                                             Hybrid
                                         </option>
 
@@ -298,7 +302,7 @@
                                     <input
                                         type="text"
                                         name="location"
-                                        value="{{ old('location') }}"
+                                        value="{{ old('location', $volunteer->location) }}"
                                         class="w-full rounded-2xl border border-gray-300 px-4 py-3"
                                         placeholder="Jl. Sudirman No.10, Jakarta">
                                 </div>
@@ -313,7 +317,7 @@
                                         step="0.1"
                                         min="0"
                                         name="location_radius"
-                                        value="{{ old('location_radius') }}"
+                                        value="{{ old('location_radius', $volunteer->location_radius) }}"
                                         class="w-full rounded-2xl border border-gray-300 px-4 py-3"
                                         placeholder="5">
                                 </div>
@@ -331,7 +335,7 @@
                                 name="notes"
                                 rows="4"
                                 class="w-full rounded-2xl border border-gray-300 px-4 py-3"
-                                placeholder="Tambahkan informasi tambahan jika diperlukan...">{{ old('notes') }}</textarea>
+                                placeholder="Tambahkan informasi tambahan jika diperlukan...">{{ old('notes', $volunteer->notes) }}</textarea>
                         </section>
 
                         {{-- Buttons --}}
@@ -345,7 +349,7 @@
                             <button
                                 type="submit"
                                 class="px-8 py-3 bg-primary text-white rounded-full font-bold hover:bg-secondary transition shadow-lg">
-                                Publish Volunteer Request
+                                Update Volunteer Request
                             </button>
 
                         </div>

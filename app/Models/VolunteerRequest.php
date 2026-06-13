@@ -28,6 +28,14 @@ class VolunteerRequest extends Model
         return $this->belongsTo(Organization::class);
     }
 
+    public function registrations()
+    {
+        return $this->hasMany(
+            VolunteerRegistration::class,
+            'volunteer_id'
+        );
+    }
+
     public function likes()
     {
         return $this->morphMany(Like::class, 'likeable');
@@ -36,5 +44,13 @@ class VolunteerRequest extends Model
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(
+            VolunteerReview::class,
+            'volunteer_request_id'
+        );
     }
 }

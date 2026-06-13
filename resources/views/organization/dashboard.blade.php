@@ -123,8 +123,8 @@
                 <span class="text-sm font-medium">Dashboard</span>
             </a>
 
-            <a 
-                class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" 
+            <a
+                class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all"
                 href="{{ route('organization.blog.create', $organization->id) }}"
             >
                 <span class="material-symbols-outlined">article</span>
@@ -157,8 +157,8 @@
                 <span class="material-symbols-outlined">group</span>
                 <span class="text-sm font-medium">Volunteer Activity</span>
             </a>
-            <a 
-                class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all" 
+            <a
+                class="text-stone-700 px-4 py-3 mx-4 flex items-center gap-3 hover:bg-emerald-100/50 rounded-full transition-all"
                 href="{{ route('organization.statistics') }}"
             >
                 <span class="material-symbols-outlined">bar_chart</span>
@@ -357,7 +357,7 @@
                 <button type="button" class="tab-btn pb-4 text-on-surface-variant font-headline font-bold relative hover:text-primary transition-colors whitespace-nowrap" data-tab="volunteer-activity">
                     Volunteer Activity
                 </button>
-                
+
                 <button type="button" class="tab-btn pb-4 text-on-surface-variant font-headline font-bold relative hover:text-primary transition-colors whitespace-nowrap" data-tab="data-organisasi">
                     Data Organisasi
                 </button>
@@ -379,7 +379,7 @@
                                 @foreach($organization->blogs as $blog)
                                 <article class="bg-white rounded-2xl border border-outline-variant/20 overflow-hidden">
                                     @if(!empty($blog->image))
-                                        <img 
+                                        <img
                                             src="{{ asset('storage/' . $blog->image) }}"
                                             class="w-full h-48 object-cover"
                                             alt="{{ $blog->title }}"
@@ -491,13 +491,45 @@
 
                                                 <div class="flex flex-wrap justify-end gap-2 mt-5 pt-4 border-t border-outline-variant/20">
                                                     <a
+                                                        href="{{ route('organization.donation.detail', $donation->id) }}"
+                                                        class="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[#006c49] text-white text-sm font-bold hover:bg-[#003527] transition-colors"
+                                                    >
+                                                        <span class="material-symbols-outlined text-[18px]">visibility</span>
+                                                        Detail
+                                                    </a>
+                                                    <a
                                                         href="{{ route('donations.edit', $donation->id) }}"
                                                         class="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-yellow-100 text-yellow-700 text-sm font-bold hover:bg-yellow-200 transition-colors"
                                                     >
                                                         <span class="material-symbols-outlined text-[18px]">edit</span>
                                                         Edit
                                                     </a>
+                                                        @if(
+                                                                    $donation->status !== 'completed' &&
+                                                                    $donation->status !== 'cancelled'
+                                                                )
 
+                                                                <form
+                                                                    action="{{ route('donations.finish', $donation->id) }}"
+                                                                    method="POST"
+                                                                    onsubmit="return confirm('Yakin ingin mengakhiri program ini? Program tidak akan muncul lagi di Explore.')"
+                                                                >
+                                                                    @csrf
+                                                                    @method('PATCH')
+
+                                                                    <button
+                                                                        type="submit"
+                                                                        class="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 text-sm font-bold hover:bg-emerald-200 transition-colors"
+                                                                    >
+                                                                        <span class="material-symbols-outlined text-[18px]">
+                                                                            task_alt
+                                                                        </span>
+
+                                                                        Akhiri Program
+                                                                    </button>
+                                                                </form>
+
+                                                    @endif
                                                     <form
                                                         action="{{ route('donations.destroy', $donation->id) }}"
                                                         method="POST"
@@ -575,35 +607,111 @@
 
                                         {{-- GAMBAR --}}
                                         @if ($item->image)
-                                            <img 
-                                                src="{{ asset('storage/' . $item->image) }}" 
+                                            <img
+                                                src="{{ asset('storage/' . $item->image) }}"
                                                 class="w-full h-auto rounded-xl mb-4"
                                             >
                                         @endif
 
                                         <div class="flex justify-between items-start">
+
                                             <div>
                                                 <h4 class="text-lg font-semibold text-primary">
                                                     {{ $item->title }}
                                                 </h4>
+
                                                 <p class="text-sm text-gray-500">
                                                     {{ $item->location }} • {{ ucfirst($item->event_type) }}
                                                 </p>
+
+                                                <div class="mt-2">
+                                                    @if($item->status === 'open')
+                                                        <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold">
+                                                            Open
+                                                        </span>
+
+                                                    @elseif($item->status === 'in_progress')
+                                                        <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-bold">
+                                                            In Progress
+                                                        </span>
+
+                                                    @elseif($item->status === 'completed')
+                                                        <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold">
+                                                            Completed
+                                                        </span>
+
+                                                    @elseif($item->status === 'cancelled')
+                                                        <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold">
+                                                            Cancelled
+                                                        </span>
+                                                    @endif
+                                                </div>
                                             </div>
 
                                             <span class="text-sm bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full">
                                                 {{ $item->volunteer_quota }} orang
                                             </span>
+
                                         </div>
 
-                                        <p class="mt-3 text-sm text-gray-700">
-                                            {{ Str::limit($item->description, 100) }}
-                                        </p>
+                                        <!-- BUTTON DETAIL -->
+                                        <div class="mt-4 flex items-center justify-between">
 
-                                        <div class="mt-4 flex justify-between text-xs text-gray-500">
-                                            <span>Deadline: {{ \Carbon\Carbon::parse($item->deadline)->format('d M Y') }}</span>
-                                            <span>Tanggal: {{ \Carbon\Carbon::parse($item->event_date)->format('d M Y') }}</span>
+                                        <div class="text-xs text-gray-500 flex gap-4">
+                                            <span>
+                                                Deadline:
+                                                {{ \Carbon\Carbon::parse($item->deadline)->format('d M Y') }}
+                                            </span>
+
+                                            <span>
+                                                Tanggal:
+                                                {{ \Carbon\Carbon::parse($item->event_date)->format('d M Y') }}
+                                            </span>
                                         </div>
+
+                                        <div class="flex gap-2">
+
+                                            <a href="{{ route('organization.volunteer.applicants', $item->id) }}"
+                                            class="px-4 py-2 bg-[#006c49] hover:bg-[#003527] text-white rounded-full text-sm font-semibold transition">
+                                                Detail Pendaftar
+                                            </a>
+
+                                            {{-- BUTTON EDIT --}}
+                                            @if(in_array($item->status, ['open', 'in_progress']))
+                                                <a href="{{ route('organization.volunteer.edit', $item->id) }}"
+                                                class="px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold hover:bg-blue-200 transition">
+                                                    Edit
+                                                </a>
+                                            @endif
+
+                                            @if(
+                                                $item->status !== 'completed' &&
+                                                $item->status !== 'cancelled'
+                                            )
+
+                                                <form
+                                                    action="{{ route('volunteer.complete', $item->id) }}"
+                                                    method="POST"
+                                                    onsubmit="return confirm('Yakin ingin mengakhiri volunteer ini?')"
+                                                >
+                                                    @csrf
+                                                    @method('PATCH')
+
+                                                    <button
+                                                        type="submit"
+                                                        class="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-semibold hover:bg-green-200"
+                                                    >
+                                                        Akhiri Volunteer
+                                                    </button>
+                                                </form>
+
+                                            @endif
+
+                                        </div>
+
+                                    </div>
+
+                                    </div>
 
                                     </div>
                                 @endforeach

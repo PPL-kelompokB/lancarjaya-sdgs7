@@ -59,4 +59,15 @@ class VolunteerRequestController extends Controller
 
         dd($request->hasFile('image'), $request->file('image'));
     }
+
+
+    public function complete($id)
+    {
+        $volunteer = VolunteerRequest::findOrFail($id);
+
+        $volunteer->status = 'completed';
+        $volunteer->save();
+
+        return back()->with('success', 'Volunteer berhasil diakhiri.');
+    }
 }

@@ -2,27 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Models\Donation;
-use App\Models\VolunteerRequest;
-use App\Models\Blog;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class VoucherRedemption extends Model
 {
-    // kode lama kamu...
+    protected $fillable = [
+    'user_id',
+    'voucher_id',
+    'points_spent',
+    'redemption_code',
+    'status',
+    'redeemed_at',
+    'expired_at',
+    ];
 
-    public function donations()
+    public static function generateRedemptionCode()
     {
-        return $this->hasMany(Donation::class);
+        return 'VCR-' . strtoupper(substr(md5(uniqid()), 0, 8));
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
-    public function volunteerRequests()
+    public function voucher()
     {
-        return $this->hasMany(VolunteerRequest::class);
-    }
-
-    public function blogs()
-    {
-        return $this->hasMany(Blog::class);
+        return $this->belongsTo(Voucher::class);
     }
 }

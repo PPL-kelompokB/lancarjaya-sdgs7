@@ -82,7 +82,7 @@
 
             <!-- DETAIL INFORMASI -->
             <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-[#eae1da] pt-6">
-                
+
                 <!-- Event Type -->
                 <div class="bg-[#f6ece6] rounded-2xl p-4">
                     <p class="text-xs font-bold text-[#003527] uppercase tracking-wide mb-1">
@@ -183,12 +183,188 @@
             </div>
             @endif
 
-            <div class="flex justify-end mt-3">
-                <a href="{{ route('volunteer.register', $volunteer->id) }}" 
-                target="_blank" 
-                class="px-6 py-2 bg-[#006c49] text-white rounded-full font-bold hover:bg-[#003527] inline-block text-center">
-                    Daftar
+                        <div class="flex justify-center mt-6">
+
+                            @if($alreadyRegistered)
+
+                <form action="{{ route('volunteer.cancel', $volunteer->id) }}"
+                    method="POST">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit"
+                            class="inline-flex items-center justify-center px-8 py-3
+                                bg-red-600 text-white rounded-xl">
+                        Batalkan Pendaftaran
+                    </button>
+                </form>
+
+            @else
+
+                <a href="{{ route('volunteer.register', $volunteer->id) }}"
+                class="inline-flex items-center justify-center px-8 py-3
+                        bg-[#006c49] text-white rounded-xl">
+                    Daftar Volunteer
                 </a>
+
+            @endif
+
+            </div>
+
+            <!-- REVIEW SECTION -->
+            <div class="mt-10 border-t border-[#eae1da] pt-8">
+
+                <!-- HEADER -->
+                <div class="flex items-center justify-between mb-8">
+
+                    <div>
+
+                        <h2 class="text-2xl font-bold text-[#003527]">
+                            ⭐ Ulasan Volunteer
+                        </h2>
+
+                        <p class="text-sm text-gray-500 mt-1">
+
+                            {{ $volunteer->reviews->count() }}
+                            ulasan volunteer
+
+                        </p>
+
+                    </div>
+
+                    <!-- AVG RATING -->
+                    @if($volunteer->reviews->count())
+
+                        <div class="text-right">
+
+                            <div class="flex items-center justify-end gap-2">
+
+                                <p class="text-4xl font-extrabold text-[#003527]">
+
+                                    {{ number_format($volunteer->reviews->avg('rating'), 1) }}
+
+                                </p>
+
+                                <div class="text-yellow-500 text-xl">
+
+                                    ⭐
+
+                                </div>
+
+                            </div>
+
+                            <p class="text-sm text-gray-500">
+
+                                Rating rata-rata
+
+                            </p>
+
+                        </div>
+
+                    @endif
+
+                </div>
+
+                <!-- REVIEW LIST -->
+                <div class="space-y-5">
+
+                    @forelse($volunteer->reviews()->with('user')->latest()->get() as $review)
+
+                        <div class="bg-[#f8f9fa] rounded-3xl p-6 border border-gray-200">
+
+                            <!-- TOP -->
+                            <div class="flex items-start justify-between">
+
+                                <div class="flex items-center gap-4">
+
+                                    <!-- AVATAR -->
+                                    <div class="w-12 h-12 rounded-full bg-[#006c49] text-white flex items-center justify-center font-bold text-lg">
+
+                                        {{ strtoupper(substr($review->user->name, 0, 1)) }}
+
+                                    </div>
+
+                                    <div>
+
+                                        <!-- NAME -->
+                                        <h3 class="font-bold text-[#003527]">
+
+                                            {{ $review->user->name }}
+
+                                        </h3>
+
+                                        <!-- DATE -->
+                                        <p class="text-xs text-gray-500">
+
+                                            {{ $review->created_at->diffForHumans() }}
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- STARS -->
+                                <div class="flex items-center gap-1">
+
+                                    @for($i = 1; $i <= 5; $i++)
+
+                                        @if($i <= $review->rating)
+
+                                            <span class="text-yellow-400 text-xl">
+                                                ⭐
+                                            </span>
+
+                                        @else
+
+                                            <span class="text-gray-300 text-xl">
+                                                ⭐
+                                            </span>
+
+                                        @endif
+
+                                    @endfor
+
+                                </div>
+
+                            </div>
+
+                            <!-- REVIEW TEXT -->
+                            <p class="mt-5 text-[#404944] leading-relaxed">
+
+                                {{ $review->review }}
+
+                            </p>
+
+                        </div>
+
+                    @empty
+
+                        <!-- EMPTY -->
+                        <div class="bg-[#f8f9fa] rounded-3xl p-10 border border-dashed border-gray-300 text-center">
+
+                            <div class="text-5xl mb-3">
+                                ⭐
+                            </div>
+
+                            <h3 class="text-lg font-bold text-[#003527] mb-2">
+
+                                Belum ada ulasan
+
+                            </h3>
+
+                            <p class="text-sm text-gray-500">
+
+                                Jadilah volunteer pertama yang memberi ulasan ✨
+
+                            </p>
+
+                        </div>
+
+                    @endforelse
+
+                </div>
+
             </div>
 
             <!-- LIKE & COMMENT -->
