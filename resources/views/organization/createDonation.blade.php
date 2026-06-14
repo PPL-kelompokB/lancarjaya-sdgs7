@@ -208,13 +208,21 @@
 
                                 <div>
                                     <label class="block mb-2 font-bold text-primary">Tanggal Mulai</label>
-                                    <input type="date" name="start_date" value="{{ old('start_date') }}"
+                                    <input
+                                        type="date"
+                                        name="start_date"
+                                        value="{{ old('start_date') }}"
+                                        min="{{ now()->format('Y-m-d') }}"
                                         class="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-secondary">
                                 </div>
 
                                 <div>
                                     <label class="block mb-2 font-bold text-primary">Tanggal Selesai</label>
-                                    <input type="date" name="end_date" value="{{ old('end_date') }}"
+                                    <input
+                                        type="date"
+                                        name="end_date"
+                                        value="{{ old('end_date') }}"
+                                        min="{{ now()->format('Y-m-d') }}"
                                         class="w-full rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-secondary">
                                 </div>
                             </div>

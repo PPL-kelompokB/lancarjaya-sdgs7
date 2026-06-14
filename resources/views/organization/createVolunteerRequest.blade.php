@@ -235,6 +235,7 @@
                                         type="date"
                                         name="deadline"
                                         value="{{ old('deadline') }}"
+                                        min="{{ now()->format('Y-m-d') }}"
                                         class="w-full rounded-2xl border border-gray-300 px-4 py-3">
                                 </div>
 
@@ -247,6 +248,7 @@
                                         type="date"
                                         name="event_date"
                                         value="{{ old('event_date') }}"
+                                        min="{{ now()->format('Y-m-d') }}"
                                         class="w-full rounded-2xl border border-gray-300 px-4 py-3">
                                 </div>
 

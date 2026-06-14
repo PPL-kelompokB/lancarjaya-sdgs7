@@ -45,8 +45,8 @@ class DonationController extends Controller
             'province'        => 'required|string',
             'contact_person'  => 'required|string',
             'contact_phone'   => 'required|string',
-            'start_date'      => 'required|date',
-            'end_date'        => 'required|date|after_or_equal:start_date',
+            'start_date' => 'required|date|after_or_equal:today',
+            'end_date' => 'required|date|after_or_equal:start_date',
         ]);
 
         Donation::create([
