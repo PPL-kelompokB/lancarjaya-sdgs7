@@ -290,7 +290,7 @@
                 @else
 
                     <p class="mt-6 text-sm text-gray-500">
-                        Login untuk komentar.
+                        Login untuk komentar
                     </p>
 
                 @endauth
